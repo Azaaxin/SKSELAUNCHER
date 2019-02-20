@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FF9A7B9A-D171-4440-8E9E-52B3041CEAAC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>TESVMP_Launcher.My.MyApplication</StartupObject>
+    <RootNamespace>TESVMP_Launcher</RootNamespace>
+    <AssemblyName>TESVMP_Launcher</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>TESVMP_Launcher.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>TESVMP_Launcher.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>256.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Azaaxin.Designer.vb">
+      <DependentUpon>Azaaxin.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Azaaxin.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Engine.vb" />
+    <Compile Include="Custom.Designer.vb">
+      <DependentUpon>Custom.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Custom.vb" />
+    <Compile Include="customize.Designer.vb">
+      <DependentUpon>customize.vb</DependentUpon>
+    </Compile>
+    <Compile Include="customize.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Debug1.Designer.vb">
+      <DependentUpon>Debug1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Debug1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ini.Designer.vb">
+      <DependentUpon>ini.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ini.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="IniFile.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Password.Designer.vb">
+      <DependentUpon>Password.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Password.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Protection.Designer.vb">
+      <DependentUpon>Protection.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Protection.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="settings_options.Designer.vb">
+      <DependentUpon>settings_options.vb</DependentUpon>
+    </Compile>
+    <Compile Include="settings_options.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Setup1.Designer.vb">
+      <DependentUpon>Setup1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Setup1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="update1.Designer.vb">
+      <DependentUpon>update1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="update1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Azaaxin.resx">
+      <DependentUpon>Azaaxin.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Custom.resx">
+      <DependentUpon>Custom.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="customize.resx">
+      <DependentUpon>customize.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Debug1.resx">
+      <DependentUpon>Debug1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ini.resx">
+      <DependentUpon>ini.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Password.resx">
+      <DependentUpon>Password.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Protection.resx">
+      <DependentUpon>Protection.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="settings_options.resx">
+      <DependentUpon>settings_options.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Setup1.resx">
+      <DependentUpon>Setup1.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="update1.resx">
+      <DependentUpon>update1.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AZAMODLOADER.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\PLAY0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OPTIONS0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EXIT0.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\OPTIONS1.png" />
+    <None Include="Resources\PLAY1.png" />
+    <None Include="Resources\PLAY1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\EXIT1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="256.ico" />
+    <Content Include="Personal_DremYolLok_Skyrim_symbol.ico" />
+    <None Include="Resources\skyrim_lockedlogo.jpg" />
+    <None Include="Resources\skyrim_lockedlogo.png" />
+    <None Include="Resources\locked2.jpg" />
+    <None Include="Resources\Protection.bmp" />
+    <None Include="Resources\bt1.bmp" />
+    <None Include="Resources\5.png" />
+    <None Include="Resources\4.png" />
+    <None Include="Resources\3.png" />
+    <None Include="Resources\2.png" />
+    <None Include="Resources\1.png" />
+    <None Include="Resources\Close.png" />
+    <None Include="Resources\Flush-loadorder.png" />
+    <None Include="Resources\VerisionChoose.png" />
+    <None Include="Resources\ezgif-2-133544a992.gif" />
+    <None Include="Resources\Image3.png" />
+    <None Include="Resources\72Setup.png" />
+    <None Include="Resources\Image2.png" />
+    <None Include="Resources\Image1.bmp" />
+    <None Include="Resources\ezgif-2-2cd698469a.gif" />
+    <None Include="Resources\dT8xnAqAc.png" />
+    <None Include="Resources\835-200.png" />
+    <None Include="Resources\style_boarder.png" />
+    <None Include="Resources\updaterBG.png" />
+    <None Include="Resources\optionsBG.png" />
+    <None Include="Resources\logo.png" />
+    <None Include="Resources\HungryLogo.jpg" />
+    <None Include="Resources\trnas.png" />
+    <None Include="Resources\options.png" />
+    <None Include="Resources\updater.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
