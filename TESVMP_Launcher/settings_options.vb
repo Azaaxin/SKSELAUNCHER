@@ -1,2158 +1,2118 @@
-﻿
 Imports System
 Imports System.IO
 Imports System.Text
 Imports System.Diagnostics
 Imports TESVMP_Launcher.IniFile
 Public Class settings_options
-    Dim objIniFile As New IniFile(My.Application.Info.DirectoryPath & "\SKSELaucher.ini")
-    Dim Gamedir As String
-    Dim MyCheckboxes(4) As CheckBox
-    Dim lines() As String
-    Dim lineArray As New ArrayList()
-    Dim Main_lineArray As New ArrayList()
-    Dim pluginNames As New ArrayList()
-    Dim linesse() As String
-    Dim whatgameisdetected As Boolean ' if value is true then the game is normal skyrim if it is false the game is sse
-    Dim path As String = My.Application.Info.DirectoryPath
-    Dim ifbeenrunning As Boolean = False
-    Dim main_linesse() As String
-    Dim main_lines() As String
-    Dim linecount As Integer
-    Dim tempnr As Integer = 0
-    Dim pluginschecked As Integer
-    Dim containing As String
-    Dim u As Integer
-    Dim x As Integer
-    ' Dim form1 As New Form1()
-    Private Sub linesarraybuild()
-        ' Denna funktion deklarerar variablarna lines och linesse om de plugins filerna finns så programmet inte krashar direkt när man öppnar det.
-        If My.Settings.Game = "skyrim_2011" = False Then
-            If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt") Then
-                linesse = IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt")
-                whatgameisdetected = False
-            End If
-
-        Else
-            If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt") Then
-                linecount = IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt").Length
-                lines = IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt")
-                containing = File.ReadAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt")
-                whatgameisdetected = True
-            End If
-
+Dim objIniFile As New IniFile(My.Application.Info.DirectoryPath & "\SKSELaucher.ini")
+Dim Gamedir As String
+Dim MyCheckboxes(4) As CheckBox
+Dim lines() As String
+Dim lineArray As New ArrayList()
+Dim Main_lineArray As New ArrayList()
+Dim pluginNames As New ArrayList()
+Dim linesse() As String
+Dim whatgameisdetected As Boolean        ' if value is true then the game is normal skyrim if it is false the game is sse
+Dim path As String = My.Application.Info.DirectoryPath
+Dim ifbeenrunning As Boolean = FALSE
+Dim main_linesse() As String
+Dim main_lines() As String
+Dim linecount As Integer
+Dim tempnr As Integer = 0
+Dim pluginschecked As Integer
+Dim containing As String
+Dim u As Integer
+Dim x As Integer
+' Dim form1 As New Form1()
+Private Sub linesarraybuild()
+    ' Denna funktion deklarerar variablarna lines och linesse om de plugins filerna finns så programmet inte krashar direkt när man öppnar det.
+    If My.Settings.Game = "skyrim_2011" = FALSE Then
+        If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt") Then
+            linesse = IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt")
+            whatgameisdetected = FALSE
         End If
-    End Sub
-    Private Sub compare_lines_array()
-        ' Denna funktion deklarerar variablarna lines och linesse om de plugins filerna finns så programmet inte krashar direkt när man öppnar det.
-        If My.Settings.Game = "skyrim_2011" = False Then
-            If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\loadorder.txt") Then
-                main_linesse = IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt")
-                whatgameisdetected = False
-            End If
-
-        Else
-            If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt") Then
-                main_lines = IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt")
-
-                whatgameisdetected = True
-
-            End If
-
+        
+    Else
+        If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt") Then
+            linecount = IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt").Length
+            lines = IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt")
+            containing = File.ReadAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt")
+            whatgameisdetected = TRUE
         End If
-    End Sub
-    Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
-
-    End Sub
-
-    Private Sub introMov_CheckedChanged(sender As Object, e As EventArgs) Handles introMov.CheckedChanged
-
-
-    End Sub
-    Private Sub Modlist_bugfix()
-        If My.Settings.Game = "skyrim_2016" Then
-            If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt") = False Then
-                MsgBox("There is no existing load order for the Special Edition! Please start the game without SKSE_Launcher or use loot/mod manager")
-                System.IO.Directory.CreateDirectory("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\")
-                Dim file As System.IO.StreamWriter
-                System.IO.File.Create("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt").Dispose()
-                file = My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt", True)
-                file.WriteLine("#Generated By TESVMP")
-                file.Close()
-            End If
+        
+    End If
+End Sub
+Private Sub compare_lines_array()
+    ' Denna funktion deklarerar variablarna lines och linesse om de plugins filerna finns så programmet inte krashar direkt när man öppnar det.
+    If My.Settings.Game = "skyrim_2011" = FALSE Then
+        If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\loadorder.txt") Then
+            main_linesse = IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt")
+            whatgameisdetected = FALSE
         End If
-        If My.Settings.Game = "skyrim_2011" Then
-            If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt") = False Then
-                MsgBox("There is no existing load order for the Skyrim! Please start the game without SKSE_Launcher or use loot/mod manager")
-                System.IO.Directory.CreateDirectory("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\")
-                Dim file As System.IO.StreamWriter
-                System.IO.File.Create("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt").Dispose()
-                file = My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", True)
-                file.WriteLine("#Generated By TESVMP")
-                file.Close()
-            End If
+        
+    Else
+        If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt") Then
+            main_lines = IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt")
+            
+            whatgameisdetected = TRUE
+            
         End If
+        
+    End If
+End Sub
+Private Sub LinkLabel1_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
+    
+End Sub
 
-
-        If My.Settings.Game = "skyrim_2016" Then
-            If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\loadorder.txt") = False Then
-                MsgBox("There is no existing load order for the Special Edition! Please start the game without SKSE_Launcher or use loot/mod manager")
-                System.IO.Directory.CreateDirectory("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\")
-                Dim file As System.IO.StreamWriter
-                System.IO.File.Create("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\loadorder.txt").Dispose()
-                file = My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\loadorder.txt", True)
-                File.WriteLine("#Generated By TESVMP")
-                File.Close()
-            End If
+Private Sub introMov_CheckedChanged(sender As Object, e As EventArgs) Handles introMov.CheckedChanged
+    
+End Sub
+Private Sub Modlist_bugfix()
+    If My.Settings.Game = "skyrim_2016" Then
+        If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt") = FALSE Then
+            MsgBox("There Is no existing load order For the Special Edition! Please start the game without SKSE_Launcher Or use loot/mod manager")
+            System.IO.Directory.CreateDirectory("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\")
+            Dim file As System.IO.StreamWriter
+            System.IO.File.Create("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt").Dispose()
+            file = My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt", True)
+            file.WriteLine("#Generated By TESVMP")
+            file.Close()
         End If
-        If My.Settings.Game = "skyrim_2011" Then
-
-            If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt") = False Then
-                MsgBox("There is no existing load order for the Skyrim! Please start the game without SKSE_Launcher or use loot/mod manager")
-                System.IO.Directory.CreateDirectory("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\")
-                Dim file As System.IO.StreamWriter
-                System.IO.File.Create("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt").Dispose()
-                file = My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt", True)
-                file.WriteLine("#Generated By TESVMP")
-                file.Close()
-            End If
+    End If
+    If My.Settings.Game = "skyrim_2011" Then
+        If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt") = FALSE Then
+            MsgBox("There Is no existing load order For the Skyrim! Please start the game without SKSE_Launcher Or use loot/mod manager")
+            System.IO.Directory.CreateDirectory("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\")
+            Dim file As System.IO.StreamWriter
+            System.IO.File.Create("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt").Dispose()
+            file = My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", True)
+            file.WriteLine("#Generated By TESVMP")
+            file.Close()
         End If
-    End Sub
-    Private Sub settings_options_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Modlist_bugfix()
-        linesarraybuild() ' deklarerar variablarna ingen krash i start om filerna inte finns.
-        compare_lines_array()
-
-        If My.Settings.Game = "skyrim_2016" Then
-            Button2.Enabled = False
-            Button3.Enabled = False
-            Button4.Enabled = False
-            Button5.Enabled = False
+    End If
+    
+    If My.Settings.Game = "skyrim_2016" Then
+        If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\loadorder.txt") = FALSE Then
+            MsgBox("There Is no existing load order For the Special Edition! Please start the game without SKSE_Launcher Or use loot/mod manager")
+            System.IO.Directory.CreateDirectory("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\")
+            Dim file As System.IO.StreamWriter
+            System.IO.File.Create("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\loadorder.txt").Dispose()
+            file = My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\loadorder.txt", True)
+            File.WriteLine("#Generated By TESVMP")
+            File.Close()
         End If
-
-        Gamedir = System.IO.Path.GetDirectoryName(My.Settings.Gamepath)
-
-
-
-        If My.Settings.Game = "skyrim_2016" = False Then
-            If whatgameisdetected = True Then
-                loadorder2011()
-            End If
-
-        Else
-            If whatgameisdetected = False Then
-                loadorderSe()
-            End If
-
+    End If
+    If My.Settings.Game = "skyrim_2011" Then
+        
+        If File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt") = FALSE Then
+            MsgBox("There Is no existing load order For the Skyrim! Please start the game without SKSE_Launcher Or use loot/mod manager")
+            System.IO.Directory.CreateDirectory("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\")
+            Dim file As System.IO.StreamWriter
+            System.IO.File.Create("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt").Dispose()
+            file = My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt", True)
+            file.WriteLine("#Generated By TESVMP")
+            file.Close()
         End If
-
-
-
-
-
-
-        '--------------------------------------------------------------------------------------------------------------------------------------
-        genFnisFunc()
-        genTESV5EditFunc()
-
-        If My.Settings.Game = "skyrim_2011" = False Then
-            If System.IO.File.Exists("C: \Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt") = True Then
-
-            Else
-                MsgBox("Could not read load order [404]")
-            End If
-        Else
-            If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt") = True Then
-
-            Else
-                MsgBox("Could not read load order [404]")
-            End If
+    End If
+End Sub
+Private Sub settings_options_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Modlist_bugfix()
+    linesarraybuild()        ' deklarerar variablarna ingen krash i start om filerna inte finns.
+    compare_lines_array()
+    
+    If My.Settings.Game = "skyrim_2016" Then
+        Button2.Enabled = FALSE
+        Button3.Enabled = FALSE
+        Button4.Enabled = FALSE
+        Button5.Enabled = FALSE
+    End If
+    
+    Gamedir = System.IO.Path.GetDirectoryName(My.Settings.Gamepath)
+    
+    If My.Settings.Game = "skyrim_2016" = FALSE Then
+        If whatgameisdetected = TRUE Then
+            loadorder2011()
         End If
-
-
-
-
-        If My.Settings.Game = "skyrim_2011" = True Then
-
-            If System.IO.File.Exists(path & "\Data\Video\BGS_Logo.bik") = True Then
-                introMov.Checked = False
-            Else 'If System.IO.File.Exists(path & "Data\Video\BGS_Logo1.bik") = True Then
-                introMov.Checked = True
-
-            End If
-        Else
-            If System.IO.File.Exists(Gamedir + "\Mods\Video\BGS_Logo.bik") = True Then
-                introMov.Checked = True
-            Else
-                introMov.Checked = False
-            End If
-
+        
+    Else
+        If whatgameisdetected = FALSE Then
+            loadorderSe()
         End If
-    End Sub
-    Private Sub Checkbox_onCheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Dim MyCheckboxes As CheckBox = DirectCast(sender, CheckBox)
-        Dim annie As Integer = 0
-
-        For x = 2 To lineArray.Count - 0
-            annie = annie + 1
-            If MyCheckboxes.Name = "MyCheckboxes" & annie Then
-                If My.Settings.Game = "skyrim_2011" Then
-
-                    If MyCheckboxes.Checked Then
-                        Dim Lines() As String = System.IO.File.ReadAllLines("C: \Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt")
-                        'Lines(annie + 1) = Environment.NewLine & MyCheckboxes.Text
-                        ' System.IO.File.WriteAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", Lines)
-
-                        MyCheckboxes.BackColor = Color.Green
-                        '  My.Computer.FileSystem.WriteAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", lineArray.Item(annie).insert(1, "/"), True)
-                        'MsgBox("Does this run?")
-
-                        Dim bool2 As Boolean = True
-
-                        My.Computer.FileSystem.WriteAllText(
-                          "C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", MyCheckboxes.Text, True)
-                        While (bool2)
-                            If main_lines.Contains(MyCheckboxes.Text) = False Then
-                                My.Computer.FileSystem.WriteAllText(
-                         "C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", MyCheckboxes.Text, True)
-                            Else
-                                bool2 = False
-                            End If
-
-                        End While
-
-
-                    Else
-                            ' Dim Lines() As String = System.IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt")
-                            ' Lines(annie).Remove(annie)
-                            '  System.IO.File.WriteAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt", Lines)
-
-                            MyCheckboxes.BackColor = Color.Red
-                        '  My.Computer.FileSystem.WriteAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", lineArray.Item(annie).insert(1, "/"), True)
-
-
-                        Dim fileReader As String = My.Computer.FileSystem.ReadAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt").Replace(MyCheckboxes.Text, "")
-                        My.Computer.FileSystem.WriteAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", fileReader, False)
-                    End If
-                Else
-                    If MyCheckboxes.Checked Then
-                        Dim Lines() As String = System.IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt")
-                        Lines(annie) = "*" & lineArray.Item(annie)
-                        System.IO.File.WriteAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt", Lines)
-
-                        MyCheckboxes.BackColor = Color.Green
-                        '  My.Computer.FileSystem.WriteAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", lineArray.Item(annie).insert(1, "/"), True)
-                    Else
-                        Dim Lines() As String = System.IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt")
-                        Lines(annie) = "" & lineArray.Item(annie)
-                        System.IO.File.WriteAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt", Lines)
-
-                        MyCheckboxes.BackColor = Color.Red
-                        '  My.Computer.FileSystem.WriteAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", lineArray.Item(annie).insert(1, "/"), True)
-                    End If
-                End If
-
-
-            End If
-        Next
-
-    End Sub
+        
+    End If
+    
     '--------------------------------------------------------------------------------------------------------------------------------------
-    Private Sub AGS_Click(sender As Object, e As EventArgs) Handles AGS.Click
-        If My.Settings.Game = "skyrim_2011" Then
-
-            If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini") = False Then
-                MsgBox("You need to run the game at least once", MsgBoxStyle.Critical, "ini Not Found")
-
-            Else
-                Process.Start("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini")
-                End
-            End If
-            If System.IO.File.Exists("bg_remember.bat") = True Then
-                Shell("bg_remember.bat", AppWinStyle.Hide)
-                End
-            End If
+    genFnisFunc()
+    genTESV5EditFunc()
+    
+    If My.Settings.Game = "skyrim_2011" = FALSE Then
+        If System.IO.File.Exists("C: \Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt") = TRUE Then
+            
         Else
-            If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim Special Edition\SkyrimPrefs.ini") = False Then
-                MsgBox("You need to run the game at least once", MsgBoxStyle.Critical, "ini Not Found")
-
-            Else
-                Process.Start("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim Special Edition\SkyrimPrefs.ini")
-                End
-            End If
-            If System.IO.File.Exists("bg_remember.bat") = True Then
-                Shell("bg_remember.bat", AppWinStyle.Hide)
-                End
-            End If
+            MsgBox("Could Not read load order [404]")
         End If
-
-    End Sub
-
-    Private Sub introMov_CheckStateChanged(sender As Object, e As EventArgs) Handles introMov.CheckStateChanged
-
-
-
-
-    End Sub
-
-    Private Sub introMov_MouseDown(sender As Object, e As MouseEventArgs) Handles introMov.MouseDown
-        If My.Settings.Game = "skyrim_2011" = True Then
-            If System.IO.File.Exists(path & "\Data\Video\BGS_Logo.bik") Or System.IO.File.Exists(path & "\Data\Video\BGS_Logo1.bik") Then
-                If System.IO.File.Exists(path & "\Data\Video\BGS_Logo.bik") = True Then
-
-                    My.Computer.FileSystem.MoveFile(path & "\Data\Video\BGS_Logo.bik", path & "\Data\Video\BGS_Logo1.bik",
-              FileIO.UIOption.AllDialogs,
-              FileIO.UICancelOption.ThrowException)
-                    introMov.Checked = False
-                Else 'If System.IO.File.Exists(path & "\Data\Video\BGS_Logo1.bik") = True Then
-
-                    My.Computer.FileSystem.MoveFile(path & "\Data\Video\BGS_Logo1.bik", path & "\Data\Video\BGS_Logo.bik",
-              FileIO.UIOption.AllDialogs,
-              FileIO.UICancelOption.ThrowException)
-                    introMov.Checked = True
+    Else
+        If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt") = TRUE Then
+            
+        Else
+            MsgBox("Could Not read load order [404]")
+        End If
+    End If
+    
+    If My.Settings.Game = "skyrim_2011" = TRUE Then
+        
+        If System.IO.File.Exists(path & "\Data\Video\BGS_Logo.bik") = TRUE Then
+            introMov.Checked = FALSE
+        Else        'If System.IO.File.Exists(path & "Data\Video\BGS_Logo1.bik") = True Then
+            introMov.Checked = TRUE
+            
+        End If
+    Else
+        If System.IO.File.Exists(Gamedir + "\Mods\Video\BGS_Logo.bik") = TRUE Then
+            introMov.Checked = TRUE
+        Else
+            introMov.Checked = FALSE
+        End If
+        
+    End If
+End Sub
+Private Sub Checkbox_onCheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
+    Dim MyCheckboxes As CheckBox = DirectCast(sender, CheckBox)
+    Dim annie As Integer = 0
+    
+    For x = 2 To lineArray.Count - 0
+        annie = annie + 1
+        If MyCheckboxes.Name = "MyCheckboxes" & annie Then
+            If My.Settings.Game = "skyrim_2011" Then
+                
+                If MyCheckboxes.Checked Then
+                    Dim Lines() As String = System.IO.File.ReadAllLines("C: \Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt")
+                    'Lines(annie + 1) = Environment.NewLine & MyCheckboxes.Text
+                    ' System.IO.File.WriteAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", Lines)
+                    
+                    MyCheckboxes.BackColor = Color.Green
+                    '  My.Computer.FileSystem.WriteAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", lineArray.Item(annie).insert(1, "/"), True)
+                    'MsgBox("Does this run?")
+                    
+                    Dim bool2 As Boolean = TRUE
+                    
+                    My.Computer.FileSystem.WriteAllText(
+                    "C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", MyCheckboxes.Text, True)
+                    While (bool2)
+                        If main_lines.Contains(MyCheckboxes.Text) = FALSE Then
+                            My.Computer.FileSystem.WriteAllText(
+                            "C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", MyCheckboxes.Text, True)
+                        Else
+                            bool2 = FALSE
+                        End If
+                        
+                    End While
+                    
+                Else
+                    ' Dim Lines() As String = System.IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt")
+                    ' Lines(annie).Remove(annie)
+                    '  System.IO.File.WriteAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\loadorder.txt", Lines)
+                    
+                    MyCheckboxes.BackColor = Color.Red
+                    '  My.Computer.FileSystem.WriteAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", lineArray.Item(annie).insert(1, "/"), True)
+                    
+                    Dim fileReader As String = My.Computer.FileSystem.ReadAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt").Replace(MyCheckboxes.Text, "")
+                    My.Computer.FileSystem.WriteAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", fileReader, False)
                 End If
             Else
-                MsgBox("You can't change this value [404]")
+                If MyCheckboxes.Checked Then
+                    Dim Lines() As String = System.IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt")
+                    Lines(annie) = "*" & lineArray.Item(annie)
+                    System.IO.File.WriteAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt", Lines)
+                    
+                    MyCheckboxes.BackColor = Color.Green
+                    '  My.Computer.FileSystem.WriteAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", lineArray.Item(annie).insert(1, "/"), True)
+                Else
+                    Dim Lines() As String = System.IO.File.ReadAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt")
+                    Lines(annie) = "" & lineArray.Item(annie)
+                    System.IO.File.WriteAllLines("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt", Lines)
+                    
+                    MyCheckboxes.BackColor = Color.Red
+                    '  My.Computer.FileSystem.WriteAllText("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", lineArray.Item(annie).insert(1, "/"), True)
+                End If
             End If
-
-        ElseIf My.Settings.Game = "skyrim_2016" = True Then
-            If System.IO.File.Exists(Gamedir + "\Mods\Video\BGS_Logo.bik") = True Then
-                My.Computer.FileSystem.DeleteFile(Gamedir + "\Mods\Video\BGS_Logo.bik")
-                introMov.Checked = False
-            Else
-
-                File.Create(Gamedir + "\Mods\Video\BGS_Logo.bik").Dispose()
-                introMov.Checked = True
-            End If
+            
         End If
-
-    End Sub
-
-    Private Sub genFnisFunc()
-        If My.Settings.Game = "skyrim_2011" = True Then
-            If System.IO.File.Exists("Data\tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe") = True Then
-                bock1.Show()
-            Else
-                bock2.Show()
-            End If
+    Next
+    
+End Sub
+'--------------------------------------------------------------------------------------------------------------------------------------
+Private Sub AGS_Click(sender As Object, e As EventArgs) Handles AGS.Click
+    If My.Settings.Game = "skyrim_2011" Then
+        
+        If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini") = FALSE Then
+            MsgBox("You need To run the game at least once", MsgBoxStyle.Critical, "ini Not Found")
+            
         Else
-            If File.Exists(My.Settings.FNIS) = True Then
-                bock1.Show()
-            Else
-                bock2.Show()
-            End If
-        End If
-    End Sub
-    Private Sub genTESV5EditFunc()
-        If My.Settings.Game = "skyrim_2011" = True Then
-            If System.IO.File.Exists("Data\tools\TES5Edit.exe") = True Then
-                bock3.Show()
-            Else
-                bock4.Show()
-            End If
-            TES5Edit.Text = "TES5Edit"
-        Else
-            If File.Exists(My.Settings.SSEEdit) = True Then
-                bock3.Show()
-            Else
-                bock4.Show()
-            End If
-            TES5Edit.Text = "SSEEdit"
-        End If
-    End Sub
-
-
-    Private Sub genFNIS_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles genFNIS.LinkClicked
-        If My.Settings.Game = "skyrim_2011" = True Then
-
-            '   Dim path As String = My.Application.Info.DirectoryPath
-            If System.IO.File.Exists("Data\tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe") = True Then
-                Process.Start("Data\tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe")
-            Else
-                MsgBox("Could not find GenerateFNISforUsers.exe, to fix it: install it: Data\tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe")
-            End If
-            ' Process.Start("CMD", "/C start  /d " & path & "\Data\tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe")
-
-        Else
-            If File.Exists(My.Settings.FNIS) = True Then
-                Process.Start(My.Settings.FNIS)
-            Else
-                MsgBox("Could not find GenerateFNISforUsers.exe, please install it")
-            End If
-        End If
-    End Sub
-
-    Private Sub LinkLabel1_LinkClicked_1(sender As Object, e As LinkLabelLinkClickedEventArgs)
-        MsgBox("Only change if you know what you are doing." & vbCrLf & vbCrLf & " Delete row=delete file from load," & vbCrLf & " Add filename=adds a file to load," & vbCrLf & " move filename =which order file load." & vbCrLf & vbCrLf & "DO NOT TOUCH Skyrim.esm, Update.esm")
-    End Sub
-
-    Private Sub TES5Edit_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles TES5Edit.LinkClicked
-        If My.Settings.Game = "skyrim_2011" = True Then
-            If System.IO.File.Exists("Data\tools\TES5Edit.exe") = True Then
-                Process.Start("Data\tools\TES5Edit.exe")
-            Else
-                MsgBox("Could not find TES5Edit.exe, to fix it: install it: Data\tools\TES5Edit.exe")
-            End If
-        Else
-            If File.Exists(My.Settings.SSEEdit) = True Then
-                Process.Start(My.Settings.SSEEdit)
-            Else
-                MsgBox("Could not find SSEEdit.exe, please install it")
-            End If
-        End If
-
-    End Sub
-
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        Me.Hide()
-        update1.Show()
-    End Sub
-
-    Private Sub LinkLabel2_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
-        Azaaxin.Show()
-    End Sub
-
-    Private Sub saveLoadorder_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub loadorderbackup_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini") = False Then
-            MsgBox("You need to run the game at least once", MsgBoxStyle.Critical, "ini: Not Found")
-        Else
-            Changing_settings_Low()
-        End If
-    End Sub
-
-    Private Sub customize_Click(sender As Object, e As EventArgs) Handles customize.Click
-        Me.Opacity = 0.9
-        Customize13.ShowDialog()
-        Me.Opacity = 1
-    End Sub
-
-    Private Sub Panel1_Scroll(sender As Object, e As ScrollEventArgs) Handles Panel1.Scroll
-        Panel1.BackColor = System.Drawing.Color.Empty
-        Panel1.BackColor = System.Drawing.Color.Transparent
-
-
-    End Sub
-
-
-
-    Private Sub Panel1_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles Panel1.MouseWheel
-        Panel1.BackColor = System.Drawing.Color.Empty
-        Panel1.BackColor = System.Drawing.Color.Transparent
-    End Sub
-
-    Private Sub About_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
-        Azaaxin.Show()
-    End Sub
-
-    Private Sub GametimeStatus_CheckedChanged(sender As Object, e As EventArgs) Handles GametimeStatus.CheckedChanged
-        If GametimeStatus.Checked = True Then
-            My.Settings.check2 = True
-            Form1.timeplayed.Visible = True
-            Form1.Label1.Visible = True
-            My.Settings.Save()
-            My.Settings.Reload()
-        Else
-            Form1.Label1.Visible = False
-            My.Settings.check2 = False
-            Form1.timeplayed.Visible = False
-            My.Settings.Save()
-            My.Settings.Reload()
-        End If
-    End Sub
-
-    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
-        '   If CheckBox1.Checked = True Then
-        '   Form1.PLAY0.Location = New Point(6, 21)
-        '   Form1.OPTIONS0.Location = New Point(6, 95)
-        '   Form1.EXIT0.Location = New Point(6, 164)
-        '    CheckBox1.Text = "Switch Side On Menu [now:left]"
-        '    My.Settings.check4 = True
-        '    My.Settings.Save()
-        '    My.Settings.Reload()
-
-        '     Else
-        '    Form1.PLAY0.Location = New Point(436, 21)
-        '    Form1.OPTIONS0.Location = New Point(436, 95)
-        '    Form1.EXIT0.Location = New Point(436, 164)
-        ''   CheckBox1.Text = "Switch Side On Menu [now:right]"
-        '   My.Settings.check4 = False
-        '  My.Settings.Save()
-        '  My.Settings.Reload()
-        '   End If
-
-    End Sub
-
-    Private Sub version_checkbox_CheckedChanged(sender As Object, e As EventArgs) Handles version_checkbox.CheckedChanged
-        If version_checkbox.Checked = True Then
-            My.Settings.check5 = True
-            Form1.AZAAXIN_INFO.Visible = True
-            Form1.version1.Visible = True
-            My.Settings.Save()
-            My.Settings.Reload()
-        Else
-            Form1.AZAAXIN_INFO.Visible = False
-            Form1.version1.Visible = False
-            My.Settings.check5 = False
-            My.Settings.Save()
-            My.Settings.Reload()
-        End If
-    End Sub
-    Private Sub Changing_settings_Low()
-        Dim imp As String = "You are about to change your graphics settings to Low. This can have a negative or good effect on your game. This can cause all kind of glitches. DO IT ON YOUR OWN RISK AND BACKUP YOUR OLD SETTINGS!"
-        Select Case MsgBox(imp, MsgBoxStyle.YesNoCancel, "Skyrim - Settings:Low")
-            Case MsgBoxResult.Yes
-                low_settings()
-            Case MsgBoxResult.Cancel
-            Case MsgBoxResult.No
-        End Select
-    End Sub
-
-    Private Sub low_settings()
-
-        Dim fPath = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\Skyrim.ini"
-        Dim afile As New IO.StreamWriter(fPath, False)
-        afile.WriteLine("[General]" + Environment.NewLine +
-                           "sLanguage=ENGLISH" + Environment.NewLine +
-                           "uGridsToLoad=5" + Environment.NewLine +
-                           "uInterior Cell Buffer=18" + Environment.NewLine +
-                           "uStaticNeverFade=1" + Environment.NewLine +
-                           "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
-                           "bForceFullLOD=1 " + Environment.NewLine +
-                           "uGridDistantTreeRange=200" + Environment.NewLine +
-                           "uGridDistantGrassRange=200" + Environment.NewLine +
-                           "uGridDistantCount=210" + Environment.NewLine +
-                           "fFlickeringLightDistance=10500.0000" + Environment.NewLine +
-                           "[Display]" + Environment.NewLine +
-                           "fShadowLODMaxStartFade=1000.0" + Environment.NewLine +
-                           "fSpecularLODMaxStartFade=2000.0" + Environment.NewLine +
-                           "fLightLODMaxStartFade=16500.0000" + Environment.NewLine +
-                           "iShadowMapResolutionPrimary=2048" + Environment.NewLine +
-                           "bAllowScreenshot=1" + Environment.NewLine +
-                           "fSunShadowUpdateTime=0.000" + Environment.NewLine +
-                           "fSunUpdateThreshold=2.000" + Environment.NewLine +
-                           "bDecalsOnSkinnedGeometry=1" + Environment.NewLine +
-                           "[Audio]" + Environment.NewLine +
-                           "fMusicDuckingSeconds=6.0" + Environment.NewLine +
-                           "fMusicUnDuckingSeconds=8.0" + Environment.NewLine +
-                           "fMenuModeFadeOutTime=3.0" + Environment.NewLine +
-                           "fMenuModeFadeInTime=1.0" + Environment.NewLine +
-                           "uMaxSizeForCachedSound=4096" + Environment.NewLine +
-                           "[Actor]" + Environment.NewLine +
-                           "fVisibleNavmeshMoveDist=12288.0000" + Environment.NewLine +
-                           "[Grass]" + Environment.NewLine +
-                           "bAllowCreateGrass=1" + Environment.NewLine +
-                           "bAllowLoadGrass=0" + Environment.NewLine +
-                           "bDrawShaderGrass=1" + Environment.NewLine +
-                           "iMinGrassSize=20" + Environment.NewLine +
-                           "iMaxGrassTypesPerTexure=9" + Environment.NewLine +
-                           "[GeneralWarnings]" + Environment.NewLine +
-                           "SGeneralMasterMismatchWarning=One or more plugins could not find the correct versions of the master files they depend on. Errors may occur during load or game play. Check the ""Warnings.txt"" file for more information." + Environment.NewLine +
-                           "[Archive]" + Environment.NewLine +
-                           "sResourceArchiveList=Skyrim - Misc.bsa, Skyrim - Shaders.bsa, Skyrim - Textures.bsa, Skyrim - Interface.bsa, Skyrim - Animations.bsa, Skyrim - Meshes.bsa, Skyrim - Sounds.bsa" + Environment.NewLine +
-                           "sResourceArchiveList2=Skyrim - Voices.bsa, Skyrim - VoicesExtra.bsa" + Environment.NewLine +
-                           "[Combat]" + Environment.NewLine +
-                           "fMagnetismStrafeHeadingMult=0.0" + Environment.NewLine +
-                           "fMagnetismLookingMult=0.0" + Environment.NewLine +
-                           "f1PArrowTiltUpAngle=0.7" + Environment.NewLine +
-                           "f3PArrowTiltUpAngle=0.7" + Environment.NewLine +
-                           "[Papyrus]" + Environment.NewLine +
-                           "fUpdateBudgetMS=1.2" + Environment.NewLine +
-                           "fExtraTaskletBudgetMS=1.2" + Environment.NewLine +
-                           "fPostLoadUpdateTimeMS=500.0" + Environment.NewLine +
-                           "iMinMemoryPageSize=128" + Environment.NewLine +
-                           "iMaxMemoryPageSize=512" + Environment.NewLine +
-                           "iMaxAllocatedMemoryBytes=76800" + Environment.NewLine +
-                           "bEnableLogging=0" + Environment.NewLine +
-                           "bEnableTrace=0" + Environment.NewLine +
-                           "bLoadDebugInformation=0" + Environment.NewLine +
-                           "bEnableProfiling=0" + Environment.NewLine +
-                           "[Water]" + Environment.NewLine +
-                           "bReflectLODObjects=1" + Environment.NewLine +
-                           "bReflectLODLand=1" + Environment.NewLine +
-                           "bReflectSky=1" + Environment.NewLine +
-                           "bReflectLODTrees=1" + Environment.NewLine +
-                           "[Cart]" + Environment.NewLine +
-                           "fWheelAngDamp=0.1100" + Environment.NewLine +
-                           "fMass=240.0000" + Environment.NewLine +
-                           "fFriction=100.0000" + Environment.NewLine +
-                           "fGravMult=7.0000" + Environment.NewLine +
-                           "[Camera]" + Environment.NewLine +
-                           "fActorFadeOutLimit=-100" + Environment.NewLine +
-                           "fOverShoulderPosY=0.0000" + Environment.NewLine +
-                           "fOverShoulderPosZ=7.5000" + Environment.NewLine +
-                           "fOverShoulderPosX=0.0000" + Environment.NewLine +
-                           "fOverShoulderCombatAddY=0.0000" + Environment.NewLine +
-                           "fOverShoulderCombatPosZ=7.5000")
-        afile.Close()
-        Dim fPathGr = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\SkyrimPrefs.ini"
-        Dim afileGr As New IO.StreamWriter(fPathGr, False)
-        afileGr.WriteLine("[General]" + Environment.NewLine +
-                                "fBrightLightColorB=1.0000" + Environment.NewLine +
-                                "fBrightLightColorG=1.0000" + Environment.NewLine +
-                                "fBrightLightColorR=1.0000" + Environment.NewLine +
-                                "iStoryManagerLoggingEvent=-1" + Environment.NewLine +
-                                "bEnableStoryManagerLogging=0" + Environment.NewLine +
-                                "fdefaultfov=85" + Environment.NewLine +
-                                "bUseThreadedTextures=1" + Environment.NewLine +
-                                "bUseThreadedParticleSystem=1" + Environment.NewLine +
-                                "bUseThreadedBlood=1" + Environment.NewLine +
-                                "bUseThreadedMeshes=1" + Environment.NewLine +
-                                "bUseThreadedMorpher=1" + Environment.NewLine +
-                                "bUseThreadedLOD=1" + Environment.NewLine +
-                                "[Imagespace]" + Environment.NewLine +
-                                "bDoDepthOfField=1" + Environment.NewLine +
-                                "iRadialBlurLevel=2" + Environment.NewLine +
-                                "[Display]" + Environment.NewLine +
-                                "iBlurDeferredShadowMask=1" + Environment.NewLine +
-                                "fInteriorShadowDistance=4000.0000" + Environment.NewLine +
-                                "fShadowDistance=8000.0000" + Environment.NewLine +
-                                "iShadowMapResolutionSecondary=1024" + Environment.NewLine +
-                                "iShadowMapResolutionPrimary=2048" + Environment.NewLine +
-                                "iMaxAnisotropy=16" + Environment.NewLine +
-                                "fLeafAnimDampenDistEnd=4600.0000" + Environment.NewLine +
-                                "fLeafAnimDampenDistStart=3600.0000" + Environment.NewLine +
-                                "fTreesMidLODSwitchDist=10000000.0000" + Environment.NewLine +
-                                "fGamma=1.0000" + Environment.NewLine +
-                                "fDecalLOD2=1500.0000" + Environment.NewLine +
-                                "fDecalLOD1=1000.0000" + Environment.NewLine +
-                                "fSpecularLODStartFade=2000.0000" + Environment.NewLine +
-                                "fShadowLODStartFade=200.0000" + Environment.NewLine +
-                                "fLightLODStartFade=3500.0000" + Environment.NewLine +
-                                "iTexMipMapMinimum=0" + Environment.NewLine +
-                                "iTexMipMapSkip=0" + Environment.NewLine +
-                                "iWaterMultiSamples=0" + Environment.NewLine +
-                                "iMultiSample=0" + Environment.NewLine +
-                                "iShadowMode=3" + Environment.NewLine +
-                                "bTreesReceiveShadows=1" + Environment.NewLine +
-                                "bDrawLandShadows=1" + Environment.NewLine +
-                                "bFull Screen=1" + Environment.NewLine +
-                                "iSize H=1080" + Environment.NewLine +
-                                "iSize W=1920" + Environment.NewLine +
-                                "fMeshLODFadePercentDefault=1.2000" + Environment.NewLine +
-                                "fMeshLODFadeBoundDefault=256.0000" + Environment.NewLine +
-                                "fMeshLODLevel2FadeTreeDistance=2048.0000" + Environment.NewLine +
-                                "fMeshLODLevel1FadeTreeDistance=2844.0000" + Environment.NewLine +
-                                "fMeshLODLevel2FadeDist=10000000.0000" + Environment.NewLine +
-                                "fMeshLODLevel1FadeDist=10000000.0000" + Environment.NewLine +
-                                "iScreenShotIndex=3" + Environment.NewLine +
-                                "bShadowMaskZPrepass=0" + Environment.NewLine +
-                                "bMainZPrepass=0" + Environment.NewLine +
-                                "iMaxSkinDecalsPerFrame=25" + Environment.NewLine +
-                                "iMaxDecalsPerFrame=100" + Environment.NewLine +
-                                "bFloatPointRenderTarget=0" + Environment.NewLine +
-                                "sD3DDevice=" + Environment.NewLine +
-                                "bFXAAEnabled=0" + Environment.NewLine +
-                                "iShadowMapResolution=2048" + Environment.NewLine +
-                                "fShadowBiasScale=0.15" + Environment.NewLine +
-                                "iShadowMaskQuarter=4" + Environment.NewLine +
-                                "iAdapter=0" + Environment.NewLine +
-                                "iPresentInterval=1" + Environment.NewLine +
-                                "iShadowFilter=2" + Environment.NewLine +
-                                "bShadowsOnGrass=1" + Environment.NewLine +
-                                "bTransparencyMultisampling=0" + Environment.NewLine +
-                                "bDeferredShadows=1" + Environment.NewLine +
-                                "bDrawShadows=1" + Environment.NewLine +
-                                "bEquippedTorchesCastShadows=1" + Environment.NewLine +
-                                "[Grass]" + Environment.NewLine +
-                                "b30GrassVS=1" + Environment.NewLine +
-                                "fGrassStartFadeDistance=50000.0000" + Environment.NewLine +
-                                "fGrassMaxStartFadeDistance=50000.0000" + Environment.NewLine +
-                                "fGrassMinStartFadeDistance=0.0000" + Environment.NewLine +
-                                "bDrawShaderGrass=1" + Environment.NewLine +
-                                "bGrassPointLighting=1" + Environment.NewLine +
-                                "[MAIN]" + Environment.NewLine +
-                                "bGamepadEnable=0" + Environment.NewLine +
-                                "bCrosshairEnabled=1" + Environment.NewLine +
-                                "fHUDOpacity=1.0000" + Environment.NewLine +
-                                "bSaveOnPause=0" + Environment.NewLine +
-                                "bSaveOnTravel=0" + Environment.NewLine +
-                                "bSaveOnWait=0" + Environment.NewLine +
-                                "bSaveOnRest=0" + Environment.NewLine +
-                                "fSkyCellRefFadeDistance=150000.0000" + Environment.NewLine +
-                                "[GamePlay]" + Environment.NewLine +
-                                "bShowFloatingQuestMarkers=1" + Environment.NewLine +
-                                "bShowQuestMarkers=1" + Environment.NewLine +
-                                "iDifficulty=2" + Environment.NewLine +
-                                "[Interface]" + Environment.NewLine +
-                                "sPosePlayerRaceSexMenu=" + Environment.NewLine +
-                                "bDialogueSubtitles=1" + Environment.NewLine +
-                                "bGeneralSubtitles=1" + Environment.NewLine +
-                                "fMouseCursorSpeed=1.0000" + Environment.NewLine +
-                                "bShowCompass=1" + Environment.NewLine +
-                                "[Controls]" + Environment.NewLine +
-                                "fGamepadHeadingSensitivity=1.0000" + Environment.NewLine +
-                                "fMouseHeadingSensitivity=0.0125" + Environment.NewLine +
-                                "bAlwaysRunByDefault=1" + Environment.NewLine +
-                                "bInvertYValues=0" + Environment.NewLine +
-                                "bGamePadRumble=1" + Environment.NewLine +
-                                "bMouseAcceleration=1" + Environment.NewLine +
-                                "bUseKinect=0" + Environment.NewLine +
-                                "[Particles]" + Environment.NewLine +
-                                "iMaxDesired=750" + Environment.NewLine +
-                                "[SaveGame]" + Environment.NewLine +
-                                "fAutosaveEveryXMins=60.0000" + Environment.NewLine +
-                                "[AudioMenu]" + Environment.NewLine +
-                                "fAudioMasterVolume=0.5000" + Environment.NewLine +
-                                "fVal7=1.0000" + Environment.NewLine +
-                                "uID7=0" + Environment.NewLine +
-                                "fVal6=1.0000" + Environment.NewLine +
-                                "uID6=0" + Environment.NewLine +
-                                "fVal5=1.0000" + Environment.NewLine +
-                                "uID5=0" + Environment.NewLine +
-                                "fVal4=1.0000" + Environment.NewLine +
-                                "uID4=0" + Environment.NewLine +
-                                "fVal3=1.0000" + Environment.NewLine +
-                                "uID3=94881" + Environment.NewLine +
-                                "fVal2=0.4000" + Environment.NewLine +
-                                "uID2=466532" + Environment.NewLine +
-                                "fVal1=1.0000" + Environment.NewLine +
-                                "uID1=554685" + Environment.NewLine +
-                                "fVal0=0.8000" + Environment.NewLine +
-                                "uID0=1007612" + Environment.NewLine +
-                                "[Clouds]" + Environment.NewLine +
-                                "fCloudLevel2Distance=262144.0000" + Environment.NewLine +
-                                "fCloudLevel1Distance=32768.0000" + Environment.NewLine +
-                                "fCloudLevel0Distance=16384.0000" + Environment.NewLine +
-                                "fCloudNearFadeDistance=9000.0000" + Environment.NewLine +
-                                "[TerrainManager]" + Environment.NewLine +
-                                "fTreeLoadDistance=75000.0000" + Environment.NewLine +
-                                "fBlockMaximumDistance=250000.0000" + Environment.NewLine +
-                                "fBlockLevel1Distance=70000.0000" + Environment.NewLine +
-                                "fBlockLevel0Distance=35000.0000" + Environment.NewLine +
-                                "fSplitDistanceMult=1.5000" + Environment.NewLine +
-                                "bShowLODInEditor=0" + Environment.NewLine +
-                                "[NavMesh]" + Environment.NewLine +
-                                "fObstacleAlpha=0.5000" + Environment.NewLine +
-                                "fCoverSideHighAlpha=0.8000" + Environment.NewLine +
-                                "fCoverSideLowAlpha=0.6500" + Environment.NewLine +
-                                "fEdgeFullAlpha=1.0000" + Environment.NewLine +
-                                "fEdgeHighAlpha=0.7500" + Environment.NewLine +
-                                "fEdgeLowAlpha=0.5000" + Environment.NewLine +
-                                "fTriangleFullAlpha=0.7000" + Environment.NewLine +
-                                "fTriangleHighAlpha=0.3500" + Environment.NewLine +
-                                "fTriangleLowAlpha=0.2000" + Environment.NewLine +
-                                "fLedgeBoxHalfHeight=25.0000" + Environment.NewLine +
-                                "fEdgeDistFromVert=10.0000" + Environment.NewLine +
-                                "fEdgeThickness=10.0000" + Environment.NewLine +
-                                "fPointSize=2.5000" + Environment.NewLine +
-                                "[Trees]" + Environment.NewLine +
-                                "bRenderSkinnedTrees=1" + Environment.NewLine +
-                                "uiMaxSkinnedTreesToRender=20" + Environment.NewLine +
-                                "bUseMultiThreadedTrees=1" + Environment.NewLine +
-                                "[Decals]" + Environment.NewLine +
-                                "uMaxDecals=1000" + Environment.NewLine +
-                                "bDecals=1" + Environment.NewLine +
-                                "bSkinnedDecals=1" + Environment.NewLine +
-                                "uMaxSkinDecals=100" + Environment.NewLine +
-                                "uMaxSkinDecalsPerActor=60" + Environment.NewLine +
-                                "[LOD]" + Environment.NewLine +
-                                "fLODFadeOutMultObjects=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultItems=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultActors=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultSkyCell=1.0000" + Environment.NewLine +
-                                "[Launcher]" + Environment.NewLine +
-                                "bEnableFileSelection=1" + Environment.NewLine +
-                                "bShowAllResolutions=1" + Environment.NewLine +
-                                "uLastAspectRatio=3" + Environment.NewLine +
-                                "[BlurShaderHDR]" + Environment.NewLine +
-                                "bDoHighDynamicRange=1" + Environment.NewLine +
-                                "[BlurShader]" + Environment.NewLine +
-                                "bUseBlurShader=0" + Environment.NewLine +
-                                "[Water]" + Environment.NewLine +
-                                "iWaterReflectHeight=512" + Environment.NewLine +
-                                "iWaterReflectWidth=512" + Environment.NewLine +
-                                "bUseWaterDisplacements=1" + Environment.NewLine +
-                                "bUseWaterRefractions=1" + Environment.NewLine +
-                                "bUseWaterReflections=1" + Environment.NewLine +
-                                "bUseWaterDepth=1" + Environment.NewLine +
-                                "bUseWaterReflectionBlur=1" + Environment.NewLine +
-                                "bReflectExplosions=1" + Environment.NewLine +
-                                "iWaterBlurAmount=4" + Environment.NewLine +
-                                "bAutoWaterSilhouetteReflections=0" + Environment.NewLine +
-                                "bForceHighDetailReflections=1" + Environment.NewLine +
-                                "fBlockLoadDistanceLow=50000.0000" + Environment.NewLine +
-                                "fBlockLoadDistance=125000.0000" + Environment.NewLine +
-                                "fHighBlockLoadDistanceLow=20000.0000" + Environment.NewLine +
-                                "[Havok]" + Environment.NewLine +
-                                "fInAirFallingCharGravityMult=1.35" + Environment.NewLine +
-                                "[BackgroundLoad]" + Environment.NewLine +
-                                "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
-                                "bBackgroundLoadLipFiles=0" + Environment.NewLine +
-                                "bLoadBackgroundFaceGen=0")
-        afileGr.Close()
-
-    End Sub
-    '----------------------------------------MEDIUM------------------------------
-    Private Sub Changing_settings_medium()
-        Dim imp As String = "You are about to change your graphics settings to Medium. This can have a negative or good effect on your game. This can cause all kind of glitches. DO IT ON YOUR OWN RISK AND BACKUP YOUR OLD SETTINGS!"
-        Select Case MsgBox(imp, MsgBoxStyle.YesNoCancel, "Skyrim - Settings:Medium")
-            Case MsgBoxResult.Yes
-                medium_settings()
-            Case MsgBoxResult.Cancel
-            Case MsgBoxResult.No
-        End Select
-    End Sub
-
-    Private Sub medium_settings()
-
-        Dim fPath = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\Skyrim.ini"
-        Dim afile As New IO.StreamWriter(fPath, False)
-        afile.WriteLine("[General]" + Environment.NewLine +
-                                "sLanguage=ENGLISH" + Environment.NewLine +
-                                "uGridsToLoad=5" + Environment.NewLine +
-                                "uExterior Cell Buffer=36" + Environment.NewLine +
-                                "uInterior Cell Buffer=18" + Environment.NewLine +
-                                "bUseThreadedTempEffects=1" + Environment.NewLine +
-                                "bUseThreadedParticleSystem=1" + Environment.NewLine +
-                                "bMultiThreadMovement=1" + Environment.NewLine +
-                                "bUseThreadedMorpher=1" + Environment.NewLine +
-                                "uStaticNeverFade=1" + Environment.NewLine +
-                                "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
-                                "bForceFullLOD=1 " + Environment.NewLine +
-                                "uGridDistantTreeRange=200" + Environment.NewLine +
-                                "uGridDistantGrassRange=200" + Environment.NewLine +
-                                "uGridDistantCount=210" + Environment.NewLine +
-                                "fFlickeringLightDistance=10500.0000" + Environment.NewLine +
-                                "[Display]" + Environment.NewLine +
-                                "fShadowLODMaxStartFade=1000.0" + Environment.NewLine +
-                                "fSpecularLODMaxStartFade=2000.0" + Environment.NewLine +
-                                "fLightLODMaxStartFade=16500.0000" + Environment.NewLine +
-                                "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
-                                "bPerPixelLighting=1" + Environment.NewLine +
-                                "bAllowScreenshot=1" + Environment.NewLine +
-                                "bSimpleLighting=0" + Environment.NewLine +
-                                "iAdapter=0" + Environment.NewLine +
-                                "bAllowScreenshot=1" + Environment.NewLine +
-                                "fSunShadowUpdateTime=0.000" + Environment.NewLine +
-                                "fSunUpdateThreshold=2.000" + Environment.NewLine +
-                                "fShadowBiasScale=1.0" + Environment.NewLine +
-                                "bDecalsOnSkinnedGeometry=1" + Environment.NewLine +
-                                "iPresentInterval=1" + Environment.NewLine +
-                                "[Audio]" + Environment.NewLine +
-                                "fMusicDuckingSeconds=6.0" + Environment.NewLine +
-                                "fMusicUnDuckingSeconds=8.0" + Environment.NewLine +
-                                "fMenuModeFadeOutTime=3.0" + Environment.NewLine +
-                                "fMenuModeFadeInTime=1.0" + Environment.NewLine +
-                                "uMaxSizeForCachedSound=4096" + Environment.NewLine +
-                                "[Actor]" + Environment.NewLine +
-                                "fVisibleNavmeshMoveDist=12288.0000" + Environment.NewLine +
-                                "[Grass]" + Environment.NewLine +
-                                "bAllowCreateGrass=1" + Environment.NewLine +
-                                "bAllowLoadGrass=0" + Environment.NewLine +
-                                "bDrawShaderGrass=1" + Environment.NewLine +
-                                "iMinGrassSize=20" + Environment.NewLine +
-                                "iMaxGrassTypesPerTexure=9" + Environment.NewLine +
-                                "[GeneralWarnings]" + Environment.NewLine +
-                                "SGeneralMasterMismatchWarning=One Or more plugins could Not find the correct versions Of the master files they depend On. Errors may occur during load Or game play. Check the ""Warnings.txt"" file For more information." + Environment.NewLine +
-                                "[Archive]" + Environment.NewLine +
-                                "sResourceArchiveList=Skyrim - Misc.bsa, Skyrim - Shaders.bsa, Skyrim - Textures.bsa, Skyrim - Interface.bsa, Skyrim - Animations.bsa, Skyrim - Meshes.bsa, Skyrim - Sounds.bsa" + Environment.NewLine +
-                                "sResourceArchiveList2=Skyrim - Voices.bsa, Skyrim - VoicesExtra.bsa" + Environment.NewLine +
-                                "[Combat]" + Environment.NewLine +
-                                "fMagnetismStrafeHeadingMult=0.0" + Environment.NewLine +
-                                "fMagnetismLookingMult=0.0" + Environment.NewLine +
-                                "[Papyrus]" + Environment.NewLine +
-                                "fUpdateBudgetMS=1.2" + Environment.NewLine +
-                                "fExtraTaskletBudgetMS=1.2" + Environment.NewLine +
-                                "fPostLoadUpdateTimeMS=500.0" + Environment.NewLine +
-                                "iMinMemoryPageSize=128" + Environment.NewLine +
-                                "iMaxMemoryPageSize=512" + Environment.NewLine +
-                                "iMaxAllocatedMemoryBytes=76800" + Environment.NewLine +
-                                "bEnableLogging=0" + Environment.NewLine +
-                                "bEnableTrace=0" + Environment.NewLine +
-                                "bLoadDebugInformation=0" + Environment.NewLine +
-                                "bEnableProfiling=0" + Environment.NewLine +
-                                "[Water]" + Environment.NewLine +
-                                "bReflectLODObjects=1" + Environment.NewLine +
-                                "bReflectLODLand=1" + Environment.NewLine +
-                                "bReflectSky=1" + Environment.NewLine +
-                                "bReflectLODTrees=1" + Environment.NewLine +
-                                "bReflectExplosions=1" + Environment.NewLine +
-                                "[Cart]" + Environment.NewLine +
-                                "fWheelAngDamp=0.1100" + Environment.NewLine +
-                                "fMass=240.0000" + Environment.NewLine +
-                                "fFriction=100.0000" + Environment.NewLine +
-                                "fGravMult=7.0000" + Environment.NewLine +
-                                "[Decals]" + Environment.NewLine +
-                                "bDecalMultithreaded=1 " + Environment.NewLine +
-                                "[Camera]" + Environment.NewLine +
-                                "fActorFadeOutLimit=-100" + Environment.NewLine +
-                                "fOverShoulderPosY=0.0000" + Environment.NewLine +
-                                "fOverShoulderPosZ=7.5000" + Environment.NewLine +
-                                "fOverShoulderPosX=0.0000" + Environment.NewLine +
-                                "fOverShoulderCombatAddY=0.0000" + Environment.NewLine +
-                                "fOverShoulderCombatPosZ=7.5000" + Environment.NewLine +
-                                "fOverShoulderCombatPosX=0.0000" + Environment.NewLine +
-                                "fOverShoulderHorseAddY=0.0000" + Environment.NewLine +
-                                "fOverShoulderHorsePosZ=0.0000" + Environment.NewLine +
-                                "fOverShoulderHorsePosX=0.0000" + Environment.NewLine +
-                                "fMouseWheelZoomIncrement=0.050 " + Environment.NewLine +
-                                "fVanityModeMaxDist=1000.0000" + Environment.NewLine +
-                                "fVanityModeMinDist=155.0000" + Environment.NewLine +
-                                "fMinCurrentZoom=0.001" + Environment.NewLine +
-                                "[BackgroundLoad]" + Environment.NewLine +
-                                "bBackgroundLoadLipFiles=1" + Environment.NewLine +
-                                "bLoadBackgroundFaceGen=1" + Environment.NewLine +
-                                "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
-                                "bBackgroundCellLoads=1" + Environment.NewLine +
-                                "bLoadHelmetsInBackground=1" + Environment.NewLine +
-                                "bUseMultiThreadedTrees=1" + Environment.NewLine +
-                                "bUseBackgroundFileLoader=1" + Environment.NewLine +
-                                "[Animation]" + Environment.NewLine +
-                                "bMultiThreadBoneUpdate=1")
-        afile.Close()
-        Dim fPathGr = "C: \Users\" + Environment.UserName + "\Documents\My Games\Skyrim\SkyrimPrefs.ini"
-        Dim afileGr As New IO.StreamWriter(fPathGr, False)
-        afileGr.WriteLine("[General]" + Environment.NewLine +
-                                "fBrightLightColorB=1.0000" + Environment.NewLine +
-                                "fBrightLightColorG=1.0000" + Environment.NewLine +
-                                "fBrightLightColorR=1.0000" + Environment.NewLine +
-                                "iStoryManagerLoggingEvent=-1" + Environment.NewLine +
-                                "bEnableStoryManagerLogging=0" + Environment.NewLine +
-                                "bMultiThreadMovement=1" + Environment.NewLine +
-                                "bUseThreadedTextures=1" + Environment.NewLine +
-                                "bUseThreadedParticleSystem=1" + Environment.NewLine +
-                                "bUseThreadedBlood=1" + Environment.NewLine +
-                                "bUseThreadedMeshes=1" + Environment.NewLine +
-                                "bUseThreadedMorpher=1" + Environment.NewLine +
-                                "bUseThreadedLOD=1" + Environment.NewLine +
-                                "bUseThreadedTempEffects=1" + Environment.NewLine +
-                                "bUseThreadedAI=1" + Environment.NewLine +
-                                "[Imagespace]" + Environment.NewLine +
-                                "bDoDepthOfField=1" + Environment.NewLine +
-                                "iRadialBlurLevel=3" + Environment.NewLine +
-                                "bDoRadialBlur=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Display]" + Environment.NewLine +
-                                "iBlurDeferredShadowMask=1" + Environment.NewLine +
-                                "fInteriorShadowDistance=4000.0000" + Environment.NewLine +
-                                "fShadowDistance=4000.0000" + Environment.NewLine +
-                                "iShadowMapResolutionSecondary=2048" + Environment.NewLine +
-                                "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
-                                "iMaxAnisotropy=16" + Environment.NewLine +
-                                "fLeafAnimDampenDistEnd=4600.0000" + Environment.NewLine +
-                                "fLeafAnimDampenDistStart=3600.0000" + Environment.NewLine +
-                                "fTreesMidLODSwitchDist=10000000.0000" + Environment.NewLine +
-                                "fGamma=1.0000" + Environment.NewLine +
-                                "fDecalLOD2=1500.0000" + Environment.NewLine +
-                                "fDecalLOD1=1000.0000" + Environment.NewLine +
-                                "fSpecularLODStartFade=2000.0000" + Environment.NewLine +
-                                "fShadowLODStartFade=200.0000" + Environment.NewLine +
-                                "fLightLODStartFade=3500.0000" + Environment.NewLine +
-                                "bUse Shaders=1" + Environment.NewLine +
-                                "bAllow30HairShader=1" + Environment.NewLine +
-                                "bUseRefractionShader=1" + Environment.NewLine +
-                                "iTexMipMap=2048" + Environment.NewLine +
-                                "iUseTexHiRes=1" + Environment.NewLine +
-                                "iTexMipMapMinimum=0" + Environment.NewLine +
-                                "iTexMipMapSkip=0" + Environment.NewLine +
-                                "iWaterMultiSamples=0" + Environment.NewLine +
-                                "iMultiSample=0" + Environment.NewLine +
-                                "iShadowMode=3" + Environment.NewLine +
-                                "bTreesReceiveShadows=1" + Environment.NewLine +
-                                "bDrawLandShadows=1" + Environment.NewLine +
-                                "bFull Screen=1" + Environment.NewLine +
-                                "iSize H=1200" + Environment.NewLine +
-                                "iSize W=1920" + Environment.NewLine +
-                                "fMeshLODFadePercentDefault=1.2000" + Environment.NewLine +
-                                "fMeshLODFadeBoundDefault=256.0000" + Environment.NewLine +
-                                "fMeshLODLevel2FadeTreeDistance=75000.0000" + Environment.NewLine +
-                                "fMeshLODLevel1FadeTreeDistance=100000.0000" + Environment.NewLine +
-                                "fMeshLODLevel2FadeDist=10000000.0000" + Environment.NewLine +
-                                "fMeshLODLevel1FadeDist=10000000.0000" + Environment.NewLine +
-                                "iScreenShotIndex=3" + Environment.NewLine +
-                                "bShadowMaskZPrepass=0" + Environment.NewLine +
-                                "bMainZPrepass=0" + Environment.NewLine +
-                                "iMaxSkinDecalsPerFrame=3" + Environment.NewLine +
-                                "iMaxDecalsPerFrame=100" + Environment.NewLine +
-                                "bFloatPointRenderTarget=1" + Environment.NewLine +
-                                "bFXAAEnabled=0" + Environment.NewLine +
-                                "iShadowMapResolution=2048" + Environment.NewLine +
-                                "fShadowBiasScale=0.2500" + Environment.NewLine +
-                                "iShadowMaskQuarter=4" + Environment.NewLine +
-                                "iAdapter=0" + Environment.NewLine +
-                                "iPresentInterval=1" + Environment.NewLine +
-                                "iShadowFilter=3" + Environment.NewLine +
-                                "bShadowsOnGrass=1" + Environment.NewLine +
-                                "bTransparencyMultisampling=0" + Environment.NewLine +
-                                "bDeferredShadows=1" + Environment.NewLine +
-                                "bDrawShadows=1" + Environment.NewLine +
-                                "iActorShadowCountInt=12" + Environment.NewLine +
-                                "iActorShadowCountExt=20" + Environment.NewLine +
-                                "iActorSelfShadow=1" + Environment.NewLine +
-                                "iActorSelfShadowResolution=8192" + Environment.NewLine +
-                                "bEquippedTorchesCastShadows=1" + Environment.NewLine +
-                                "[Grass]" + Environment.NewLine +
-                                "b30GrassVS=1" + Environment.NewLine +
-                                "fGrassStartFadeDistance=50000.0000" + Environment.NewLine +
-                                "fGrassMaxStartFadeDistance=50000.0000" + Environment.NewLine +
-                                "fGrassMinStartFadeDistance=0.0000" + Environment.NewLine +
-                                "bGrassPointLighting=1" + Environment.NewLine +
-                                "bDrawShaderGrass=1" + Environment.NewLine +
-                                "[MAIN]" + Environment.NewLine +
-                                "bGamepadEnable=0" + Environment.NewLine +
-                                "bCrosshairEnabled=1" + Environment.NewLine +
-                                "fHUDOpacity=1.0000" + Environment.NewLine +
-                                "bSaveOnPause=0" + Environment.NewLine +
-                                "bSaveOnTravel=0" + Environment.NewLine +
-                                "bSaveOnWait=0" + Environment.NewLine +
-                                "bSaveOnRest=0" + Environment.NewLine +
-                                "fSkyCellRefFadeDistance=150000.0000" + Environment.NewLine +
-                                "[GamePlay]" + Environment.NewLine +
-                                "bShowFloatingQuestMarkers=1" + Environment.NewLine +
-                                "bShowQuestMarkers=1" + Environment.NewLine +
-                                "iDifficulty=2" + Environment.NewLine +
-                                "[Interface]" + Environment.NewLine +
-                                "sPosePlayerRaceSexMenu=" + Environment.NewLine +
-                                "bDialogueSubtitles=1" + Environment.NewLine +
-                                "bGeneralSubtitles=1" + Environment.NewLine +
-                                "fMouseCursorSpeed=1.0000" + Environment.NewLine +
-                                "bShowCompass=1" + Environment.NewLine +
-                                "[Controls]" + Environment.NewLine +
-                                "fGamepadHeadingSensitivity=1.0000" + Environment.NewLine +
-                                "fMouseHeadingSensitivity=0.0125" + Environment.NewLine +
-                                "bAlwaysRunByDefault=1" + Environment.NewLine +
-                                "bInvertYValues=0" + Environment.NewLine +
-                                "bGamePadRumble=1" + Environment.NewLine +
-                                "bMouseAcceleration=1" + Environment.NewLine +
-                                "bUseKinect=0" + Environment.NewLine +
-                                "[Particles]" + Environment.NewLine +
-                                "iMaxDesired=750" + Environment.NewLine +
-                                "[SaveGame]" + Environment.NewLine +
-                                "fAutosaveEveryXMins=60.0000" + Environment.NewLine +
-                                "bDisableAutoSave=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[AudioMenu]" + Environment.NewLine +
-                                "fAudioMasterVolume=0.5000" + Environment.NewLine +
-                                "fVal7=1.0000" + Environment.NewLine +
-                                "uID7=0" + Environment.NewLine +
-                                "fVal6=1.0000" + Environment.NewLine +
-                                "uID6=0" + Environment.NewLine +
-                                "fVal5=1.0000" + Environment.NewLine +
-                                "uID5=0" + Environment.NewLine +
-                                "fVal4=1.0000" + Environment.NewLine +
-                                "uID4=0" + Environment.NewLine +
-                                "fVal3=1.0000" + Environment.NewLine +
-                                "uID3=94881" + Environment.NewLine +
-                                "fVal2=0.4000" + Environment.NewLine +
-                                "uID2=466532" + Environment.NewLine +
-                                "fVal1=1.0000" + Environment.NewLine +
-                                "uID1=554685" + Environment.NewLine +
-                                "fVal0=0.8000" + Environment.NewLine +
-                                "uID0=1007612" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Clouds]" + Environment.NewLine +
-                                "fCloudLevel2Distance=262144.0000" + Environment.NewLine +
-                                "fCloudLevel1Distance=32768.0000" + Environment.NewLine +
-                                "fCloudLevel0Distance=16384.0000" + Environment.NewLine +
-                                "fCloudNearFadeDistance=9000.0000" + Environment.NewLine +
-                                "[TerrainManager]" + Environment.NewLine +
-                                "fTreeLoadDistance=75000.0000" + Environment.NewLine +
-                                "fBlockMaximumDistance=250000.0000" + Environment.NewLine +
-                                "fBlockLevel1Distance=70000.0000" + Environment.NewLine +
-                                "fBlockLevel0Distance=35000.0000" + Environment.NewLine +
-                                "fSplitDistanceMult=1.5000" + Environment.NewLine +
-                                "bShowLODInEditor=0" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[NavMesh]" + Environment.NewLine +
-                                "fObstacleAlpha=0.5000" + Environment.NewLine +
-                                "fCoverSideHighAlpha=0.8000" + Environment.NewLine +
-                                "fCoverSideLowAlpha=0.6500" + Environment.NewLine +
-                                "fEdgeFullAlpha=1.0000" + Environment.NewLine +
-                                "fEdgeHighAlpha=0.7500" + Environment.NewLine +
-                                "fEdgeLowAlpha=0.5000" + Environment.NewLine +
-                                "fTriangleFullAlpha=0.7000" + Environment.NewLine +
-                                "fTriangleHighAlpha=0.3500" + Environment.NewLine +
-                                "fTriangleLowAlpha=0.2000" + Environment.NewLine +
-                                "fLedgeBoxHalfHeight=25.0000" + Environment.NewLine +
-                                "fEdgeDistFromVert=10.0000" + Environment.NewLine +
-                                "fEdgeThickness=10.0000" + Environment.NewLine +
-                                "fPointSize=2.5000" + Environment.NewLine +
-                                "bUseThreadedMeshes=1" + Environment.NewLine +
-                                "[Trees]" + Environment.NewLine +
-                                "bRenderSkinnedTrees=1" + Environment.NewLine +
-                                "uiMaxSkinnedTreesToRender=20" + Environment.NewLine +
-                                "bUseMultiThreadedTrees=1" + Environment.NewLine +
-                                "bEnableTreeAnimations=1" + Environment.NewLine +
-                                "[Decals]" + Environment.NewLine +
-                                "uMaxDecals=1000" + Environment.NewLine +
-                                "bDecals=1" + Environment.NewLine +
-                                "bSkinnedDecals=1" + Environment.NewLine +
-                                "uMaxSkinDecals=100" + Environment.NewLine +
-                                "uMaxSkinDecalsPerActor=60" + Environment.NewLine +
-                                "bDecalMultithreaded=1" + Environment.NewLine +
-                                "[LOD]" + Environment.NewLine +
-                                "fLODFadeOutMultObjects=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultItems=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultActors=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultSkyCell=1.0000" + Environment.NewLine +
-                                "[Launcher]" + Environment.NewLine +
-                                "bEnableFileSelection=1" + Environment.NewLine +
-                                "bShowAllResolutions=1" + Environment.NewLine +
-                                "uLastAspectRatio=4" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[BlurShaderHDR]" + Environment.NewLine +
-                                "bDoHighDynamicRange=1" + Environment.NewLine +
-                                "[BlurShader]" + Environment.NewLine +
-                                "bUseBlurShader=0" + Environment.NewLine +
-                                "[Water]" + Environment.NewLine +
-                                "iWaterReflectHeight=512" + Environment.NewLine +
-                                "iWaterReflectWidth=512" + Environment.NewLine +
-                                "bUseWaterDisplacements=1" + Environment.NewLine +
-                                "bUseWaterRefractions=1" + Environment.NewLine +
-                                "bUseWaterReflections=1" + Environment.NewLine +
-                                "bUseWaterDepth=1" + Environment.NewLine +
-                                "bUseWaterReflectionBlur=1" + Environment.NewLine +
-                                "bReflectExplosions=1" + Environment.NewLine +
-                                "iWaterBlurAmount=4" + Environment.NewLine +
-                                "bAutoWaterSilhouetteReflections=0" + Environment.NewLine +
-                                "bForceHighDetailReflections=1" + Environment.NewLine +
-                                "fBlockLoadDistanceLow=50000.0000" + Environment.NewLine +
-                                "fBlockLoadDistance=125000.0000" + Environment.NewLine +
-                                "fHighBlockLoadDistanceLow=20000.0000" + Environment.NewLine +
-                                "[Havok]" + Environment.NewLine +
-                                "fInAirFallingCharGravityMult=1.35" + Environment.NewLine +
-                                "[BackgroundLoad]" + Environment.NewLine +
-                                "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
-                                "bBackgroundLoadLipFiles=1" + Environment.NewLine +
-                                "bLoadBackgroundFaceGen=1" + Environment.NewLine +
-                                "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
-                                "bBackgroundCellLoads=1" + Environment.NewLine +
-                                "bLoadHelmetsInBackground=1" + Environment.NewLine +
-                                "bUseMultiThreadedTrees=1")
-        afileGr.Close()
-
-    End Sub
-
-    '----------------------------------------HIGH------------------------------
-    Private Sub Changing_settings_high()
-        If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini") = False Then
-            MsgBox("You need to run the game at least once", MsgBoxStyle.Critical, "ini: Not Found")
-        Else
-
-            Dim imp As String = "You are about to change your graphics settings to High. This can have a negative or good effect on your game. This can cause all kind of glitches. DO IT ON YOUR OWN RISK AND BACKUP YOUR OLD SETTINGS!"
-            Select Case MsgBox(imp, MsgBoxStyle.YesNoCancel, "Skyrim - Settings:High")
-                Case MsgBoxResult.Yes
-                    high_settings()
-                Case MsgBoxResult.Cancel
-                Case MsgBoxResult.No
-            End Select
-        End If
-
-    End Sub
-    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
-        Changing_settings_high()
-    End Sub
-    Private Sub high_settings()
-
-        Dim fPath = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\Skyrim.ini"
-        Dim afile As New IO.StreamWriter(fPath, False)
-        afile.WriteLine("[General]" + Environment.NewLine +
-                                    "sLanguage=ENGLISH" + Environment.NewLine +
-                                    "uExterior Cell Buffer=64" + Environment.NewLine +
-                                    "uGridsToLoad=7" + Environment.NewLine +
-                                    "uInterior Cell Buffer=32" + Environment.NewLine +
-                                    "bUseThreadedTempEffects=1" + Environment.NewLine +
-                                    "bUseThreadedParticleSystem=1" + Environment.NewLine +
-                                    "bMultiThreadMovement=1" + Environment.NewLine +
-                                    "bUseThreadedMorpher=1" + Environment.NewLine +
-                                    "uStaticNeverFade=1" + Environment.NewLine +
-                                    "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
-                                    "bForceFullLOD=1 " + Environment.NewLine +
-                                    "uGridDistantTreeRange=200" + Environment.NewLine +
-                                    "uGridDistantGrassRange=200" + Environment.NewLine +
-                                    "uGridDistantCount=210" + Environment.NewLine +
-                                    "fFlickeringLightDistance=10500.0000" + Environment.NewLine +
-                                    "[Display]" + Environment.NewLine +
-                                    "fShadowLODMaxStartFade=1000.0" + Environment.NewLine +
-                                    "iPresentInterval=1" + Environment.NewLine +
-                                    "iAdapter=0" + Environment.NewLine +
-                                    "fSunShadowUpdateTime=0" + Environment.NewLine +
-                                    "fSunUpdateThreshold=2.0" + Environment.NewLine +
-                                    "fShadowBiasScale=1.0" + Environment.NewLine +
-                                    "fSpecularLODMaxStartFade=3000.0000" + Environment.NewLine +
-                                    "fLightLODMaxStartFade=16500.0000" + Environment.NewLine +
-                                    "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
-                                    "bPerPixelLighting=1" + Environment.NewLine +
-                                    "bAllowScreenshot=1" + Environment.NewLine +
-                                    "bSimpleLighting=0" + Environment.NewLine +
-                                    "bDecalsOnSkinnedGeometry=1" + Environment.NewLine +
-                                    "fNearDistance=20.0000" + Environment.NewLine +
-                                    "[Audio]" + Environment.NewLine +
-                                    "fMusicDuckingSeconds=6.0" + Environment.NewLine +
-                                    "fMusicUnDuckingSeconds=8.0" + Environment.NewLine +
-                                    "fMenuModeFadeOutTime=3.0" + Environment.NewLine +
-                                    "fMenuModeFadeInTime=1.0" + Environment.NewLine +
-                                    "uMaxSizeForCachedSound=4096" + Environment.NewLine +
-                                    "[Actor]" + Environment.NewLine +
-                                    "fVisibleNavmeshMoveDist=12288.0000" + Environment.NewLine +
-                                    "[Grass]" + Environment.NewLine +
-                                    "bAllowCreateGrass=1" + Environment.NewLine +
-                                    "bAllowLoadGrass=0" + Environment.NewLine +
-                                    "bDrawShaderGrass=1" + Environment.NewLine +
-                                    "iGrassCellRadius=3" + Environment.NewLine +
-                                    "iMinGrassSize=20" + Environment.NewLine +
-                                    "iMaxGrassTypesPerTexure=9" + Environment.NewLine +
-                                    "[GeneralWarnings]" + Environment.NewLine +
-                                    "SGeneralMasterMismatchWarning=One or more plugins could not find the correct versions of the master files they depend on. Errors may occur during load or game play. Check the ""Warnings.txt"" file for more information." + Environment.NewLine +
-                                    "[Archive]" + Environment.NewLine +
-                                    "sResourceArchiveList=Skyrim - Misc.bsa, Skyrim - Shaders.bsa, Skyrim - Textures.bsa, Skyrim - Interface.bsa, Skyrim - Animations.bsa, Skyrim - Meshes.bsa, Skyrim - Sounds.bsa" + Environment.NewLine +
-                                    "sResourceArchiveList2=Skyrim - Voices.bsa, Skyrim - VoicesExtra.bsa" + Environment.NewLine +
-                                    "[Combat]" + Environment.NewLine +
-                                    "fMagnetismStrafeHeadingMult=0.0" + Environment.NewLine +
-                                    "fMagnetismLookingMult=0.0" + Environment.NewLine +
-                                    "[Papyrus]" + Environment.NewLine +
-                                    "fUpdateBudgetMS=1.2" + Environment.NewLine +
-                                    "fExtraTaskletBudgetMS=1.2" + Environment.NewLine +
-                                    "fPostLoadUpdateTimeMS=500.0" + Environment.NewLine +
-                                    "iMinMemoryPageSize=128" + Environment.NewLine +
-                                    "iMaxMemoryPageSize=512" + Environment.NewLine +
-                                    "iMaxAllocatedMemoryBytes=76800" + Environment.NewLine +
-                                    "bEnableLogging=0" + Environment.NewLine +
-                                    "bEnableTrace=0" + Environment.NewLine +
-                                    "bLoadDebugInformation=0" + Environment.NewLine +
-                                    "bEnableProfiling=0" + Environment.NewLine +
-                                    "[Water]" + Environment.NewLine +
-                                    "bReflectLODObjects=1" + Environment.NewLine +
-                                    "bReflectLODLand=1" + Environment.NewLine +
-                                    "bReflectSky=1" + Environment.NewLine +
-                                    "bReflectLODTrees=1" + Environment.NewLine +
-                                    "bReflectExplosions=1" + Environment.NewLine +
-                                    "[Trees]" + Environment.NewLine +
-                                    "bForceFullDetail=0" + Environment.NewLine +
-                                    "bEnableTreeAnimations=1" + Environment.NewLine +
-                                    "[Decals]" + Environment.NewLine +
-                                    "bDecalMultithreaded=1" + Environment.NewLine +
-                                    "[Cart]" + Environment.NewLine +
-                                    "fWheelAngDamp=0.1100" + Environment.NewLine +
-                                    "fMass=240.0000" + Environment.NewLine +
-                                    "fFriction=100.0000" + Environment.NewLine +
-                                    "fGravMult=7.0000" + Environment.NewLine +
-                                    "[Camera]" + Environment.NewLine +
-                                    "fActorFadeOutLimit=-100" + Environment.NewLine +
-                                    "fOverShoulderPosY=0.0000" + Environment.NewLine +
-                                    "fOverShoulderPosZ=7.5000" + Environment.NewLine +
-                                    "fOverShoulderPosX=0.0000" + Environment.NewLine +
-                                    "fOverShoulderCombatAddY=0.0000" + Environment.NewLine +
-                                    "fOverShoulderCombatPosZ=7.5000" + Environment.NewLine +
-                                    "fOverShoulderCombatPosX=0.0000" + Environment.NewLine +
-                                    "fOverShoulderHorseAddY=0.0000" + Environment.NewLine +
-                                    "fOverShoulderHorsePosZ=0.0000" + Environment.NewLine +
-                                    "fOverShoulderHorsePosX=0.0000" + Environment.NewLine +
-                                    "fMouseWheelZoomIncrement=0.050 " + Environment.NewLine +
-                                    "fVanityModeMaxDist=1000.0000" + Environment.NewLine +
-                                    "fVanityModeMinDist=155.0000" + Environment.NewLine +
-                                    "fMinCurrentZoom=0.001" + Environment.NewLine +
-                                    "[BackgroundLoad]" + Environment.NewLine +
-                                    "bBackgroundLoadLipFiles=1" + Environment.NewLine +
-                                    "bLoadBackgroundFaceGen=1" + Environment.NewLine +
-                                    "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
-                                    "bBackgroundCellLoads=1" + Environment.NewLine +
-                                    "bLoadHelmetsInBackground=1" + Environment.NewLine +
-                                    "bUseMultiThreadedTrees=1" + Environment.NewLine +
-                                    "bUseBackgroundFileLoader=1" + Environment.NewLine +
-                                    "[Animation]" + Environment.NewLine +
-                                    "bMultiThreadBoneUpdate=1")
-        afile.Close()
-        Dim fPathGr = "C: \Users\" + Environment.UserName + "\Documents\My Games\Skyrim\SkyrimPrefs.ini"
-        Dim afileGr As New IO.StreamWriter(fPathGr, False)
-        afileGr.WriteLine("[General]" + Environment.NewLine +
-                                "fBrightLightColorB=1.0000" + Environment.NewLine +
-                                "fBrightLightColorG=1.0000" + Environment.NewLine +
-                                "fBrightLightColorR=1.0000" + Environment.NewLine +
-                                "iStoryManagerLoggingEvent=-1" + Environment.NewLine +
-                                "bEnableStoryManagerLogging=0" + Environment.NewLine +
-                                "bMultiThreadMovement=1" + Environment.NewLine +
-                                "bUseThreadedParticleSystem=1" + Environment.NewLine +
-                                "bUseThreadedBlood=1" + Environment.NewLine +
-                                "bUseThreadedMorpher=1" + Environment.NewLine +
-                                "bUseThreadedTempEffects=1" + Environment.NewLine +
-                                "bUseThreadedTextures=1" + Environment.NewLine +
-                                "bUseThreadedMeshes=1" + Environment.NewLine +
-                                "bUseThreadedLOD=1" + Environment.NewLine +
-                                "bUseThreadedAI=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Imagespace]" + Environment.NewLine +
-                                "bDoDepthOfField=1" + Environment.NewLine +
-                                "iRadialBlurLevel=3" + Environment.NewLine +
-                                "bDoRadialBlur=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Display]" + Environment.NewLine +
-                                "iBlurDeferredShadowMask=1" + Environment.NewLine +
-                                "fInteriorShadowDistance=4000.0000" + Environment.NewLine +
-                                "fShadowDistance=8000.0000" + Environment.NewLine +
-                                "iShadowMapResolutionSecondary=4096" + Environment.NewLine +
-                                "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
-                                "iMaxAnisotropy=16" + Environment.NewLine +
-                                "fLeafAnimDampenDistEnd=6000.0000" + Environment.NewLine +
-                                "fLeafAnimDampenDistStart=4600.0000" + Environment.NewLine +
-                                "fTreesMidLODSwitchDist=10000000.0000" + Environment.NewLine +
-                                "fGamma=1.0000" + Environment.NewLine +
-                                "fDecalLOD2=1500.0000" + Environment.NewLine +
-                                "fDecalLOD1=1000.0000" + Environment.NewLine +
-                                "fSpecularLODStartFade=3000.0000" + Environment.NewLine +
-                                "fShadowLODStartFade=2000.0000" + Environment.NewLine +
-                                "fLightLODStartFade=16000.0000" + Environment.NewLine +
-                                "bUse Shaders=1" + Environment.NewLine +
-                                "bAllow30HairShader=1" + Environment.NewLine +
-                                "bUseRefractionShader=1" + Environment.NewLine +
-                                "iTexMipMap=2048" + Environment.NewLine +
-                                "iUseTexHiRes=1" + Environment.NewLine +
-                                "iNormalMapQuality=4096" + Environment.NewLine +
-                                "iTexNormalMapMinimum=2048" + Environment.NewLine +
-                                "iTexMipMapResolution=4096" + Environment.NewLine +
-                                "iTexMipMapQuality=4096" + Environment.NewLine +
-                                "iMipMapResolution=4096" + Environment.NewLine +
-                                "iMipMapSize=4096" + Environment.NewLine +
-                                "bFaceMipMaps=1" + Environment.NewLine +
-                                "bFaceGenTexturing=1" + Environment.NewLine +
-                                "bFaceGenTexturingQuality=4096" + Environment.NewLine +
-                                "bHighQualityTexMipMaps=1" + Environment.NewLine +
-                                "bDynamicWindowReflections=1" + Environment.NewLine +
-                                "iTexMipMapMinimum=4" + Environment.NewLine +
-                                "iTexMipMapSkip=0" + Environment.NewLine +
-                                "iWaterMultiSamples=0" + Environment.NewLine +
-                                "iMultiSample=0" + Environment.NewLine +
-                                "iShadowMode=4" + Environment.NewLine +
-                                "bTreesReceiveShadows=1" + Environment.NewLine +
-                                "bDrawLandShadows=1" + Environment.NewLine +
-                                "bDrawShadows=1" + Environment.NewLine +
-                                "bFull Screen=1" + Environment.NewLine +
-                                "iSize H=1080" + Environment.NewLine +
-                                "iSize W=1920" + Environment.NewLine +
-                                "fMeshLODFadePercentDefault=1.2000" + Environment.NewLine +
-                                "fMeshLODFadeBoundDefault=256.0000" + Environment.NewLine +
-                                "fMeshLODLevel2FadeTreeDistance=75000.0000" + Environment.NewLine +
-                                "fMeshLODLevel1FadeTreeDistance=100000.0000" + Environment.NewLine +
-                                "fMeshLODLevel2FadeDist=10000000.0000" + Environment.NewLine +
-                                "fMeshLODLevel1FadeDist=10000000.0000" + Environment.NewLine +
-                                "iScreenShotIndex=28" + Environment.NewLine +
-                                "bShadowMaskZPrepass=0" + Environment.NewLine +
-                                "bMainZPrepass=0" + Environment.NewLine +
-                                "iMaxSkinDecalsPerFrame=25" + Environment.NewLine +
-                                "iMaxDecalsPerFrame=100" + Environment.NewLine +
-                                "bFloatPointRenderTarget=1" + Environment.NewLine +
-                                "bFXAAEnabled=0" + Environment.NewLine +
-                                "iShadowMapResolutionInt=8192" + Environment.NewLine +
-                                "iShadowMapResolution=4096" + Environment.NewLine +
-                                "fShadowBiasScale=0.1500" + Environment.NewLine +
-                                "iShadowMaskQuarter=4" + Environment.NewLine +
-                                "iAdapter=0" + Environment.NewLine +
-                                "iPresentInterval=1" + Environment.NewLine +
-                                "iShadowFilter=4" + Environment.NewLine +
-                                "bShadowsOnGrass=1" + Environment.NewLine +
-                                "bTransparencyMultisampling=0" + Environment.NewLine +
-                                "bDeferredShadows=1" + Environment.NewLine +
-                                "iActorShadowCountInt=12" + Environment.NewLine +
-                                "iActorShadowCountExt=20" + Environment.NewLine +
-                                "iActorSelfShadow=1" + Environment.NewLine +
-                                "iActorSelfShadowResolution=8192" + Environment.NewLine +
-                                "bEquippedTorchesCastShadows=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Grass]" + Environment.NewLine +
-                                "b30GrassVS=1" + Environment.NewLine +
-                                "fGrassStartFadeDistance=50000.0000" + Environment.NewLine +
-                                "fGrassMaxStartFadeDistance=50000.0000" + Environment.NewLine +
-                                "fGrassMinStartFadeDistance=0.0000" + Environment.NewLine +
-                                "bDrawShaderGrass=1" + Environment.NewLine +
-                                "bGrassPointLighting=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[MAIN]" + Environment.NewLine +
-                                "bGamepadEnable=0" + Environment.NewLine +
-                                "bCrosshairEnabled=1" + Environment.NewLine +
-                                "fHUDOpacity=1.0000" + Environment.NewLine +
-                                "bSaveOnPause=0" + Environment.NewLine +
-                                "bSaveOnTravel=0" + Environment.NewLine +
-                                "bSaveOnWait=0" + Environment.NewLine +
-                                "bSaveOnRest=0" + Environment.NewLine +
-                                "fSkyCellRefFadeDistance=500000.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[GamePlay]" + Environment.NewLine +
-                                "bShowFloatingQuestMarkers=1" + Environment.NewLine +
-                                "bShowQuestMarkers=1" + Environment.NewLine +
-                                "iDifficulty=2" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Interface]" + Environment.NewLine +
-                                "sPosePlayerRaceSexMenu=" + Environment.NewLine +
-                                "bDialogueSubtitles=1" + Environment.NewLine +
-                                "bGeneralSubtitles=1" + Environment.NewLine +
-                                "fMouseCursorSpeed=1.0000" + Environment.NewLine +
-                                "bShowCompass=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Controls]" + Environment.NewLine +
-                                "fGamepadHeadingSensitivity=1.0000" + Environment.NewLine +
-                                "fMouseHeadingSensitivity=0.0125" + Environment.NewLine +
-                                "bAlwaysRunByDefault=1" + Environment.NewLine +
-                                "bInvertYValues=0" + Environment.NewLine +
-                                "bGamePadRumble=1" + Environment.NewLine +
-                                "bMouseAcceleration=1" + Environment.NewLine +
-                                "bUseKinect=0" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Particles]" + Environment.NewLine +
-                                "iMaxDesired=750" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[SaveGame]" + Environment.NewLine +
-                                "fAutosaveEveryXMins=60.0000" + Environment.NewLine +
-                                "bDisableAutoSave=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[AudioMenu]" + Environment.NewLine +
-                                "fAudioMasterVolume=0.8000" + Environment.NewLine +
-                                "fVal7=1.0000" + Environment.NewLine +
-                                "uID7=0" + Environment.NewLine +
-                                "fVal6=1.0000" + Environment.NewLine +
-                                "uID6=0" + Environment.NewLine +
-                                "fVal5=1.0000" + Environment.NewLine +
-                                "uID5=0" + Environment.NewLine +
-                                "fVal4=1.0000" + Environment.NewLine +
-                                "uID4=2298633443" + Environment.NewLine +
-                                "fVal3=1.0000" + Environment.NewLine +
-                                "uID3=94881" + Environment.NewLine +
-                                "fVal2=0.4000" + Environment.NewLine +
-                                "uID2=466532" + Environment.NewLine +
-                                "fVal1=1.0000" + Environment.NewLine +
-                                "uID1=554685" + Environment.NewLine +
-                                "fVal0=0.8000" + Environment.NewLine +
-                                "uID0=1007612" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Clouds]" + Environment.NewLine +
-                                "fCloudLevel2Distance=262144.0000" + Environment.NewLine +
-                                "fCloudLevel1Distance=32768.0000" + Environment.NewLine +
-                                "fCloudLevel0Distance=16384.0000" + Environment.NewLine +
-                                "fCloudNearFadeDistance=9000.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[TerrainManager]" + Environment.NewLine +
-                                "fTreeLoadDistance=75000.0000" + Environment.NewLine +
-                                "fBlockMaximumDistance=500000.0000" + Environment.NewLine +
-                                "fBlockLevel1Distance=140000.0000" + Environment.NewLine +
-                                "fBlockLevel0Distance=75000.0000" + Environment.NewLine +
-                                "fSplitDistanceMult=4.0000" + Environment.NewLine +
-                                "bShowLODInEditor=0" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[NavMesh]" + Environment.NewLine +
-                                "fObstacleAlpha=0.5000" + Environment.NewLine +
-                                "fCoverSideHighAlpha=0.8000" + Environment.NewLine +
-                                "fCoverSideLowAlpha=0.6500" + Environment.NewLine +
-                                "fEdgeFullAlpha=1.0000" + Environment.NewLine +
-                                "fEdgeHighAlpha=0.7500" + Environment.NewLine +
-                                "fEdgeLowAlpha=0.5000" + Environment.NewLine +
-                                "fTriangleFullAlpha=0.7000" + Environment.NewLine +
-                                "fTriangleHighAlpha=0.3500" + Environment.NewLine +
-                                "fTriangleLowAlpha=0.2000" + Environment.NewLine +
-                                "fLedgeBoxHalfHeight=25.0000" + Environment.NewLine +
-                                "fEdgeDistFromVert=10.0000" + Environment.NewLine +
-                                "fEdgeThickness=10.0000" + Environment.NewLine +
-                                "fPointSize=2.5000" + Environment.NewLine +
-                                "bUseThreadedMeshes=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Trees]" + Environment.NewLine +
-                                "bRenderSkinnedTrees=1" + Environment.NewLine +
-                                "uiMaxSkinnedTreesToRender=24" + Environment.NewLine +
-                                "bUseMultiThreadedTrees=1" + Environment.NewLine +
-                                "bEnableTreeAnimations=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Decals]" + Environment.NewLine +
-                                "uMaxDecals=1000" + Environment.NewLine +
-                                "bDecals=1" + Environment.NewLine +
-                                "bSkinnedDecals=1" + Environment.NewLine +
-                                "uMaxSkinDecals=100" + Environment.NewLine +
-                                "uMaxSkinDecalsPerActor=60" + Environment.NewLine +
-                                "bDecalMultithreaded=1 " + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[LOD]" + Environment.NewLine +
-                                "fLODFadeOutMultObjects=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultItems=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultActors=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultSkyCell=1.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Launcher]" + Environment.NewLine +
-                                "bEnableFileSelection=1" + Environment.NewLine +
-                                "bShowAllResolutions=1" + Environment.NewLine +
-                                "uLastAspectRatio=3" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[BlurShaderHDR]" + Environment.NewLine +
-                                "bDoHighDynamicRange=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[BlurShader]" + Environment.NewLine +
-                                "bUseBlurShader=0" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Water]" + Environment.NewLine +
-                                "iWaterReflectHeight=2048" + Environment.NewLine +
-                                "iWaterReflectWidth=2048" + Environment.NewLine +
-                                "fWadingWaterTextureRes=1024" + Environment.NewLine +
-                                "fSurfaceTileSize=1024" + Environment.NewLine +
-                                "bUseWaterDisplacements=1" + Environment.NewLine +
-                                "bUseWaterRefractions=1" + Environment.NewLine +
-                                "bUseWaterReflections=1" + Environment.NewLine +
-                                "bUseWaterDepth=1" + Environment.NewLine +
-                                "bUseWaterReflectionBlur=1" + Environment.NewLine +
-                                "bReflectExplosions=1" + Environment.NewLine +
-                                "iWaterBlurAmount=4" + Environment.NewLine +
-                                "bUseWaterHiRes=1" + Environment.NewLine +
-                                "bUseWaterShader=1" + Environment.NewLine +
-                                "bUseWaterHDR=1" + Environment.NewLine +
-                                "bUseWaterLOD=1" + Environment.NewLine +
-                                "bReflectLODObjects=1" + Environment.NewLine +
-                                "bReflectLODLand=1" + Environment.NewLine +
-                                "bReflectSky=1" + Environment.NewLine +
-                                "bReflectLODTrees=1" + Environment.NewLine +
-                                "bAutoWaterSilhouetteReflections=0" + Environment.NewLine +
-                                "bForceHighDetailReflections=1" + Environment.NewLine +
-                                "fBlockLoadDistanceLow=50000.0000" + Environment.NewLine +
-                                "fBlockLoadDistance=125000.0000" + Environment.NewLine +
-                                "fHighBlockLoadDistanceLow=20000.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[BackgroundLoad]" + Environment.NewLine +
-                                "bUseBackgroundFileLoader=1" + Environment.NewLine +
-                                "bLoadBackgroundFaceGen=1" + Environment.NewLine +
-                                "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
-                                "bBackgroundCellLoads=1" + Environment.NewLine +
-                                "bBackgroundLoadLipFiles=1" + Environment.NewLine +
-                                "bLoadHelmetsInBackground=1" + Environment.NewLine +
-                                "bUseMultiThreadedTrees=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Havok]" + Environment.NewLine +
-                                "fInAirFallingCharGravityMult=1.35")
-        afileGr.Close()
-
-    End Sub
-
-
-    '----------------------------------------ULTRA------------------------------
-    Private Sub Changing_settings_ultra()
-        Dim imp As String = "You are about to change your graphics settings to Ultra. This can have a negative or good effect on your game. This can cause all kind of glitches. DO IT ON YOUR OWN RISK AND BACKUP YOUR OLD SETTINGS!"
-        Select Case MsgBox(imp, MsgBoxStyle.YesNoCancel, "Skyrim - Settings:ultra")
-            Case MsgBoxResult.Yes
-                ultra_settings()
-            Case MsgBoxResult.Cancel
-            Case MsgBoxResult.No
-        End Select
-    End Sub
-    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
-        If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini") = False Then
-            MsgBox("You need to run the game at least once", MsgBoxStyle.Critical, "ini: Not Found")
-        Else
-            Changing_settings_ultra()
-        End If
-    End Sub
-    Private Sub ultra_settings()
-
-        Dim fPath = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\Skyrim.ini"
-        Dim afile As New IO.StreamWriter(fPath, False)
-        afile.WriteLine("[General]" + Environment.NewLine +
-                                "sLanguage=ENGLISH" + Environment.NewLine +
-                                "uExterior Cell Buffer=64" + Environment.NewLine +
-                                "uGridsToLoad=7" + Environment.NewLine +
-                                "uInterior Cell Buffer=32" + Environment.NewLine +
-                                "bUseThreadedTempEffects=1" + Environment.NewLine +
-                                "bUseThreadedParticleSystem=1" + Environment.NewLine +
-                                "bMultiThreadMovement=1" + Environment.NewLine +
-                                "bUseThreadedMorpher=1" + Environment.NewLine +
-                                "iHWThread6=6" + Environment.NewLine +
-                                "iHWThread5=6" + Environment.NewLine +
-                                "iHWThread4=6" + Environment.NewLine +
-                                "iNumHWThreads=8" + Environment.NewLine +
-                                "uStaticNeverFade=1" + Environment.NewLine +
-                                "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
-                                "bForceFullLOD=1 " + Environment.NewLine +
-                                "uGridDistantTreeRange=200" + Environment.NewLine +
-                                "uGridDistantGrassRange=200" + Environment.NewLine +
-                                "uGridDistantCount=210" + Environment.NewLine +
-                                "fFlickeringLightDistance=10500.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Display]" + Environment.NewLine +
-                                "fShadowLODMaxStartFade=1000.0" + Environment.NewLine +
-                                "iPresentInterval=1" + Environment.NewLine +
-                                "iAdapter=0" + Environment.NewLine +
-                                "fSunShadowUpdateTime=0" + Environment.NewLine +
-                                "fSunUpdateThreshold=2.0" + Environment.NewLine +
-                                "fShadowBiasScale=1.0" + Environment.NewLine +
-                                "fSpecularLODMaxStartFade=3000.0000" + Environment.NewLine +
-                                "fLightLODMaxStartFade=16500.0000" + Environment.NewLine +
-                                "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
-                                "bPerPixelLighting=1" + Environment.NewLine +
-                                "bAllowScreenshot=1" + Environment.NewLine +
-                                "bSimpleLighting=0" + Environment.NewLine +
-                                "bDecalsOnSkinnedGeometry=1" + Environment.NewLine +
-                                "fNearDistance=20.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Audio]" + Environment.NewLine +
-                                "fMusicDuckingSeconds=6.0" + Environment.NewLine +
-                                "fMusicUnDuckingSeconds=8.0" + Environment.NewLine +
-                                "fMenuModeFadeOutTime=3.0" + Environment.NewLine +
-                                "fMenuModeFadeInTime=1.0" + Environment.NewLine +
-                                "uMaxSizeForCachedSound=4096" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Actor]" + Environment.NewLine +
-                                "fVisibleNavmeshMoveDist=12288.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Grass]" + Environment.NewLine +
-                                "bAllowCreateGrass=1" + Environment.NewLine +
-                                "bAllowLoadGrass=0" + Environment.NewLine +
-                                "bDrawShaderGrass=1" + Environment.NewLine +
-                                "iGrassCellRadius=3" + Environment.NewLine +
-                                "iMinGrassSize=20" + Environment.NewLine +
-                                "iMaxGrassTypesPerTexure=9" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[GeneralWarnings]" + Environment.NewLine +
-                                "SGeneralMasterMismatchWarning=One or more plugins could not find the correct versions of the master files they depend on. Errors may occur during load or game play. Check the ""Warnings.txt"" file for more information." + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Archive]" + Environment.NewLine +
-                                "sResourceArchiveList=Skyrim - Misc.bsa, Skyrim - Shaders.bsa, Skyrim - Textures.bsa, Skyrim - Interface.bsa, Skyrim - Animations.bsa, Skyrim - Meshes.bsa, Skyrim - Sounds.bsa" + Environment.NewLine +
-                                "sResourceArchiveList2=Skyrim - Voices.bsa, Skyrim - VoicesExtra.bsa" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Combat]" + Environment.NewLine +
-                                "fMagnetismStrafeHeadingMult=0.0" + Environment.NewLine +
-                                "fMagnetismLookingMult=0.0" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Papyrus]" + Environment.NewLine +
-                                "fUpdateBudgetMS=1.2" + Environment.NewLine +
-                                "fExtraTaskletBudgetMS=1.2" + Environment.NewLine +
-                                "fPostLoadUpdateTimeMS=500.0" + Environment.NewLine +
-                                "iMinMemoryPageSize=128" + Environment.NewLine +
-                                "iMaxMemoryPageSize=512" + Environment.NewLine +
-                                "iMaxAllocatedMemoryBytes=76800" + Environment.NewLine +
-                                "bEnableLogging=0" + Environment.NewLine +
-                                "bEnableTrace=0" + Environment.NewLine +
-                                "bLoadDebugInformation=0" + Environment.NewLine +
-                                "bEnableProfiling=0" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Water]" + Environment.NewLine +
-                                "bReflectLODObjects=1" + Environment.NewLine +
-                                "bReflectLODLand=1" + Environment.NewLine +
-                                "bReflectSky=1" + Environment.NewLine +
-                                "bReflectLODTrees=1" + Environment.NewLine +
-                                "bReflectExplosions=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Trees]" + Environment.NewLine +
-                                "bForceFullDetail=0" + Environment.NewLine +
-                                "bEnableTreeAnimations=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Decals]" + Environment.NewLine +
-                                "bDecalMultithreaded=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Cart]" + Environment.NewLine +
-                                "fWheelAngDamp=0.1100" + Environment.NewLine +
-                                "fMass=240.0000" + Environment.NewLine +
-                                "fFriction=100.0000" + Environment.NewLine +
-                                "fGravMult=7.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Camera]" + Environment.NewLine +
-                                "fActorFadeOutLimit=-100" + Environment.NewLine +
-                                "fOverShoulderPosY=0.0000" + Environment.NewLine +
-                                "fOverShoulderPosZ=7.5000" + Environment.NewLine +
-                                "fOverShoulderPosX=0.0000" + Environment.NewLine +
-                                "fOverShoulderCombatAddY=0.0000" + Environment.NewLine +
-                                "fOverShoulderCombatPosZ=7.5000" + Environment.NewLine +
-                                "fOverShoulderCombatPosX=0.0000" + Environment.NewLine +
-                                "fOverShoulderHorseAddY=0.0000" + Environment.NewLine +
-                                "fOverShoulderHorsePosZ=0.0000" + Environment.NewLine +
-                                "fOverShoulderHorsePosX=0.0000" + Environment.NewLine +
-                                "fMouseWheelZoomIncrement=0.050 " + Environment.NewLine +
-                                "fVanityModeMaxDist=1000.0000" + Environment.NewLine +
-                                "fVanityModeMinDist=155.0000" + Environment.NewLine +
-                                "fMinCurrentZoom=0.001" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[BackgroundLoad]" + Environment.NewLine +
-                                "bBackgroundLoadLipFiles=1" + Environment.NewLine +
-                                "bLoadBackgroundFaceGen=1" + Environment.NewLine +
-                                "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
-                                "bBackgroundCellLoads=1" + Environment.NewLine +
-                                "bLoadHelmetsInBackground=1" + Environment.NewLine +
-                                "bUseMultiThreadedTrees=1" + Environment.NewLine +
-                                "bUseBackgroundFileLoader=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Animation]" + Environment.NewLine +
-                                "bMultiThreadBoneUpdate=1")
-        afile.Close()
-        Dim fPathGr = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\SkyrimPrefs.ini"
-        Dim afileGr As New IO.StreamWriter(fPathGr, False)
-        afileGr.WriteLine("[General]" + Environment.NewLine +
-                                "fBrightLightColorB=1.0000" + Environment.NewLine +
-                                "fBrightLightColorG=1.0000" + Environment.NewLine +
-                                "fBrightLightColorR=1.0000" + Environment.NewLine +
-                                "iStoryManagerLoggingEvent=-1" + Environment.NewLine +
-                                "bEnableStoryManagerLogging=0" + Environment.NewLine +
-                                "bMultiThreadMovement=1" + Environment.NewLine +
-                                "bUseThreadedParticleSystem=1" + Environment.NewLine +
-                                "bUseThreadedBlood=1" + Environment.NewLine +
-                                "bUseThreadedMorpher=1" + Environment.NewLine +
-                                "bUseThreadedTempEffects=1" + Environment.NewLine +
-                                "bUseThreadedTextures=1" + Environment.NewLine +
-                                "bUseThreadedMeshes=1" + Environment.NewLine +
-                                "bUseThreadedLOD=1" + Environment.NewLine +
-                                "bUseThreadedAI=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Imagespace]" + Environment.NewLine +
-                                "bDoDepthOfField=1" + Environment.NewLine +
-                                "iRadialBlurLevel=3" + Environment.NewLine +
-                                "bDoRadialBlur=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Display]" + Environment.NewLine +
-                                "iBlurDeferredShadowMask=1" + Environment.NewLine +
-                                "fInteriorShadowDistance=4000.0000" + Environment.NewLine +
-                                "fShadowDistance=8000.0000" + Environment.NewLine +
-                                "iShadowMapResolutionSecondary=4096" + Environment.NewLine +
-                                "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
-                                "iMaxAnisotropy=16" + Environment.NewLine +
-                                "fLeafAnimDampenDistEnd=6000.0000" + Environment.NewLine +
-                                "fLeafAnimDampenDistStart=4600.0000" + Environment.NewLine +
-                                "fTreesMidLODSwitchDist=10000000.0000" + Environment.NewLine +
-                                "fGamma=1.0000" + Environment.NewLine +
-                                "fDecalLOD2=1500.0000" + Environment.NewLine +
-                                "fDecalLOD1=1000.0000" + Environment.NewLine +
-                                "fSpecularLODStartFade=3000.0000" + Environment.NewLine +
-                                "fShadowLODStartFade=2000.0000" + Environment.NewLine +
-                                "fLightLODStartFade=16000.0000" + Environment.NewLine +
-                                "bUse Shaders=1" + Environment.NewLine +
-                                "bAllow30HairShader=1" + Environment.NewLine +
-                                "bUseRefractionShader=1" + Environment.NewLine +
-                                "iTexMipMap=2048" + Environment.NewLine +
-                                "iUseTexHiRes=1" + Environment.NewLine +
-                                "iNormalMapQuality=4096" + Environment.NewLine +
-                                "iTexNormalMapMinimum=2048" + Environment.NewLine +
-                                "iTexMipMapResolution=4096" + Environment.NewLine +
-                                "iTexMipMapQuality=4096" + Environment.NewLine +
-                                "iMipMapResolution=4096" + Environment.NewLine +
-                                "iMipMapSize=4096" + Environment.NewLine +
-                                "bFaceMipMaps=1" + Environment.NewLine +
-                                "bFaceGenTexturing=1" + Environment.NewLine +
-                                "bFaceGenTexturingQuality=4096" + Environment.NewLine +
-                                "bHighQualityTexMipMaps=1" + Environment.NewLine +
-                                "bDynamicWindowReflections=1" + Environment.NewLine +
-                                "iTexMipMapMinimum=4" + Environment.NewLine +
-                                "iTexMipMapSkip=0" + Environment.NewLine +
-                                "iWaterMultiSamples=0" + Environment.NewLine +
-                                "iMultiSample=0" + Environment.NewLine +
-                                "iShadowMode=4" + Environment.NewLine +
-                                "bTreesReceiveShadows=1" + Environment.NewLine +
-                                "bDrawLandShadows=1" + Environment.NewLine +
-                                "bDrawShadows=1" + Environment.NewLine +
-                                "bFull Screen=1" + Environment.NewLine +
-                                "iSize H=1080" + Environment.NewLine +
-                                "iSize W=1920" + Environment.NewLine +
-                                "fMeshLODFadePercentDefault=1.2000" + Environment.NewLine +
-                                "fMeshLODFadeBoundDefault=256.0000" + Environment.NewLine +
-                                "fMeshLODLevel2FadeTreeDistance=75000.0000" + Environment.NewLine +
-                                "fMeshLODLevel1FadeTreeDistance=100000.0000" + Environment.NewLine +
-                                "fMeshLODLevel2FadeDist=10000000.0000" + Environment.NewLine +
-                                "fMeshLODLevel1FadeDist=10000000.0000" + Environment.NewLine +
-                                "iScreenShotIndex=28" + Environment.NewLine +
-                                "bShadowMaskZPrepass=0" + Environment.NewLine +
-                                "bMainZPrepass=0" + Environment.NewLine +
-                                "iMaxSkinDecalsPerFrame=25" + Environment.NewLine +
-                                "iMaxDecalsPerFrame=100" + Environment.NewLine +
-                                "bFloatPointRenderTarget=1" + Environment.NewLine +
-                                "bFXAAEnabled=0" + Environment.NewLine +
-                                "iShadowMapResolutionInt=8192" + Environment.NewLine +
-                                "iShadowMapResolution=4096" + Environment.NewLine +
-                                "fShadowBiasScale=0.1500" + Environment.NewLine +
-                                "iShadowMaskQuarter=4" + Environment.NewLine +
-                                "iAdapter=0" + Environment.NewLine +
-                                "iPresentInterval=1" + Environment.NewLine +
-                                "iShadowFilter=4" + Environment.NewLine +
-                                "bShadowsOnGrass=1" + Environment.NewLine +
-                                "bTransparencyMultisampling=0" + Environment.NewLine +
-                                "bDeferredShadows=1" + Environment.NewLine +
-                                "iActorShadowCountInt=12" + Environment.NewLine +
-                                "iActorShadowCountExt=20" + Environment.NewLine +
-                                "iActorSelfShadow=1" + Environment.NewLine +
-                                "iActorSelfShadowResolution=8192" + Environment.NewLine +
-                                "bEquippedTorchesCastShadows=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Grass]" + Environment.NewLine +
-                                "b30GrassVS=1" + Environment.NewLine +
-                                "fGrassStartFadeDistance=50000.0000" + Environment.NewLine +
-                                "fGrassMaxStartFadeDistance=50000.0000" + Environment.NewLine +
-                                "fGrassMinStartFadeDistance=0.0000" + Environment.NewLine +
-                                "bDrawShaderGrass=1" + Environment.NewLine +
-                                "bGrassPointLighting=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[MAIN]" + Environment.NewLine +
-                                "bGamepadEnable=0" + Environment.NewLine +
-                                "bCrosshairEnabled=1" + Environment.NewLine +
-                                "fHUDOpacity=1.0000" + Environment.NewLine +
-                                "bSaveOnPause=0" + Environment.NewLine +
-                                "bSaveOnTravel=0" + Environment.NewLine +
-                                "bSaveOnWait=0" + Environment.NewLine +
-                                "bSaveOnRest=0" + Environment.NewLine +
-                                "fSkyCellRefFadeDistance=500000.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[GamePlay]" + Environment.NewLine +
-                                "bShowFloatingQuestMarkers=1" + Environment.NewLine +
-                                "bShowQuestMarkers=1" + Environment.NewLine +
-                                "iDifficulty=2" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Interface]" + Environment.NewLine +
-                                "sPosePlayerRaceSexMenu=" + Environment.NewLine +
-                                "bDialogueSubtitles=1" + Environment.NewLine +
-                                "bGeneralSubtitles=1" + Environment.NewLine +
-                                "fMouseCursorSpeed=1.0000" + Environment.NewLine +
-                                "bShowCompass=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Controls]" + Environment.NewLine +
-                                "fGamepadHeadingSensitivity=1.0000" + Environment.NewLine +
-                                "fMouseHeadingSensitivity=0.0125" + Environment.NewLine +
-                                "bAlwaysRunByDefault=1" + Environment.NewLine +
-                                "bInvertYValues=0" + Environment.NewLine +
-                                "bGamePadRumble=1" + Environment.NewLine +
-                                "bMouseAcceleration=1" + Environment.NewLine +
-                                "bUseKinect=0" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Particles]" + Environment.NewLine +
-                                "iMaxDesired=750" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[SaveGame]" + Environment.NewLine +
-                                "fAutosaveEveryXMins=60.0000" + Environment.NewLine +
-                                "bDisableAutoSave=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[AudioMenu]" + Environment.NewLine +
-                                "fAudioMasterVolume=0.8000" + Environment.NewLine +
-                                "fVal7=1.0000" + Environment.NewLine +
-                                "uID7=0" + Environment.NewLine +
-                                "fVal6=1.0000" + Environment.NewLine +
-                                "uID6=0" + Environment.NewLine +
-                                "fVal5=1.0000" + Environment.NewLine +
-                                "uID5=0" + Environment.NewLine +
-                                "fVal4=1.0000" + Environment.NewLine +
-                                "uID4=2298633443" + Environment.NewLine +
-                                "fVal3=1.0000" + Environment.NewLine +
-                                "uID3=94881" + Environment.NewLine +
-                                "fVal2=0.4000" + Environment.NewLine +
-                                "uID2=466532" + Environment.NewLine +
-                                "fVal1=1.0000" + Environment.NewLine +
-                                "uID1=554685" + Environment.NewLine +
-                                "fVal0=0.8000" + Environment.NewLine +
-                                "uID0=1007612" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Clouds]" + Environment.NewLine +
-                                "fCloudLevel2Distance=262144.0000" + Environment.NewLine +
-                                "fCloudLevel1Distance=32768.0000" + Environment.NewLine +
-                                "fCloudLevel0Distance=16384.0000" + Environment.NewLine +
-                                "fCloudNearFadeDistance=9000.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[TerrainManager]" + Environment.NewLine +
-                                "fTreeLoadDistance=75000.0000" + Environment.NewLine +
-                                "fBlockMaximumDistance=500000.0000" + Environment.NewLine +
-                                "fBlockLevel1Distance=140000.0000" + Environment.NewLine +
-                                "fBlockLevel0Distance=75000.0000" + Environment.NewLine +
-                                "fSplitDistanceMult=4.0000" + Environment.NewLine +
-                                "bShowLODInEditor=0" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[NavMesh]" + Environment.NewLine +
-                                "fObstacleAlpha=0.5000" + Environment.NewLine +
-                                "fCoverSideHighAlpha=0.8000" + Environment.NewLine +
-                                "fCoverSideLowAlpha=0.6500" + Environment.NewLine +
-                                "fEdgeFullAlpha=1.0000" + Environment.NewLine +
-                                "fEdgeHighAlpha=0.7500" + Environment.NewLine +
-                                "fEdgeLowAlpha=0.5000" + Environment.NewLine +
-                                "fTriangleFullAlpha=0.7000" + Environment.NewLine +
-                                "fTriangleHighAlpha=0.3500" + Environment.NewLine +
-                                "fTriangleLowAlpha=0.2000" + Environment.NewLine +
-                                "fLedgeBoxHalfHeight=25.0000" + Environment.NewLine +
-                                "fEdgeDistFromVert=10.0000" + Environment.NewLine +
-                                "fEdgeThickness=10.0000" + Environment.NewLine +
-                                "fPointSize=2.5000" + Environment.NewLine +
-                                "bUseThreadedMeshes=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Trees]" + Environment.NewLine +
-                                "bRenderSkinnedTrees=1" + Environment.NewLine +
-                                "uiMaxSkinnedTreesToRender=24" + Environment.NewLine +
-                                "bUseMultiThreadedTrees=1" + Environment.NewLine +
-                                "bEnableTreeAnimations=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Decals]" + Environment.NewLine +
-                                "uMaxDecals=1000" + Environment.NewLine +
-                                "bDecals=1" + Environment.NewLine +
-                                "bSkinnedDecals=1" + Environment.NewLine +
-                                "uMaxSkinDecals=100" + Environment.NewLine +
-                                "uMaxSkinDecalsPerActor=60" + Environment.NewLine +
-                                "bDecalMultithreaded=1 " + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[LOD]" + Environment.NewLine +
-                                "fLODFadeOutMultObjects=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultItems=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultActors=15.0000" + Environment.NewLine +
-                                "fLODFadeOutMultSkyCell=1.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Launcher]" + Environment.NewLine +
-                                "bEnableFileSelection=1" + Environment.NewLine +
-                                "bShowAllResolutions=1" + Environment.NewLine +
-                                "uLastAspectRatio=3" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[BlurShaderHDR]" + Environment.NewLine +
-                                "bDoHighDynamicRange=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[BlurShader]" + Environment.NewLine +
-                                "bUseBlurShader=0" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Water]" + Environment.NewLine +
-                                "iWaterReflectHeight=2048" + Environment.NewLine +
-                                "iWaterReflectWidth=2048" + Environment.NewLine +
-                                "fWadingWaterTextureRes=1024" + Environment.NewLine +
-                                "fSurfaceTileSize=1024" + Environment.NewLine +
-                                "bUseWaterDisplacements=1" + Environment.NewLine +
-                                "bUseWaterRefractions=1" + Environment.NewLine +
-                                "bUseWaterReflections=1" + Environment.NewLine +
-                                "bUseWaterDepth=1" + Environment.NewLine +
-                                "bUseWaterReflectionBlur=1" + Environment.NewLine +
-                                "bReflectExplosions=1" + Environment.NewLine +
-                                "iWaterBlurAmount=4" + Environment.NewLine +
-                                "bUseWaterHiRes=1" + Environment.NewLine +
-                                "bUseWaterShader=1" + Environment.NewLine +
-                                "bUseWaterHDR=1" + Environment.NewLine +
-                                "bUseWaterLOD=1" + Environment.NewLine +
-                                "bReflectLODObjects=1" + Environment.NewLine +
-                                "bReflectLODLand=1" + Environment.NewLine +
-                                "bReflectSky=1" + Environment.NewLine +
-                                "bReflectLODTrees=1" + Environment.NewLine +
-                                "bAutoWaterSilhouetteReflections=0" + Environment.NewLine +
-                                "bForceHighDetailReflections=1" + Environment.NewLine +
-                                "fBlockLoadDistanceLow=50000.0000" + Environment.NewLine +
-                                "fBlockLoadDistance=125000.0000" + Environment.NewLine +
-                                "fHighBlockLoadDistanceLow=20000.0000" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[BackgroundLoad]" + Environment.NewLine +
-                                "bUseBackgroundFileLoader=1" + Environment.NewLine +
-                                "bLoadBackgroundFaceGen=1" + Environment.NewLine +
-                                "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
-                                "bBackgroundCellLoads=1" + Environment.NewLine +
-                                "bBackgroundLoadLipFiles=1" + Environment.NewLine +
-                                "bLoadHelmetsInBackground=1" + Environment.NewLine +
-                                "bUseMultiThreadedTrees=1" + Environment.NewLine +
-                                "" + Environment.NewLine +
-                                "[Havok]" + Environment.NewLine +
-                                "fInAirFallingCharGravityMult=1.35")
-        afileGr.Close()
-
-    End Sub
-
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-
-        If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini") = False Then
-            MsgBox("You need to run the game at least once", MsgBoxStyle.Critical, "ini: Not Found")
-        Else
-            Changing_settings_medium()
-        End If
-    End Sub
-
-    Private Sub Feedback_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles Feedback.LinkClicked
-        Process.Start("http://www.nexusmods.com/skyrim/mods/72381/?tab=5&&navtag=http%3A%2F%2Fwww.nexusmods.com%2Fskyrim%2Fajax%2Fcomments%2F%3Fmod_id%3D72381%26page%3D1%26sort%3DDESC%26pid%3D0%26thread_id%3D4770440&pUp=1")
-
-    End Sub
-
-    Private Sub Button2_MouseHover(sender As Object, e As EventArgs) Handles Button5.MouseHover, Button4.MouseHover, Button3.MouseHover, Button2.MouseHover
-
-    End Sub
-
-    Private Sub Button2_MouseLeave(sender As Object, e As EventArgs) Handles Button5.MouseLeave, Button4.MouseLeave, Button3.MouseLeave, Button2.MouseLeave
-
-    End Sub
-
-    Private Sub Panel2_MouseHover(sender As Object, e As EventArgs) Handles Panel2.MouseHover
-
-    End Sub
-
-    Private Sub Panel2_MouseLeave(sender As Object, e As EventArgs) Handles Panel2.MouseLeave
-
-    End Sub
-
-    Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
-
-
-        Dim result As Integer = MessageBox.Show("Clean the loadorder list (It will come back when you start the game again.)", "Cleaning time", MessageBoxButtons.YesNoCancel)
-        If result = DialogResult.Cancel Then
-
-        ElseIf result = DialogResult.No Then
-
-        ElseIf result = DialogResult.Yes Then
-            If My.Settings.Game = "skyrim_2011" = True Then
-
-                My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", False).Dispose()
-            Else
-
-                My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt", False).Dispose()
-
-            End If
-        End If
-    End Sub
-
-    Private Sub LinkLabel1_LinkClicked_2(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
-        Dim ggversion As Integer = MessageBox.Show("Are you sure?", "reconfigure the settings", MessageBoxButtons.YesNoCancel)
-        If ggversion = DialogResult.Cancel Then
-
-        ElseIf ggversion = DialogResult.No Then
-
-        ElseIf ggversion = DialogResult.Yes Then
-            My.Settings.FirstTimeUsed = True
-            My.Settings.Save()
-            My.Settings.Reload()
+            Process.Start("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini")
             End
         End If
-    End Sub
-
-    Private Sub settings_options_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-
-
-
-
-    End Sub
-
-    Private Sub loadorderSe()
-        If ifbeenrunning = True Then
-        Else
-            For x = 0 To linesse.GetUpperBound(0)
-
-                ifbeenrunning = False
-                lineArray.Add(linesse(x))
-
-            Next
-
-            'CREATE NEW CHECKBOX CONTROL ARRAY
-            Dim MyCheckboxes(x) As CheckBox
-
-            'LOOP THROUGH THE LAYERS AND CREATE A CHECKBOX FOR EACH
-            Dim i As Integer
-            Dim Ypos As Integer
-
-            For x = 2 To lineArray.Count - 1
-
-                'if the number of layers is 5 our Layer array will be 0 to 4
-
-                MyCheckboxes(i) = New CheckBox
-                Panel1.Controls.Add(MyCheckboxes(i))
-                'CYCLE THROUGH AND POPULATE CHECKBOXES
-
-                MyCheckboxes(i).Location = New Point(10, Ypos) ' X LOCATION NEVER CHANGES, Y POSITION DOWN BY 25
-                Ypos = Ypos + 25
-                MyCheckboxes(i).Visible = True
-                MyCheckboxes(i).Name = "MyCheckboxes" & x
-                MyCheckboxes(i).Size = New Size(300, 20)
-                If InStr(lineArray.Item(x), "*") > 0 Then
-                    MyCheckboxes(i).Checked = True
-                    lineArray.Item(x) = lineArray.Item(x).Remove(0, 1)
-                    MyCheckboxes(i).BackColor = Color.Green
-                    MyCheckboxes(i).Text = lineArray.Item(x)
-                Else
-                    MyCheckboxes(i).Checked = False
-
-                    MyCheckboxes(i).BackColor = Color.Red
-                    MyCheckboxes(i).Text = lineArray.Item(x)
-                End If
-                AddHandler MyCheckboxes(i).CheckedChanged, AddressOf Checkbox_onCheckedChanged
-            Next
+        If System.IO.File.Exists("bg_remember.bat") = TRUE Then
+            Shell("bg_remember.bat", AppWinStyle.Hide)
+            End
         End If
-        ifbeenrunning = True
-    End Sub
-    Private Sub loadorder2011()
-
-        If ifbeenrunning = True Then
+    Else
+        If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim Special Edition\SkyrimPrefs.ini") = FALSE Then
+            MsgBox("You need To run the game at least once", MsgBoxStyle.Critical, "ini Not Found")
+            
         Else
-            For x = 0 To main_lines.GetUpperBound(0)
-
-
-                ifbeenrunning = False
-                If x > lines.GetUpperBound(0) = False Then
-                    lineArray.Add(lines(x))
-                    u = u + 1
-                End If
-
-                Main_lineArray.Add(main_lines(x))
-
-            Next
-
-
-            Dim MyCheckboxes(x) As CheckBox
-
-
-            Dim i As Integer
-            Dim Ypos As Integer
-
-            For x = 1 To Main_lineArray.Count - 1
-
-
-
-
-
-
-
-
-                MyCheckboxes(i) = New CheckBox
-
-                Panel1.Controls.Add(MyCheckboxes(i))
-
-
-                MyCheckboxes(i).Location = New Point(10, Ypos)
-                Ypos = Ypos + 25
-                MyCheckboxes(i).Visible = True
-                '     MyCheckboxes(i).Name = "MyCheckboxes" & x
-                MyCheckboxes(i).Size = New Size(300, 20)
-                '    If x >= linecount Then
-                ' MsgBox(containing)
-                tempnr = tempnr + 1
-                If containing.Contains(Main_lineArray.Item(x)) = False Then
-
-                    MyCheckboxes(i).Checked = False
-                    '          lineArray.Item(x) = lineArray.Item(x).Remove(0)
-                    MyCheckboxes(i).BackColor = Color.Red
-                    MyCheckboxes(i).Text = Main_lineArray.Item(x)
-                    MyCheckboxes(i).Name = "MyCheckboxes" & pluginschecked
-
-                Else
-                    MyCheckboxes(i).Checked = True
-                    MyCheckboxes(i).BackColor = Color.Green
-                    pluginschecked = pluginschecked + 1
-                    MyCheckboxes(i).Text = Main_lineArray.Item(x) ' & pluginschecked
-
-                    ' pluginNames(pluginschecked) = pluginNames(pluginschecked) + x
-                    '  MyCheckboxes(i).Name = "MyCheckboxes" & pluginschecked
-                    MyCheckboxes(i).Name = "MyCheckboxes" & pluginschecked
-
-                End If
-
-                '   End If
-
-
-                AddHandler MyCheckboxes(i).CheckedChanged, AddressOf Checkbox_onCheckedChanged
-            Next
+            Process.Start("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim Special Edition\SkyrimPrefs.ini")
+            End
         End If
-        ifbeenrunning = True
-    End Sub
-    Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
+        If System.IO.File.Exists("bg_remember.bat") = TRUE Then
+            Shell("bg_remember.bat", AppWinStyle.Hide)
+            End
+        End If
+    End If
+    
+End Sub
 
-    End Sub
+Private Sub introMov_CheckStateChanged(sender As Object, e As EventArgs) Handles introMov.CheckStateChanged
+    
+End Sub
 
-    Private Sub About_LinkClicked_1(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles About.LinkClicked
-        Azaaxin.ShowDialog()
-    End Sub
+Private Sub introMov_MouseDown(sender As Object, e As MouseEventArgs) Handles introMov.MouseDown
+    If My.Settings.Game = "skyrim_2011" = TRUE Then
+        If System.IO.File.Exists(path & "\Data\Video\BGS_Logo.bik") Or System.IO.File.Exists(path & "\Data\Video\BGS_Logo1.bik") Then
+            If System.IO.File.Exists(path & "\Data\Video\BGS_Logo.bik") = TRUE Then
+                
+                My.Computer.FileSystem.MoveFile(path & "\Data\Video\BGS_Logo.bik", path & "\Data\Video\BGS_Logo1.bik",
+                FileIO.UIOption.AllDialogs,
+                FileIO.UICancelOption.ThrowException)
+                introMov.Checked = FALSE
+            Else        'If System.IO.File.Exists(path & "\Data\Video\BGS_Logo1.bik") = True Then
+                
+                My.Computer.FileSystem.MoveFile(path & "\Data\Video\BGS_Logo1.bik", path & "\Data\Video\BGS_Logo.bik",
+                FileIO.UIOption.AllDialogs,
+                FileIO.UICancelOption.ThrowException)
+                introMov.Checked = TRUE
+            End If
+        Else
+            MsgBox("You        't change this value [404]")
+        End If
+        
+    ElseIf My.Settings.Game = "skyrim_2016" = TRUE Then
+        If System.IO.File.Exists(Gamedir + "\Mods\Video\BGS_Logo.bik") = TRUE Then
+            My.Computer.FileSystem.DeleteFile(Gamedir + "\Mods\Video\BGS_Logo.bik")
+            introMov.Checked = FALSE
+        Else
+            
+            File.Create(Gamedir + "\Mods\Video\BGS_Logo.bik").Dispose()
+            introMov.Checked = TRUE
+        End If
+    End If
+    
+End Sub
 
-    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+Private Sub genFnisFunc()
+    If My.Settings.Game = "skyrim_2011" = TRUE Then
+        If System.IO.File.Exists("Data\tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe") = TRUE Then
+            bock1.Show()
+        Else
+            bock2.Show()
+        End If
+    Else
+        If File.Exists(My.Settings.FNIS) = TRUE Then
+            bock1.Show()
+        Else
+            bock2.Show()
+        End If
+    End If
+End Sub
+Private Sub genTESV5EditFunc()
+    If My.Settings.Game = "skyrim_2011" = TRUE Then
+        If System.IO.File.Exists("Data\tools\TES5Edit.exe") = TRUE Then
+            bock3.Show()
+        Else
+            bock4.Show()
+        End If
+        TES5Edit.Text = "TES5Edit"
+    Else
+        If File.Exists(My.Settings.SSEEdit) = TRUE Then
+            bock3.Show()
+        Else
+            bock4.Show()
+        End If
+        TES5Edit.Text = "SSEEdit"
+    End If
+End Sub
 
-    End Sub
+Private Sub genFNIS_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles genFNIS.LinkClicked
+    If My.Settings.Game = "skyrim_2011" = TRUE Then
+        
+        '   Dim path As String = My.Application.Info.DirectoryPath
+        If System.IO.File.Exists("Data\tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe") = TRUE Then
+            Process.Start("Data\tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe")
+        Else
+            MsgBox("Could Not find GenerateFNISforUsers.exe, To fix it: install it: Data\tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe")
+        End If
+        ' Process.Start("CMD", "/C start  /d " & path & "\Data\tools\GenerateFNIS_for_Users\GenerateFNISforUsers.exe")
+        
+    Else
+        If File.Exists(My.Settings.FNIS) = TRUE Then
+            Process.Start(My.Settings.FNIS)
+        Else
+            MsgBox("Could Not find GenerateFNISforUsers.exe, please install it")
+        End If
+    End If
+End Sub
 
-    Private Sub LinkLabel2_LinkClicked_1(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel2.LinkClicked
-        Dim strLOOTInstallPath As String = My.Computer.Registry.GetValue(
+Private Sub LinkLabel1_LinkClicked_1(sender As Object, e As LinkLabelLinkClickedEventArgs)
+    MsgBox("Only change If you know what you are doing." & vbCrLf & vbCrLf & " Delete row=delete file from load," & vbCrLf & " Add filename=adds a file To load," & vbCrLf & " move filename =which order file load." & vbCrLf & vbCrLf & "DO Not TOUCH Skyrim.esm, Update.esm")
+End Sub
+
+Private Sub TES5Edit_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles TES5Edit.LinkClicked
+    If My.Settings.Game = "skyrim_2011" = TRUE Then
+        If System.IO.File.Exists("Data\tools\TES5Edit.exe") = TRUE Then
+            Process.Start("Data\tools\TES5Edit.exe")
+        Else
+            MsgBox("Could Not find TES5Edit.exe, To fix it: install it: Data\tools\TES5Edit.exe")
+        End If
+    Else
+        If File.Exists(My.Settings.SSEEdit) = TRUE Then
+            Process.Start(My.Settings.SSEEdit)
+        Else
+            MsgBox("Could Not find SSEEdit.exe, please install it")
+        End If
+    End If
+    
+End Sub
+
+Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+    Me.Hide()
+    update1.Show()
+End Sub
+
+Private Sub LinkLabel2_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
+    Azaaxin.Show()
+End Sub
+
+Private Sub saveLoadorder_Click(sender As Object, e As EventArgs)
+    
+End Sub
+
+Private Sub loadorderbackup_Click(sender As Object, e As EventArgs)
+    
+End Sub
+
+Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini") = FALSE Then
+        MsgBox("You need To run the game at least once", MsgBoxStyle.Critical, "ini: Not Found")
+    Else
+        Changing_settings_Low()
+    End If
+End Sub
+
+Private Sub customize_Click(sender As Object, e As EventArgs) Handles customize.Click
+    Me.Opacity = 0.9
+    Customize13.ShowDialog()
+    Me.Opacity = 1
+End Sub
+
+Private Sub Panel1_Scroll(sender As Object, e As ScrollEventArgs) Handles Panel1.Scroll
+    Panel1.BackColor = System.Drawing.Color.Empty
+    Panel1.BackColor = System.Drawing.Color.Transparent
+    
+End Sub
+
+Private Sub Panel1_MouseWheel(sender As Object, e As System.Windows.Forms.MouseEventArgs) Handles Panel1.MouseWheel
+    Panel1.BackColor = System.Drawing.Color.Empty
+    Panel1.BackColor = System.Drawing.Color.Transparent
+End Sub
+
+Private Sub About_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs)
+    Azaaxin.Show()
+End Sub
+
+Private Sub GametimeStatus_CheckedChanged(sender As Object, e As EventArgs) Handles GametimeStatus.CheckedChanged
+    If GametimeStatus.Checked = TRUE Then
+        My.Settings.check2 = TRUE
+        Form1.timeplayed.Visible = TRUE
+        Form1.Label1.Visible = TRUE
+        My.Settings.Save()
+        My.Settings.Reload()
+    Else
+        Form1.Label1.Visible = FALSE
+        My.Settings.check2 = FALSE
+        Form1.timeplayed.Visible = FALSE
+        My.Settings.Save()
+        My.Settings.Reload()
+    End If
+End Sub
+
+Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
+    '   If CheckBox1.Checked = True Then
+    '   Form1.PLAY0.Location = New Point(6, 21)
+    '   Form1.OPTIONS0.Location = New Point(6, 95)
+    '   Form1.EXIT0.Location = New Point(6, 164)
+    '    CheckBox1.Text = "Switch Side On Menu [now:left]"
+    '    My.Settings.check4 = True
+    '    My.Settings.Save()
+    '    My.Settings.Reload()
+    
+    '     Else
+    '    Form1.PLAY0.Location = New Point(436, 21)
+    '    Form1.OPTIONS0.Location = New Point(436, 95)
+    '    Form1.EXIT0.Location = New Point(436, 164)
+    ''   CheckBox1.Text = "Switch Side On Menu [now:right]"
+    '   My.Settings.check4 = False
+    '  My.Settings.Save()
+    '  My.Settings.Reload()
+    '   End If
+    
+End Sub
+
+Private Sub version_checkbox_CheckedChanged(sender As Object, e As EventArgs) Handles version_checkbox.CheckedChanged
+    If version_checkbox.Checked = TRUE Then
+        My.Settings.check5 = TRUE
+        Form1.AZAAXIN_INFO.Visible = TRUE
+        Form1.version1.Visible = TRUE
+        My.Settings.Save()
+        My.Settings.Reload()
+    Else
+        Form1.AZAAXIN_INFO.Visible = FALSE
+        Form1.version1.Visible = FALSE
+        My.Settings.check5 = FALSE
+        My.Settings.Save()
+        My.Settings.Reload()
+    End If
+End Sub
+Private Sub Changing_settings_Low()
+    Dim imp As String = "You are about To change your graphics settings To Low. This can have a negative Or good effect On your game. This can cause all kind of glitches. Do IT On YOUR OWN RISK And BACKUP YOUR OLD SETTINGS!"
+    Select Case MsgBox(imp, MsgBoxStyle.YesNoCancel, "Skyrim - Settings:Low")
+        Case MsgBoxResult.Yes
+            low_settings()
+        Case MsgBoxResult.Cancel
+        Case MsgBoxResult.No
+    End Select
+End Sub
+
+Private Sub low_settings()
+    
+    Dim fPath = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\Skyrim.ini"
+    Dim afile As New IO.StreamWriter(fPath, False)
+    afile.WriteLine("[General]" + Environment.NewLine +
+    "sLanguage=ENGLISH" + Environment.NewLine +
+    "uGridsToLoad=5" + Environment.NewLine +
+    "uInterior Cell Buffer=18" + Environment.NewLine +
+    "uStaticNeverFade=1" + Environment.NewLine +
+    "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
+    "bForceFullLOD=1 " + Environment.NewLine +
+    "uGridDistantTreeRange=200" + Environment.NewLine +
+    "uGridDistantGrassRange=200" + Environment.NewLine +
+    "uGridDistantCount=210" + Environment.NewLine +
+    "fFlickeringLightDistance=10500.0000" + Environment.NewLine +
+    "[Display]" + Environment.NewLine +
+    "fShadowLODMaxStartFade=1000.0" + Environment.NewLine +
+    "fSpecularLODMaxStartFade=2000.0" + Environment.NewLine +
+    "fLightLODMaxStartFade=16500.0000" + Environment.NewLine +
+    "iShadowMapResolutionPrimary=2048" + Environment.NewLine +
+    "bAllowScreenshot=1" + Environment.NewLine +
+    "fSunShadowUpdateTime=0.000" + Environment.NewLine +
+    "fSunUpdateThreshold=2.000" + Environment.NewLine +
+    "bDecalsOnSkinnedGeometry=1" + Environment.NewLine +
+    "[Audio]" + Environment.NewLine +
+    "fMusicDuckingSeconds=6.0" + Environment.NewLine +
+    "fMusicUnDuckingSeconds=8.0" + Environment.NewLine +
+    "fMenuModeFadeOutTime=3.0" + Environment.NewLine +
+    "fMenuModeFadeInTime=1.0" + Environment.NewLine +
+    "uMaxSizeForCachedSound=4096" + Environment.NewLine +
+    "[Actor]" + Environment.NewLine +
+    "fVisibleNavmeshMoveDist=12288.0000" + Environment.NewLine +
+    "[Grass]" + Environment.NewLine +
+    "bAllowCreateGrass=1" + Environment.NewLine +
+    "bAllowLoadGrass=0" + Environment.NewLine +
+    "bDrawShaderGrass=1" + Environment.NewLine +
+    "iMinGrassSize=20" + Environment.NewLine +
+    "iMaxGrassTypesPerTexure=9" + Environment.NewLine +
+    "[GeneralWarnings]" + Environment.NewLine +
+    "SGeneralMasterMismatchWarning=One Or more plugins could Not find the correct versions of the master files they depend on. Errors may occur during load Or game play. Check the ""Warnings.txt"" file For more information." + Environment.NewLine +
+    "[Archive]" + Environment.NewLine +
+    "sResourceArchiveList=Skyrim - Misc.bsa, Skyrim - Shaders.bsa, Skyrim - Textures.bsa, Skyrim - Interface.bsa, Skyrim - Animations.bsa, Skyrim - Meshes.bsa, Skyrim - Sounds.bsa" + Environment.NewLine +
+    "sResourceArchiveList2=Skyrim - Voices.bsa, Skyrim - VoicesExtra.bsa" + Environment.NewLine +
+    "[Combat]" + Environment.NewLine +
+    "fMagnetismStrafeHeadingMult=0.0" + Environment.NewLine +
+    "fMagnetismLookingMult=0.0" + Environment.NewLine +
+    "f1PArrowTiltUpAngle=0.7" + Environment.NewLine +
+    "f3PArrowTiltUpAngle=0.7" + Environment.NewLine +
+    "[Papyrus]" + Environment.NewLine +
+    "fUpdateBudgetMS=1.2" + Environment.NewLine +
+    "fExtraTaskletBudgetMS=1.2" + Environment.NewLine +
+    "fPostLoadUpdateTimeMS=500.0" + Environment.NewLine +
+    "iMinMemoryPageSize=128" + Environment.NewLine +
+    "iMaxMemoryPageSize=512" + Environment.NewLine +
+    "iMaxAllocatedMemoryBytes=76800" + Environment.NewLine +
+    "bEnableLogging=0" + Environment.NewLine +
+    "bEnableTrace=0" + Environment.NewLine +
+    "bLoadDebugInformation=0" + Environment.NewLine +
+    "bEnableProfiling=0" + Environment.NewLine +
+    "[Water]" + Environment.NewLine +
+    "bReflectLODObjects=1" + Environment.NewLine +
+    "bReflectLODLand=1" + Environment.NewLine +
+    "bReflectSky=1" + Environment.NewLine +
+    "bReflectLODTrees=1" + Environment.NewLine +
+    "[Cart]" + Environment.NewLine +
+    "fWheelAngDamp=0.1100" + Environment.NewLine +
+    "fMass=240.0000" + Environment.NewLine +
+    "fFriction=100.0000" + Environment.NewLine +
+    "fGravMult=7.0000" + Environment.NewLine +
+    "[Camera]" + Environment.NewLine +
+    "fActorFadeOutLimit=-100" + Environment.NewLine +
+    "fOverShoulderPosY=0.0000" + Environment.NewLine +
+    "fOverShoulderPosZ=7.5000" + Environment.NewLine +
+    "fOverShoulderPosX=0.0000" + Environment.NewLine +
+    "fOverShoulderCombatAddY=0.0000" + Environment.NewLine +
+    "fOverShoulderCombatPosZ=7.5000")
+    afile.Close()
+    Dim fPathGr = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\SkyrimPrefs.ini"
+    Dim afileGr As New IO.StreamWriter(fPathGr, False)
+    afileGr.WriteLine("[General]" + Environment.NewLine +
+    "fBrightLightColorB=1.0000" + Environment.NewLine +
+    "fBrightLightColorG=1.0000" + Environment.NewLine +
+    "fBrightLightColorR=1.0000" + Environment.NewLine +
+    "iStoryManagerLoggingEvent=-1" + Environment.NewLine +
+    "bEnableStoryManagerLogging=0" + Environment.NewLine +
+    "fdefaultfov=85" + Environment.NewLine +
+    "bUseThreadedTextures=1" + Environment.NewLine +
+    "bUseThreadedParticleSystem=1" + Environment.NewLine +
+    "bUseThreadedBlood=1" + Environment.NewLine +
+    "bUseThreadedMeshes=1" + Environment.NewLine +
+    "bUseThreadedMorpher=1" + Environment.NewLine +
+    "bUseThreadedLOD=1" + Environment.NewLine +
+    "[Imagespace]" + Environment.NewLine +
+    "bDoDepthOfField=1" + Environment.NewLine +
+    "iRadialBlurLevel=2" + Environment.NewLine +
+    "[Display]" + Environment.NewLine +
+    "iBlurDeferredShadowMask=1" + Environment.NewLine +
+    "fInteriorShadowDistance=4000.0000" + Environment.NewLine +
+    "fShadowDistance=8000.0000" + Environment.NewLine +
+    "iShadowMapResolutionSecondary=1024" + Environment.NewLine +
+    "iShadowMapResolutionPrimary=2048" + Environment.NewLine +
+    "iMaxAnisotropy=16" + Environment.NewLine +
+    "fLeafAnimDampenDistEnd=4600.0000" + Environment.NewLine +
+    "fLeafAnimDampenDistStart=3600.0000" + Environment.NewLine +
+    "fTreesMidLODSwitchDist=10000000.0000" + Environment.NewLine +
+    "fGamma=1.0000" + Environment.NewLine +
+    "fDecalLOD2=1500.0000" + Environment.NewLine +
+    "fDecalLOD1=1000.0000" + Environment.NewLine +
+    "fSpecularLODStartFade=2000.0000" + Environment.NewLine +
+    "fShadowLODStartFade=200.0000" + Environment.NewLine +
+    "fLightLODStartFade=3500.0000" + Environment.NewLine +
+    "iTexMipMapMinimum=0" + Environment.NewLine +
+    "iTexMipMapSkip=0" + Environment.NewLine +
+    "iWaterMultiSamples=0" + Environment.NewLine +
+    "iMultiSample=0" + Environment.NewLine +
+    "iShadowMode=3" + Environment.NewLine +
+    "bTreesReceiveShadows=1" + Environment.NewLine +
+    "bDrawLandShadows=1" + Environment.NewLine +
+    "bFull Screen=1" + Environment.NewLine +
+    "iSize H=1080" + Environment.NewLine +
+    "iSize W=1920" + Environment.NewLine +
+    "fMeshLODFadePercentDefault=1.2000" + Environment.NewLine +
+    "fMeshLODFadeBoundDefault=256.0000" + Environment.NewLine +
+    "fMeshLODLevel2FadeTreeDistance=2048.0000" + Environment.NewLine +
+    "fMeshLODLevel1FadeTreeDistance=2844.0000" + Environment.NewLine +
+    "fMeshLODLevel2FadeDist=10000000.0000" + Environment.NewLine +
+    "fMeshLODLevel1FadeDist=10000000.0000" + Environment.NewLine +
+    "iScreenShotIndex=3" + Environment.NewLine +
+    "bShadowMaskZPrepass=0" + Environment.NewLine +
+    "bMainZPrepass=0" + Environment.NewLine +
+    "iMaxSkinDecalsPerFrame=25" + Environment.NewLine +
+    "iMaxDecalsPerFrame=100" + Environment.NewLine +
+    "bFloatPointRenderTarget=0" + Environment.NewLine +
+    "sD3DDevice=" + Environment.NewLine +
+    "bFXAAEnabled=0" + Environment.NewLine +
+    "iShadowMapResolution=2048" + Environment.NewLine +
+    "fShadowBiasScale=0.15" + Environment.NewLine +
+    "iShadowMaskQuarter=4" + Environment.NewLine +
+    "iAdapter=0" + Environment.NewLine +
+    "iPresentInterval=1" + Environment.NewLine +
+    "iShadowFilter=2" + Environment.NewLine +
+    "bShadowsOnGrass=1" + Environment.NewLine +
+    "bTransparencyMultisampling=0" + Environment.NewLine +
+    "bDeferredShadows=1" + Environment.NewLine +
+    "bDrawShadows=1" + Environment.NewLine +
+    "bEquippedTorchesCastShadows=1" + Environment.NewLine +
+    "[Grass]" + Environment.NewLine +
+    "b30GrassVS=1" + Environment.NewLine +
+    "fGrassStartFadeDistance=50000.0000" + Environment.NewLine +
+    "fGrassMaxStartFadeDistance=50000.0000" + Environment.NewLine +
+    "fGrassMinStartFadeDistance=0.0000" + Environment.NewLine +
+    "bDrawShaderGrass=1" + Environment.NewLine +
+    "bGrassPointLighting=1" + Environment.NewLine +
+    "[MAIN]" + Environment.NewLine +
+    "bGamepadEnable=0" + Environment.NewLine +
+    "bCrosshairEnabled=1" + Environment.NewLine +
+    "fHUDOpacity=1.0000" + Environment.NewLine +
+    "bSaveOnPause=0" + Environment.NewLine +
+    "bSaveOnTravel=0" + Environment.NewLine +
+    "bSaveOnWait=0" + Environment.NewLine +
+    "bSaveOnRest=0" + Environment.NewLine +
+    "fSkyCellRefFadeDistance=150000.0000" + Environment.NewLine +
+    "[GamePlay]" + Environment.NewLine +
+    "bShowFloatingQuestMarkers=1" + Environment.NewLine +
+    "bShowQuestMarkers=1" + Environment.NewLine +
+    "iDifficulty=2" + Environment.NewLine +
+    "[Interface]" + Environment.NewLine +
+    "sPosePlayerRaceSexMenu=" + Environment.NewLine +
+    "bDialogueSubtitles=1" + Environment.NewLine +
+    "bGeneralSubtitles=1" + Environment.NewLine +
+    "fMouseCursorSpeed=1.0000" + Environment.NewLine +
+    "bShowCompass=1" + Environment.NewLine +
+    "[Controls]" + Environment.NewLine +
+    "fGamepadHeadingSensitivity=1.0000" + Environment.NewLine +
+    "fMouseHeadingSensitivity=0.0125" + Environment.NewLine +
+    "bAlwaysRunByDefault=1" + Environment.NewLine +
+    "bInvertYValues=0" + Environment.NewLine +
+    "bGamePadRumble=1" + Environment.NewLine +
+    "bMouseAcceleration=1" + Environment.NewLine +
+    "bUseKinect=0" + Environment.NewLine +
+    "[Particles]" + Environment.NewLine +
+    "iMaxDesired=750" + Environment.NewLine +
+    "[SaveGame]" + Environment.NewLine +
+    "fAutosaveEveryXMins=60.0000" + Environment.NewLine +
+    "[AudioMenu]" + Environment.NewLine +
+    "fAudioMasterVolume=0.5000" + Environment.NewLine +
+    "fVal7=1.0000" + Environment.NewLine +
+    "uID7=0" + Environment.NewLine +
+    "fVal6=1.0000" + Environment.NewLine +
+    "uID6=0" + Environment.NewLine +
+    "fVal5=1.0000" + Environment.NewLine +
+    "uID5=0" + Environment.NewLine +
+    "fVal4=1.0000" + Environment.NewLine +
+    "uID4=0" + Environment.NewLine +
+    "fVal3=1.0000" + Environment.NewLine +
+    "uID3=94881" + Environment.NewLine +
+    "fVal2=0.4000" + Environment.NewLine +
+    "uID2=466532" + Environment.NewLine +
+    "fVal1=1.0000" + Environment.NewLine +
+    "uID1=554685" + Environment.NewLine +
+    "fVal0=0.8000" + Environment.NewLine +
+    "uID0=1007612" + Environment.NewLine +
+    "[Clouds]" + Environment.NewLine +
+    "fCloudLevel2Distance=262144.0000" + Environment.NewLine +
+    "fCloudLevel1Distance=32768.0000" + Environment.NewLine +
+    "fCloudLevel0Distance=16384.0000" + Environment.NewLine +
+    "fCloudNearFadeDistance=9000.0000" + Environment.NewLine +
+    "[TerrainManager]" + Environment.NewLine +
+    "fTreeLoadDistance=75000.0000" + Environment.NewLine +
+    "fBlockMaximumDistance=250000.0000" + Environment.NewLine +
+    "fBlockLevel1Distance=70000.0000" + Environment.NewLine +
+    "fBlockLevel0Distance=35000.0000" + Environment.NewLine +
+    "fSplitDistanceMult=1.5000" + Environment.NewLine +
+    "bShowLODInEditor=0" + Environment.NewLine +
+    "[NavMesh]" + Environment.NewLine +
+    "fObstacleAlpha=0.5000" + Environment.NewLine +
+    "fCoverSideHighAlpha=0.8000" + Environment.NewLine +
+    "fCoverSideLowAlpha=0.6500" + Environment.NewLine +
+    "fEdgeFullAlpha=1.0000" + Environment.NewLine +
+    "fEdgeHighAlpha=0.7500" + Environment.NewLine +
+    "fEdgeLowAlpha=0.5000" + Environment.NewLine +
+    "fTriangleFullAlpha=0.7000" + Environment.NewLine +
+    "fTriangleHighAlpha=0.3500" + Environment.NewLine +
+    "fTriangleLowAlpha=0.2000" + Environment.NewLine +
+    "fLedgeBoxHalfHeight=25.0000" + Environment.NewLine +
+    "fEdgeDistFromVert=10.0000" + Environment.NewLine +
+    "fEdgeThickness=10.0000" + Environment.NewLine +
+    "fPointSize=2.5000" + Environment.NewLine +
+    "[Trees]" + Environment.NewLine +
+    "bRenderSkinnedTrees=1" + Environment.NewLine +
+    "uiMaxSkinnedTreesToRender=20" + Environment.NewLine +
+    "bUseMultiThreadedTrees=1" + Environment.NewLine +
+    "[Decals]" + Environment.NewLine +
+    "uMaxDecals=1000" + Environment.NewLine +
+    "bDecals=1" + Environment.NewLine +
+    "bSkinnedDecals=1" + Environment.NewLine +
+    "uMaxSkinDecals=100" + Environment.NewLine +
+    "uMaxSkinDecalsPerActor=60" + Environment.NewLine +
+    "[LOD]" + Environment.NewLine +
+    "fLODFadeOutMultObjects=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultItems=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultActors=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultSkyCell=1.0000" + Environment.NewLine +
+    "[Launcher]" + Environment.NewLine +
+    "bEnableFileSelection=1" + Environment.NewLine +
+    "bShowAllResolutions=1" + Environment.NewLine +
+    "uLastAspectRatio=3" + Environment.NewLine +
+    "[BlurShaderHDR]" + Environment.NewLine +
+    "bDoHighDynamicRange=1" + Environment.NewLine +
+    "[BlurShader]" + Environment.NewLine +
+    "bUseBlurShader=0" + Environment.NewLine +
+    "[Water]" + Environment.NewLine +
+    "iWaterReflectHeight=512" + Environment.NewLine +
+    "iWaterReflectWidth=512" + Environment.NewLine +
+    "bUseWaterDisplacements=1" + Environment.NewLine +
+    "bUseWaterRefractions=1" + Environment.NewLine +
+    "bUseWaterReflections=1" + Environment.NewLine +
+    "bUseWaterDepth=1" + Environment.NewLine +
+    "bUseWaterReflectionBlur=1" + Environment.NewLine +
+    "bReflectExplosions=1" + Environment.NewLine +
+    "iWaterBlurAmount=4" + Environment.NewLine +
+    "bAutoWaterSilhouetteReflections=0" + Environment.NewLine +
+    "bForceHighDetailReflections=1" + Environment.NewLine +
+    "fBlockLoadDistanceLow=50000.0000" + Environment.NewLine +
+    "fBlockLoadDistance=125000.0000" + Environment.NewLine +
+    "fHighBlockLoadDistanceLow=20000.0000" + Environment.NewLine +
+    "[Havok]" + Environment.NewLine +
+    "fInAirFallingCharGravityMult=1.35" + Environment.NewLine +
+    "[BackgroundLoad]" + Environment.NewLine +
+    "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
+    "bBackgroundLoadLipFiles=0" + Environment.NewLine +
+    "bLoadBackgroundFaceGen=0")
+    afileGr.Close()
+    
+End Sub
+'----------------------------------------MEDIUM------------------------------
+Private Sub Changing_settings_medium()
+    Dim imp As String = "You are about To change your graphics settings To Medium. This can have a negative Or good effect On your game. This can cause all kind of glitches. Do IT On YOUR OWN RISK And BACKUP YOUR OLD SETTINGS!"
+    Select Case MsgBox(imp, MsgBoxStyle.YesNoCancel, "Skyrim - Settings:Medium")
+        Case MsgBoxResult.Yes
+            medium_settings()
+        Case MsgBoxResult.Cancel
+        Case MsgBoxResult.No
+    End Select
+End Sub
+
+Private Sub medium_settings()
+    
+    Dim fPath = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\Skyrim.ini"
+    Dim afile As New IO.StreamWriter(fPath, False)
+    afile.WriteLine("[General]" + Environment.NewLine +
+    "sLanguage=ENGLISH" + Environment.NewLine +
+    "uGridsToLoad=5" + Environment.NewLine +
+    "uExterior Cell Buffer=36" + Environment.NewLine +
+    "uInterior Cell Buffer=18" + Environment.NewLine +
+    "bUseThreadedTempEffects=1" + Environment.NewLine +
+    "bUseThreadedParticleSystem=1" + Environment.NewLine +
+    "bMultiThreadMovement=1" + Environment.NewLine +
+    "bUseThreadedMorpher=1" + Environment.NewLine +
+    "uStaticNeverFade=1" + Environment.NewLine +
+    "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
+    "bForceFullLOD=1 " + Environment.NewLine +
+    "uGridDistantTreeRange=200" + Environment.NewLine +
+    "uGridDistantGrassRange=200" + Environment.NewLine +
+    "uGridDistantCount=210" + Environment.NewLine +
+    "fFlickeringLightDistance=10500.0000" + Environment.NewLine +
+    "[Display]" + Environment.NewLine +
+    "fShadowLODMaxStartFade=1000.0" + Environment.NewLine +
+    "fSpecularLODMaxStartFade=2000.0" + Environment.NewLine +
+    "fLightLODMaxStartFade=16500.0000" + Environment.NewLine +
+    "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
+    "bPerPixelLighting=1" + Environment.NewLine +
+    "bAllowScreenshot=1" + Environment.NewLine +
+    "bSimpleLighting=0" + Environment.NewLine +
+    "iAdapter=0" + Environment.NewLine +
+    "bAllowScreenshot=1" + Environment.NewLine +
+    "fSunShadowUpdateTime=0.000" + Environment.NewLine +
+    "fSunUpdateThreshold=2.000" + Environment.NewLine +
+    "fShadowBiasScale=1.0" + Environment.NewLine +
+    "bDecalsOnSkinnedGeometry=1" + Environment.NewLine +
+    "iPresentInterval=1" + Environment.NewLine +
+    "[Audio]" + Environment.NewLine +
+    "fMusicDuckingSeconds=6.0" + Environment.NewLine +
+    "fMusicUnDuckingSeconds=8.0" + Environment.NewLine +
+    "fMenuModeFadeOutTime=3.0" + Environment.NewLine +
+    "fMenuModeFadeInTime=1.0" + Environment.NewLine +
+    "uMaxSizeForCachedSound=4096" + Environment.NewLine +
+    "[Actor]" + Environment.NewLine +
+    "fVisibleNavmeshMoveDist=12288.0000" + Environment.NewLine +
+    "[Grass]" + Environment.NewLine +
+    "bAllowCreateGrass=1" + Environment.NewLine +
+    "bAllowLoadGrass=0" + Environment.NewLine +
+    "bDrawShaderGrass=1" + Environment.NewLine +
+    "iMinGrassSize=20" + Environment.NewLine +
+    "iMaxGrassTypesPerTexure=9" + Environment.NewLine +
+    "[GeneralWarnings]" + Environment.NewLine +
+    "SGeneralMasterMismatchWarning=One Or more plugins could Not find the correct versions Of the master files they depend On. Errors may occur during load Or game play. Check the ""Warnings.txt"" file For more information." + Environment.NewLine +
+    "[Archive]" + Environment.NewLine +
+    "sResourceArchiveList=Skyrim - Misc.bsa, Skyrim - Shaders.bsa, Skyrim - Textures.bsa, Skyrim - Interface.bsa, Skyrim - Animations.bsa, Skyrim - Meshes.bsa, Skyrim - Sounds.bsa" + Environment.NewLine +
+    "sResourceArchiveList2=Skyrim - Voices.bsa, Skyrim - VoicesExtra.bsa" + Environment.NewLine +
+    "[Combat]" + Environment.NewLine +
+    "fMagnetismStrafeHeadingMult=0.0" + Environment.NewLine +
+    "fMagnetismLookingMult=0.0" + Environment.NewLine +
+    "[Papyrus]" + Environment.NewLine +
+    "fUpdateBudgetMS=1.2" + Environment.NewLine +
+    "fExtraTaskletBudgetMS=1.2" + Environment.NewLine +
+    "fPostLoadUpdateTimeMS=500.0" + Environment.NewLine +
+    "iMinMemoryPageSize=128" + Environment.NewLine +
+    "iMaxMemoryPageSize=512" + Environment.NewLine +
+    "iMaxAllocatedMemoryBytes=76800" + Environment.NewLine +
+    "bEnableLogging=0" + Environment.NewLine +
+    "bEnableTrace=0" + Environment.NewLine +
+    "bLoadDebugInformation=0" + Environment.NewLine +
+    "bEnableProfiling=0" + Environment.NewLine +
+    "[Water]" + Environment.NewLine +
+    "bReflectLODObjects=1" + Environment.NewLine +
+    "bReflectLODLand=1" + Environment.NewLine +
+    "bReflectSky=1" + Environment.NewLine +
+    "bReflectLODTrees=1" + Environment.NewLine +
+    "bReflectExplosions=1" + Environment.NewLine +
+    "[Cart]" + Environment.NewLine +
+    "fWheelAngDamp=0.1100" + Environment.NewLine +
+    "fMass=240.0000" + Environment.NewLine +
+    "fFriction=100.0000" + Environment.NewLine +
+    "fGravMult=7.0000" + Environment.NewLine +
+    "[Decals]" + Environment.NewLine +
+    "bDecalMultithreaded=1 " + Environment.NewLine +
+    "[Camera]" + Environment.NewLine +
+    "fActorFadeOutLimit=-100" + Environment.NewLine +
+    "fOverShoulderPosY=0.0000" + Environment.NewLine +
+    "fOverShoulderPosZ=7.5000" + Environment.NewLine +
+    "fOverShoulderPosX=0.0000" + Environment.NewLine +
+    "fOverShoulderCombatAddY=0.0000" + Environment.NewLine +
+    "fOverShoulderCombatPosZ=7.5000" + Environment.NewLine +
+    "fOverShoulderCombatPosX=0.0000" + Environment.NewLine +
+    "fOverShoulderHorseAddY=0.0000" + Environment.NewLine +
+    "fOverShoulderHorsePosZ=0.0000" + Environment.NewLine +
+    "fOverShoulderHorsePosX=0.0000" + Environment.NewLine +
+    "fMouseWheelZoomIncrement=0.050 " + Environment.NewLine +
+    "fVanityModeMaxDist=1000.0000" + Environment.NewLine +
+    "fVanityModeMinDist=155.0000" + Environment.NewLine +
+    "fMinCurrentZoom=0.001" + Environment.NewLine +
+    "[BackgroundLoad]" + Environment.NewLine +
+    "bBackgroundLoadLipFiles=1" + Environment.NewLine +
+    "bLoadBackgroundFaceGen=1" + Environment.NewLine +
+    "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
+    "bBackgroundCellLoads=1" + Environment.NewLine +
+    "bLoadHelmetsInBackground=1" + Environment.NewLine +
+    "bUseMultiThreadedTrees=1" + Environment.NewLine +
+    "bUseBackgroundFileLoader=1" + Environment.NewLine +
+    "[Animation]" + Environment.NewLine +
+    "bMultiThreadBoneUpdate=1")
+    afile.Close()
+    Dim fPathGr = "C: \Users\" + Environment.UserName + "\Documents\My Games\Skyrim\SkyrimPrefs.ini"
+    Dim afileGr As New IO.StreamWriter(fPathGr, False)
+    afileGr.WriteLine("[General]" + Environment.NewLine +
+    "fBrightLightColorB=1.0000" + Environment.NewLine +
+    "fBrightLightColorG=1.0000" + Environment.NewLine +
+    "fBrightLightColorR=1.0000" + Environment.NewLine +
+    "iStoryManagerLoggingEvent=-1" + Environment.NewLine +
+    "bEnableStoryManagerLogging=0" + Environment.NewLine +
+    "bMultiThreadMovement=1" + Environment.NewLine +
+    "bUseThreadedTextures=1" + Environment.NewLine +
+    "bUseThreadedParticleSystem=1" + Environment.NewLine +
+    "bUseThreadedBlood=1" + Environment.NewLine +
+    "bUseThreadedMeshes=1" + Environment.NewLine +
+    "bUseThreadedMorpher=1" + Environment.NewLine +
+    "bUseThreadedLOD=1" + Environment.NewLine +
+    "bUseThreadedTempEffects=1" + Environment.NewLine +
+    "bUseThreadedAI=1" + Environment.NewLine +
+    "[Imagespace]" + Environment.NewLine +
+    "bDoDepthOfField=1" + Environment.NewLine +
+    "iRadialBlurLevel=3" + Environment.NewLine +
+    "bDoRadialBlur=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Display]" + Environment.NewLine +
+    "iBlurDeferredShadowMask=1" + Environment.NewLine +
+    "fInteriorShadowDistance=4000.0000" + Environment.NewLine +
+    "fShadowDistance=4000.0000" + Environment.NewLine +
+    "iShadowMapResolutionSecondary=2048" + Environment.NewLine +
+    "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
+    "iMaxAnisotropy=16" + Environment.NewLine +
+    "fLeafAnimDampenDistEnd=4600.0000" + Environment.NewLine +
+    "fLeafAnimDampenDistStart=3600.0000" + Environment.NewLine +
+    "fTreesMidLODSwitchDist=10000000.0000" + Environment.NewLine +
+    "fGamma=1.0000" + Environment.NewLine +
+    "fDecalLOD2=1500.0000" + Environment.NewLine +
+    "fDecalLOD1=1000.0000" + Environment.NewLine +
+    "fSpecularLODStartFade=2000.0000" + Environment.NewLine +
+    "fShadowLODStartFade=200.0000" + Environment.NewLine +
+    "fLightLODStartFade=3500.0000" + Environment.NewLine +
+    "bUse Shaders=1" + Environment.NewLine +
+    "bAllow30HairShader=1" + Environment.NewLine +
+    "bUseRefractionShader=1" + Environment.NewLine +
+    "iTexMipMap=2048" + Environment.NewLine +
+    "iUseTexHiRes=1" + Environment.NewLine +
+    "iTexMipMapMinimum=0" + Environment.NewLine +
+    "iTexMipMapSkip=0" + Environment.NewLine +
+    "iWaterMultiSamples=0" + Environment.NewLine +
+    "iMultiSample=0" + Environment.NewLine +
+    "iShadowMode=3" + Environment.NewLine +
+    "bTreesReceiveShadows=1" + Environment.NewLine +
+    "bDrawLandShadows=1" + Environment.NewLine +
+    "bFull Screen=1" + Environment.NewLine +
+    "iSize H=1200" + Environment.NewLine +
+    "iSize W=1920" + Environment.NewLine +
+    "fMeshLODFadePercentDefault=1.2000" + Environment.NewLine +
+    "fMeshLODFadeBoundDefault=256.0000" + Environment.NewLine +
+    "fMeshLODLevel2FadeTreeDistance=75000.0000" + Environment.NewLine +
+    "fMeshLODLevel1FadeTreeDistance=100000.0000" + Environment.NewLine +
+    "fMeshLODLevel2FadeDist=10000000.0000" + Environment.NewLine +
+    "fMeshLODLevel1FadeDist=10000000.0000" + Environment.NewLine +
+    "iScreenShotIndex=3" + Environment.NewLine +
+    "bShadowMaskZPrepass=0" + Environment.NewLine +
+    "bMainZPrepass=0" + Environment.NewLine +
+    "iMaxSkinDecalsPerFrame=3" + Environment.NewLine +
+    "iMaxDecalsPerFrame=100" + Environment.NewLine +
+    "bFloatPointRenderTarget=1" + Environment.NewLine +
+    "bFXAAEnabled=0" + Environment.NewLine +
+    "iShadowMapResolution=2048" + Environment.NewLine +
+    "fShadowBiasScale=0.2500" + Environment.NewLine +
+    "iShadowMaskQuarter=4" + Environment.NewLine +
+    "iAdapter=0" + Environment.NewLine +
+    "iPresentInterval=1" + Environment.NewLine +
+    "iShadowFilter=3" + Environment.NewLine +
+    "bShadowsOnGrass=1" + Environment.NewLine +
+    "bTransparencyMultisampling=0" + Environment.NewLine +
+    "bDeferredShadows=1" + Environment.NewLine +
+    "bDrawShadows=1" + Environment.NewLine +
+    "iActorShadowCountInt=12" + Environment.NewLine +
+    "iActorShadowCountExt=20" + Environment.NewLine +
+    "iActorSelfShadow=1" + Environment.NewLine +
+    "iActorSelfShadowResolution=8192" + Environment.NewLine +
+    "bEquippedTorchesCastShadows=1" + Environment.NewLine +
+    "[Grass]" + Environment.NewLine +
+    "b30GrassVS=1" + Environment.NewLine +
+    "fGrassStartFadeDistance=50000.0000" + Environment.NewLine +
+    "fGrassMaxStartFadeDistance=50000.0000" + Environment.NewLine +
+    "fGrassMinStartFadeDistance=0.0000" + Environment.NewLine +
+    "bGrassPointLighting=1" + Environment.NewLine +
+    "bDrawShaderGrass=1" + Environment.NewLine +
+    "[MAIN]" + Environment.NewLine +
+    "bGamepadEnable=0" + Environment.NewLine +
+    "bCrosshairEnabled=1" + Environment.NewLine +
+    "fHUDOpacity=1.0000" + Environment.NewLine +
+    "bSaveOnPause=0" + Environment.NewLine +
+    "bSaveOnTravel=0" + Environment.NewLine +
+    "bSaveOnWait=0" + Environment.NewLine +
+    "bSaveOnRest=0" + Environment.NewLine +
+    "fSkyCellRefFadeDistance=150000.0000" + Environment.NewLine +
+    "[GamePlay]" + Environment.NewLine +
+    "bShowFloatingQuestMarkers=1" + Environment.NewLine +
+    "bShowQuestMarkers=1" + Environment.NewLine +
+    "iDifficulty=2" + Environment.NewLine +
+    "[Interface]" + Environment.NewLine +
+    "sPosePlayerRaceSexMenu=" + Environment.NewLine +
+    "bDialogueSubtitles=1" + Environment.NewLine +
+    "bGeneralSubtitles=1" + Environment.NewLine +
+    "fMouseCursorSpeed=1.0000" + Environment.NewLine +
+    "bShowCompass=1" + Environment.NewLine +
+    "[Controls]" + Environment.NewLine +
+    "fGamepadHeadingSensitivity=1.0000" + Environment.NewLine +
+    "fMouseHeadingSensitivity=0.0125" + Environment.NewLine +
+    "bAlwaysRunByDefault=1" + Environment.NewLine +
+    "bInvertYValues=0" + Environment.NewLine +
+    "bGamePadRumble=1" + Environment.NewLine +
+    "bMouseAcceleration=1" + Environment.NewLine +
+    "bUseKinect=0" + Environment.NewLine +
+    "[Particles]" + Environment.NewLine +
+    "iMaxDesired=750" + Environment.NewLine +
+    "[SaveGame]" + Environment.NewLine +
+    "fAutosaveEveryXMins=60.0000" + Environment.NewLine +
+    "bDisableAutoSave=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[AudioMenu]" + Environment.NewLine +
+    "fAudioMasterVolume=0.5000" + Environment.NewLine +
+    "fVal7=1.0000" + Environment.NewLine +
+    "uID7=0" + Environment.NewLine +
+    "fVal6=1.0000" + Environment.NewLine +
+    "uID6=0" + Environment.NewLine +
+    "fVal5=1.0000" + Environment.NewLine +
+    "uID5=0" + Environment.NewLine +
+    "fVal4=1.0000" + Environment.NewLine +
+    "uID4=0" + Environment.NewLine +
+    "fVal3=1.0000" + Environment.NewLine +
+    "uID3=94881" + Environment.NewLine +
+    "fVal2=0.4000" + Environment.NewLine +
+    "uID2=466532" + Environment.NewLine +
+    "fVal1=1.0000" + Environment.NewLine +
+    "uID1=554685" + Environment.NewLine +
+    "fVal0=0.8000" + Environment.NewLine +
+    "uID0=1007612" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Clouds]" + Environment.NewLine +
+    "fCloudLevel2Distance=262144.0000" + Environment.NewLine +
+    "fCloudLevel1Distance=32768.0000" + Environment.NewLine +
+    "fCloudLevel0Distance=16384.0000" + Environment.NewLine +
+    "fCloudNearFadeDistance=9000.0000" + Environment.NewLine +
+    "[TerrainManager]" + Environment.NewLine +
+    "fTreeLoadDistance=75000.0000" + Environment.NewLine +
+    "fBlockMaximumDistance=250000.0000" + Environment.NewLine +
+    "fBlockLevel1Distance=70000.0000" + Environment.NewLine +
+    "fBlockLevel0Distance=35000.0000" + Environment.NewLine +
+    "fSplitDistanceMult=1.5000" + Environment.NewLine +
+    "bShowLODInEditor=0" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[NavMesh]" + Environment.NewLine +
+    "fObstacleAlpha=0.5000" + Environment.NewLine +
+    "fCoverSideHighAlpha=0.8000" + Environment.NewLine +
+    "fCoverSideLowAlpha=0.6500" + Environment.NewLine +
+    "fEdgeFullAlpha=1.0000" + Environment.NewLine +
+    "fEdgeHighAlpha=0.7500" + Environment.NewLine +
+    "fEdgeLowAlpha=0.5000" + Environment.NewLine +
+    "fTriangleFullAlpha=0.7000" + Environment.NewLine +
+    "fTriangleHighAlpha=0.3500" + Environment.NewLine +
+    "fTriangleLowAlpha=0.2000" + Environment.NewLine +
+    "fLedgeBoxHalfHeight=25.0000" + Environment.NewLine +
+    "fEdgeDistFromVert=10.0000" + Environment.NewLine +
+    "fEdgeThickness=10.0000" + Environment.NewLine +
+    "fPointSize=2.5000" + Environment.NewLine +
+    "bUseThreadedMeshes=1" + Environment.NewLine +
+    "[Trees]" + Environment.NewLine +
+    "bRenderSkinnedTrees=1" + Environment.NewLine +
+    "uiMaxSkinnedTreesToRender=20" + Environment.NewLine +
+    "bUseMultiThreadedTrees=1" + Environment.NewLine +
+    "bEnableTreeAnimations=1" + Environment.NewLine +
+    "[Decals]" + Environment.NewLine +
+    "uMaxDecals=1000" + Environment.NewLine +
+    "bDecals=1" + Environment.NewLine +
+    "bSkinnedDecals=1" + Environment.NewLine +
+    "uMaxSkinDecals=100" + Environment.NewLine +
+    "uMaxSkinDecalsPerActor=60" + Environment.NewLine +
+    "bDecalMultithreaded=1" + Environment.NewLine +
+    "[LOD]" + Environment.NewLine +
+    "fLODFadeOutMultObjects=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultItems=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultActors=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultSkyCell=1.0000" + Environment.NewLine +
+    "[Launcher]" + Environment.NewLine +
+    "bEnableFileSelection=1" + Environment.NewLine +
+    "bShowAllResolutions=1" + Environment.NewLine +
+    "uLastAspectRatio=4" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[BlurShaderHDR]" + Environment.NewLine +
+    "bDoHighDynamicRange=1" + Environment.NewLine +
+    "[BlurShader]" + Environment.NewLine +
+    "bUseBlurShader=0" + Environment.NewLine +
+    "[Water]" + Environment.NewLine +
+    "iWaterReflectHeight=512" + Environment.NewLine +
+    "iWaterReflectWidth=512" + Environment.NewLine +
+    "bUseWaterDisplacements=1" + Environment.NewLine +
+    "bUseWaterRefractions=1" + Environment.NewLine +
+    "bUseWaterReflections=1" + Environment.NewLine +
+    "bUseWaterDepth=1" + Environment.NewLine +
+    "bUseWaterReflectionBlur=1" + Environment.NewLine +
+    "bReflectExplosions=1" + Environment.NewLine +
+    "iWaterBlurAmount=4" + Environment.NewLine +
+    "bAutoWaterSilhouetteReflections=0" + Environment.NewLine +
+    "bForceHighDetailReflections=1" + Environment.NewLine +
+    "fBlockLoadDistanceLow=50000.0000" + Environment.NewLine +
+    "fBlockLoadDistance=125000.0000" + Environment.NewLine +
+    "fHighBlockLoadDistanceLow=20000.0000" + Environment.NewLine +
+    "[Havok]" + Environment.NewLine +
+    "fInAirFallingCharGravityMult=1.35" + Environment.NewLine +
+    "[BackgroundLoad]" + Environment.NewLine +
+    "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
+    "bBackgroundLoadLipFiles=1" + Environment.NewLine +
+    "bLoadBackgroundFaceGen=1" + Environment.NewLine +
+    "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
+    "bBackgroundCellLoads=1" + Environment.NewLine +
+    "bLoadHelmetsInBackground=1" + Environment.NewLine +
+    "bUseMultiThreadedTrees=1")
+    afileGr.Close()
+    
+End Sub
+
+'----------------------------------------HIGH------------------------------
+Private Sub Changing_settings_high()
+    If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini") = FALSE Then
+        MsgBox("You need To run the game at least once", MsgBoxStyle.Critical, "ini: Not Found")
+    Else
+        
+        Dim imp As String = "You are about To change your graphics settings To High. This can have a negative Or good effect On your game. This can cause all kind of glitches. Do IT On YOUR OWN RISK And BACKUP YOUR OLD SETTINGS!"
+        Select Case MsgBox(imp, MsgBoxStyle.YesNoCancel, "Skyrim - Settings:High")
+            Case MsgBoxResult.Yes
+                high_settings()
+            Case MsgBoxResult.Cancel
+            Case MsgBoxResult.No
+        End Select
+    End If
+    
+End Sub
+Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+    Changing_settings_high()
+End Sub
+Private Sub high_settings()
+    
+    Dim fPath = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\Skyrim.ini"
+    Dim afile As New IO.StreamWriter(fPath, False)
+    afile.WriteLine("[General]" + Environment.NewLine +
+    "sLanguage=ENGLISH" + Environment.NewLine +
+    "uExterior Cell Buffer=64" + Environment.NewLine +
+    "uGridsToLoad=7" + Environment.NewLine +
+    "uInterior Cell Buffer=32" + Environment.NewLine +
+    "bUseThreadedTempEffects=1" + Environment.NewLine +
+    "bUseThreadedParticleSystem=1" + Environment.NewLine +
+    "bMultiThreadMovement=1" + Environment.NewLine +
+    "bUseThreadedMorpher=1" + Environment.NewLine +
+    "uStaticNeverFade=1" + Environment.NewLine +
+    "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
+    "bForceFullLOD=1 " + Environment.NewLine +
+    "uGridDistantTreeRange=200" + Environment.NewLine +
+    "uGridDistantGrassRange=200" + Environment.NewLine +
+    "uGridDistantCount=210" + Environment.NewLine +
+    "fFlickeringLightDistance=10500.0000" + Environment.NewLine +
+    "[Display]" + Environment.NewLine +
+    "fShadowLODMaxStartFade=1000.0" + Environment.NewLine +
+    "iPresentInterval=1" + Environment.NewLine +
+    "iAdapter=0" + Environment.NewLine +
+    "fSunShadowUpdateTime=0" + Environment.NewLine +
+    "fSunUpdateThreshold=2.0" + Environment.NewLine +
+    "fShadowBiasScale=1.0" + Environment.NewLine +
+    "fSpecularLODMaxStartFade=3000.0000" + Environment.NewLine +
+    "fLightLODMaxStartFade=16500.0000" + Environment.NewLine +
+    "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
+    "bPerPixelLighting=1" + Environment.NewLine +
+    "bAllowScreenshot=1" + Environment.NewLine +
+    "bSimpleLighting=0" + Environment.NewLine +
+    "bDecalsOnSkinnedGeometry=1" + Environment.NewLine +
+    "fNearDistance=20.0000" + Environment.NewLine +
+    "[Audio]" + Environment.NewLine +
+    "fMusicDuckingSeconds=6.0" + Environment.NewLine +
+    "fMusicUnDuckingSeconds=8.0" + Environment.NewLine +
+    "fMenuModeFadeOutTime=3.0" + Environment.NewLine +
+    "fMenuModeFadeInTime=1.0" + Environment.NewLine +
+    "uMaxSizeForCachedSound=4096" + Environment.NewLine +
+    "[Actor]" + Environment.NewLine +
+    "fVisibleNavmeshMoveDist=12288.0000" + Environment.NewLine +
+    "[Grass]" + Environment.NewLine +
+    "bAllowCreateGrass=1" + Environment.NewLine +
+    "bAllowLoadGrass=0" + Environment.NewLine +
+    "bDrawShaderGrass=1" + Environment.NewLine +
+    "iGrassCellRadius=3" + Environment.NewLine +
+    "iMinGrassSize=20" + Environment.NewLine +
+    "iMaxGrassTypesPerTexure=9" + Environment.NewLine +
+    "[GeneralWarnings]" + Environment.NewLine +
+    "SGeneralMasterMismatchWarning=One Or more plugins could Not find the correct versions of the master files they depend on. Errors may occur during load Or game play. Check the ""Warnings.txt"" file For more information." + Environment.NewLine +
+    "[Archive]" + Environment.NewLine +
+    "sResourceArchiveList=Skyrim - Misc.bsa, Skyrim - Shaders.bsa, Skyrim - Textures.bsa, Skyrim - Interface.bsa, Skyrim - Animations.bsa, Skyrim - Meshes.bsa, Skyrim - Sounds.bsa" + Environment.NewLine +
+    "sResourceArchiveList2=Skyrim - Voices.bsa, Skyrim - VoicesExtra.bsa" + Environment.NewLine +
+    "[Combat]" + Environment.NewLine +
+    "fMagnetismStrafeHeadingMult=0.0" + Environment.NewLine +
+    "fMagnetismLookingMult=0.0" + Environment.NewLine +
+    "[Papyrus]" + Environment.NewLine +
+    "fUpdateBudgetMS=1.2" + Environment.NewLine +
+    "fExtraTaskletBudgetMS=1.2" + Environment.NewLine +
+    "fPostLoadUpdateTimeMS=500.0" + Environment.NewLine +
+    "iMinMemoryPageSize=128" + Environment.NewLine +
+    "iMaxMemoryPageSize=512" + Environment.NewLine +
+    "iMaxAllocatedMemoryBytes=76800" + Environment.NewLine +
+    "bEnableLogging=0" + Environment.NewLine +
+    "bEnableTrace=0" + Environment.NewLine +
+    "bLoadDebugInformation=0" + Environment.NewLine +
+    "bEnableProfiling=0" + Environment.NewLine +
+    "[Water]" + Environment.NewLine +
+    "bReflectLODObjects=1" + Environment.NewLine +
+    "bReflectLODLand=1" + Environment.NewLine +
+    "bReflectSky=1" + Environment.NewLine +
+    "bReflectLODTrees=1" + Environment.NewLine +
+    "bReflectExplosions=1" + Environment.NewLine +
+    "[Trees]" + Environment.NewLine +
+    "bForceFullDetail=0" + Environment.NewLine +
+    "bEnableTreeAnimations=1" + Environment.NewLine +
+    "[Decals]" + Environment.NewLine +
+    "bDecalMultithreaded=1" + Environment.NewLine +
+    "[Cart]" + Environment.NewLine +
+    "fWheelAngDamp=0.1100" + Environment.NewLine +
+    "fMass=240.0000" + Environment.NewLine +
+    "fFriction=100.0000" + Environment.NewLine +
+    "fGravMult=7.0000" + Environment.NewLine +
+    "[Camera]" + Environment.NewLine +
+    "fActorFadeOutLimit=-100" + Environment.NewLine +
+    "fOverShoulderPosY=0.0000" + Environment.NewLine +
+    "fOverShoulderPosZ=7.5000" + Environment.NewLine +
+    "fOverShoulderPosX=0.0000" + Environment.NewLine +
+    "fOverShoulderCombatAddY=0.0000" + Environment.NewLine +
+    "fOverShoulderCombatPosZ=7.5000" + Environment.NewLine +
+    "fOverShoulderCombatPosX=0.0000" + Environment.NewLine +
+    "fOverShoulderHorseAddY=0.0000" + Environment.NewLine +
+    "fOverShoulderHorsePosZ=0.0000" + Environment.NewLine +
+    "fOverShoulderHorsePosX=0.0000" + Environment.NewLine +
+    "fMouseWheelZoomIncrement=0.050 " + Environment.NewLine +
+    "fVanityModeMaxDist=1000.0000" + Environment.NewLine +
+    "fVanityModeMinDist=155.0000" + Environment.NewLine +
+    "fMinCurrentZoom=0.001" + Environment.NewLine +
+    "[BackgroundLoad]" + Environment.NewLine +
+    "bBackgroundLoadLipFiles=1" + Environment.NewLine +
+    "bLoadBackgroundFaceGen=1" + Environment.NewLine +
+    "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
+    "bBackgroundCellLoads=1" + Environment.NewLine +
+    "bLoadHelmetsInBackground=1" + Environment.NewLine +
+    "bUseMultiThreadedTrees=1" + Environment.NewLine +
+    "bUseBackgroundFileLoader=1" + Environment.NewLine +
+    "[Animation]" + Environment.NewLine +
+    "bMultiThreadBoneUpdate=1")
+    afile.Close()
+    Dim fPathGr = "C: \Users\" + Environment.UserName + "\Documents\My Games\Skyrim\SkyrimPrefs.ini"
+    Dim afileGr As New IO.StreamWriter(fPathGr, False)
+    afileGr.WriteLine("[General]" + Environment.NewLine +
+    "fBrightLightColorB=1.0000" + Environment.NewLine +
+    "fBrightLightColorG=1.0000" + Environment.NewLine +
+    "fBrightLightColorR=1.0000" + Environment.NewLine +
+    "iStoryManagerLoggingEvent=-1" + Environment.NewLine +
+    "bEnableStoryManagerLogging=0" + Environment.NewLine +
+    "bMultiThreadMovement=1" + Environment.NewLine +
+    "bUseThreadedParticleSystem=1" + Environment.NewLine +
+    "bUseThreadedBlood=1" + Environment.NewLine +
+    "bUseThreadedMorpher=1" + Environment.NewLine +
+    "bUseThreadedTempEffects=1" + Environment.NewLine +
+    "bUseThreadedTextures=1" + Environment.NewLine +
+    "bUseThreadedMeshes=1" + Environment.NewLine +
+    "bUseThreadedLOD=1" + Environment.NewLine +
+    "bUseThreadedAI=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Imagespace]" + Environment.NewLine +
+    "bDoDepthOfField=1" + Environment.NewLine +
+    "iRadialBlurLevel=3" + Environment.NewLine +
+    "bDoRadialBlur=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Display]" + Environment.NewLine +
+    "iBlurDeferredShadowMask=1" + Environment.NewLine +
+    "fInteriorShadowDistance=4000.0000" + Environment.NewLine +
+    "fShadowDistance=8000.0000" + Environment.NewLine +
+    "iShadowMapResolutionSecondary=4096" + Environment.NewLine +
+    "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
+    "iMaxAnisotropy=16" + Environment.NewLine +
+    "fLeafAnimDampenDistEnd=6000.0000" + Environment.NewLine +
+    "fLeafAnimDampenDistStart=4600.0000" + Environment.NewLine +
+    "fTreesMidLODSwitchDist=10000000.0000" + Environment.NewLine +
+    "fGamma=1.0000" + Environment.NewLine +
+    "fDecalLOD2=1500.0000" + Environment.NewLine +
+    "fDecalLOD1=1000.0000" + Environment.NewLine +
+    "fSpecularLODStartFade=3000.0000" + Environment.NewLine +
+    "fShadowLODStartFade=2000.0000" + Environment.NewLine +
+    "fLightLODStartFade=16000.0000" + Environment.NewLine +
+    "bUse Shaders=1" + Environment.NewLine +
+    "bAllow30HairShader=1" + Environment.NewLine +
+    "bUseRefractionShader=1" + Environment.NewLine +
+    "iTexMipMap=2048" + Environment.NewLine +
+    "iUseTexHiRes=1" + Environment.NewLine +
+    "iNormalMapQuality=4096" + Environment.NewLine +
+    "iTexNormalMapMinimum=2048" + Environment.NewLine +
+    "iTexMipMapResolution=4096" + Environment.NewLine +
+    "iTexMipMapQuality=4096" + Environment.NewLine +
+    "iMipMapResolution=4096" + Environment.NewLine +
+    "iMipMapSize=4096" + Environment.NewLine +
+    "bFaceMipMaps=1" + Environment.NewLine +
+    "bFaceGenTexturing=1" + Environment.NewLine +
+    "bFaceGenTexturingQuality=4096" + Environment.NewLine +
+    "bHighQualityTexMipMaps=1" + Environment.NewLine +
+    "bDynamicWindowReflections=1" + Environment.NewLine +
+    "iTexMipMapMinimum=4" + Environment.NewLine +
+    "iTexMipMapSkip=0" + Environment.NewLine +
+    "iWaterMultiSamples=0" + Environment.NewLine +
+    "iMultiSample=0" + Environment.NewLine +
+    "iShadowMode=4" + Environment.NewLine +
+    "bTreesReceiveShadows=1" + Environment.NewLine +
+    "bDrawLandShadows=1" + Environment.NewLine +
+    "bDrawShadows=1" + Environment.NewLine +
+    "bFull Screen=1" + Environment.NewLine +
+    "iSize H=1080" + Environment.NewLine +
+    "iSize W=1920" + Environment.NewLine +
+    "fMeshLODFadePercentDefault=1.2000" + Environment.NewLine +
+    "fMeshLODFadeBoundDefault=256.0000" + Environment.NewLine +
+    "fMeshLODLevel2FadeTreeDistance=75000.0000" + Environment.NewLine +
+    "fMeshLODLevel1FadeTreeDistance=100000.0000" + Environment.NewLine +
+    "fMeshLODLevel2FadeDist=10000000.0000" + Environment.NewLine +
+    "fMeshLODLevel1FadeDist=10000000.0000" + Environment.NewLine +
+    "iScreenShotIndex=28" + Environment.NewLine +
+    "bShadowMaskZPrepass=0" + Environment.NewLine +
+    "bMainZPrepass=0" + Environment.NewLine +
+    "iMaxSkinDecalsPerFrame=25" + Environment.NewLine +
+    "iMaxDecalsPerFrame=100" + Environment.NewLine +
+    "bFloatPointRenderTarget=1" + Environment.NewLine +
+    "bFXAAEnabled=0" + Environment.NewLine +
+    "iShadowMapResolutionInt=8192" + Environment.NewLine +
+    "iShadowMapResolution=4096" + Environment.NewLine +
+    "fShadowBiasScale=0.1500" + Environment.NewLine +
+    "iShadowMaskQuarter=4" + Environment.NewLine +
+    "iAdapter=0" + Environment.NewLine +
+    "iPresentInterval=1" + Environment.NewLine +
+    "iShadowFilter=4" + Environment.NewLine +
+    "bShadowsOnGrass=1" + Environment.NewLine +
+    "bTransparencyMultisampling=0" + Environment.NewLine +
+    "bDeferredShadows=1" + Environment.NewLine +
+    "iActorShadowCountInt=12" + Environment.NewLine +
+    "iActorShadowCountExt=20" + Environment.NewLine +
+    "iActorSelfShadow=1" + Environment.NewLine +
+    "iActorSelfShadowResolution=8192" + Environment.NewLine +
+    "bEquippedTorchesCastShadows=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Grass]" + Environment.NewLine +
+    "b30GrassVS=1" + Environment.NewLine +
+    "fGrassStartFadeDistance=50000.0000" + Environment.NewLine +
+    "fGrassMaxStartFadeDistance=50000.0000" + Environment.NewLine +
+    "fGrassMinStartFadeDistance=0.0000" + Environment.NewLine +
+    "bDrawShaderGrass=1" + Environment.NewLine +
+    "bGrassPointLighting=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[MAIN]" + Environment.NewLine +
+    "bGamepadEnable=0" + Environment.NewLine +
+    "bCrosshairEnabled=1" + Environment.NewLine +
+    "fHUDOpacity=1.0000" + Environment.NewLine +
+    "bSaveOnPause=0" + Environment.NewLine +
+    "bSaveOnTravel=0" + Environment.NewLine +
+    "bSaveOnWait=0" + Environment.NewLine +
+    "bSaveOnRest=0" + Environment.NewLine +
+    "fSkyCellRefFadeDistance=500000.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[GamePlay]" + Environment.NewLine +
+    "bShowFloatingQuestMarkers=1" + Environment.NewLine +
+    "bShowQuestMarkers=1" + Environment.NewLine +
+    "iDifficulty=2" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Interface]" + Environment.NewLine +
+    "sPosePlayerRaceSexMenu=" + Environment.NewLine +
+    "bDialogueSubtitles=1" + Environment.NewLine +
+    "bGeneralSubtitles=1" + Environment.NewLine +
+    "fMouseCursorSpeed=1.0000" + Environment.NewLine +
+    "bShowCompass=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Controls]" + Environment.NewLine +
+    "fGamepadHeadingSensitivity=1.0000" + Environment.NewLine +
+    "fMouseHeadingSensitivity=0.0125" + Environment.NewLine +
+    "bAlwaysRunByDefault=1" + Environment.NewLine +
+    "bInvertYValues=0" + Environment.NewLine +
+    "bGamePadRumble=1" + Environment.NewLine +
+    "bMouseAcceleration=1" + Environment.NewLine +
+    "bUseKinect=0" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Particles]" + Environment.NewLine +
+    "iMaxDesired=750" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[SaveGame]" + Environment.NewLine +
+    "fAutosaveEveryXMins=60.0000" + Environment.NewLine +
+    "bDisableAutoSave=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[AudioMenu]" + Environment.NewLine +
+    "fAudioMasterVolume=0.8000" + Environment.NewLine +
+    "fVal7=1.0000" + Environment.NewLine +
+    "uID7=0" + Environment.NewLine +
+    "fVal6=1.0000" + Environment.NewLine +
+    "uID6=0" + Environment.NewLine +
+    "fVal5=1.0000" + Environment.NewLine +
+    "uID5=0" + Environment.NewLine +
+    "fVal4=1.0000" + Environment.NewLine +
+    "uID4=2298633443" + Environment.NewLine +
+    "fVal3=1.0000" + Environment.NewLine +
+    "uID3=94881" + Environment.NewLine +
+    "fVal2=0.4000" + Environment.NewLine +
+    "uID2=466532" + Environment.NewLine +
+    "fVal1=1.0000" + Environment.NewLine +
+    "uID1=554685" + Environment.NewLine +
+    "fVal0=0.8000" + Environment.NewLine +
+    "uID0=1007612" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Clouds]" + Environment.NewLine +
+    "fCloudLevel2Distance=262144.0000" + Environment.NewLine +
+    "fCloudLevel1Distance=32768.0000" + Environment.NewLine +
+    "fCloudLevel0Distance=16384.0000" + Environment.NewLine +
+    "fCloudNearFadeDistance=9000.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[TerrainManager]" + Environment.NewLine +
+    "fTreeLoadDistance=75000.0000" + Environment.NewLine +
+    "fBlockMaximumDistance=500000.0000" + Environment.NewLine +
+    "fBlockLevel1Distance=140000.0000" + Environment.NewLine +
+    "fBlockLevel0Distance=75000.0000" + Environment.NewLine +
+    "fSplitDistanceMult=4.0000" + Environment.NewLine +
+    "bShowLODInEditor=0" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[NavMesh]" + Environment.NewLine +
+    "fObstacleAlpha=0.5000" + Environment.NewLine +
+    "fCoverSideHighAlpha=0.8000" + Environment.NewLine +
+    "fCoverSideLowAlpha=0.6500" + Environment.NewLine +
+    "fEdgeFullAlpha=1.0000" + Environment.NewLine +
+    "fEdgeHighAlpha=0.7500" + Environment.NewLine +
+    "fEdgeLowAlpha=0.5000" + Environment.NewLine +
+    "fTriangleFullAlpha=0.7000" + Environment.NewLine +
+    "fTriangleHighAlpha=0.3500" + Environment.NewLine +
+    "fTriangleLowAlpha=0.2000" + Environment.NewLine +
+    "fLedgeBoxHalfHeight=25.0000" + Environment.NewLine +
+    "fEdgeDistFromVert=10.0000" + Environment.NewLine +
+    "fEdgeThickness=10.0000" + Environment.NewLine +
+    "fPointSize=2.5000" + Environment.NewLine +
+    "bUseThreadedMeshes=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Trees]" + Environment.NewLine +
+    "bRenderSkinnedTrees=1" + Environment.NewLine +
+    "uiMaxSkinnedTreesToRender=24" + Environment.NewLine +
+    "bUseMultiThreadedTrees=1" + Environment.NewLine +
+    "bEnableTreeAnimations=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Decals]" + Environment.NewLine +
+    "uMaxDecals=1000" + Environment.NewLine +
+    "bDecals=1" + Environment.NewLine +
+    "bSkinnedDecals=1" + Environment.NewLine +
+    "uMaxSkinDecals=100" + Environment.NewLine +
+    "uMaxSkinDecalsPerActor=60" + Environment.NewLine +
+    "bDecalMultithreaded=1 " + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[LOD]" + Environment.NewLine +
+    "fLODFadeOutMultObjects=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultItems=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultActors=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultSkyCell=1.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Launcher]" + Environment.NewLine +
+    "bEnableFileSelection=1" + Environment.NewLine +
+    "bShowAllResolutions=1" + Environment.NewLine +
+    "uLastAspectRatio=3" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[BlurShaderHDR]" + Environment.NewLine +
+    "bDoHighDynamicRange=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[BlurShader]" + Environment.NewLine +
+    "bUseBlurShader=0" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Water]" + Environment.NewLine +
+    "iWaterReflectHeight=2048" + Environment.NewLine +
+    "iWaterReflectWidth=2048" + Environment.NewLine +
+    "fWadingWaterTextureRes=1024" + Environment.NewLine +
+    "fSurfaceTileSize=1024" + Environment.NewLine +
+    "bUseWaterDisplacements=1" + Environment.NewLine +
+    "bUseWaterRefractions=1" + Environment.NewLine +
+    "bUseWaterReflections=1" + Environment.NewLine +
+    "bUseWaterDepth=1" + Environment.NewLine +
+    "bUseWaterReflectionBlur=1" + Environment.NewLine +
+    "bReflectExplosions=1" + Environment.NewLine +
+    "iWaterBlurAmount=4" + Environment.NewLine +
+    "bUseWaterHiRes=1" + Environment.NewLine +
+    "bUseWaterShader=1" + Environment.NewLine +
+    "bUseWaterHDR=1" + Environment.NewLine +
+    "bUseWaterLOD=1" + Environment.NewLine +
+    "bReflectLODObjects=1" + Environment.NewLine +
+    "bReflectLODLand=1" + Environment.NewLine +
+    "bReflectSky=1" + Environment.NewLine +
+    "bReflectLODTrees=1" + Environment.NewLine +
+    "bAutoWaterSilhouetteReflections=0" + Environment.NewLine +
+    "bForceHighDetailReflections=1" + Environment.NewLine +
+    "fBlockLoadDistanceLow=50000.0000" + Environment.NewLine +
+    "fBlockLoadDistance=125000.0000" + Environment.NewLine +
+    "fHighBlockLoadDistanceLow=20000.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[BackgroundLoad]" + Environment.NewLine +
+    "bUseBackgroundFileLoader=1" + Environment.NewLine +
+    "bLoadBackgroundFaceGen=1" + Environment.NewLine +
+    "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
+    "bBackgroundCellLoads=1" + Environment.NewLine +
+    "bBackgroundLoadLipFiles=1" + Environment.NewLine +
+    "bLoadHelmetsInBackground=1" + Environment.NewLine +
+    "bUseMultiThreadedTrees=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Havok]" + Environment.NewLine +
+    "fInAirFallingCharGravityMult=1.35")
+    afileGr.Close()
+    
+End Sub
+
+'----------------------------------------ULTRA------------------------------
+Private Sub Changing_settings_ultra()
+    Dim imp As String = "You are about To change your graphics settings To Ultra. This can have a negative Or good effect On your game. This can cause all kind of glitches. Do IT On YOUR OWN RISK And BACKUP YOUR OLD SETTINGS!"
+    Select Case MsgBox(imp, MsgBoxStyle.YesNoCancel, "Skyrim - Settings:ultra")
+        Case MsgBoxResult.Yes
+            ultra_settings()
+        Case MsgBoxResult.Cancel
+        Case MsgBoxResult.No
+    End Select
+End Sub
+Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+    If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini") = FALSE Then
+        MsgBox("You need To run the game at least once", MsgBoxStyle.Critical, "ini: Not Found")
+    Else
+        Changing_settings_ultra()
+    End If
+End Sub
+Private Sub ultra_settings()
+    
+    Dim fPath = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\Skyrim.ini"
+    Dim afile As New IO.StreamWriter(fPath, False)
+    afile.WriteLine("[General]" + Environment.NewLine +
+    "sLanguage=ENGLISH" + Environment.NewLine +
+    "uExterior Cell Buffer=64" + Environment.NewLine +
+    "uGridsToLoad=7" + Environment.NewLine +
+    "uInterior Cell Buffer=32" + Environment.NewLine +
+    "bUseThreadedTempEffects=1" + Environment.NewLine +
+    "bUseThreadedParticleSystem=1" + Environment.NewLine +
+    "bMultiThreadMovement=1" + Environment.NewLine +
+    "bUseThreadedMorpher=1" + Environment.NewLine +
+    "iHWThread6=6" + Environment.NewLine +
+    "iHWThread5=6" + Environment.NewLine +
+    "iHWThread4=6" + Environment.NewLine +
+    "iNumHWThreads=8" + Environment.NewLine +
+    "uStaticNeverFade=1" + Environment.NewLine +
+    "bSelectivePurgeUnusedOnFastTravel=1" + Environment.NewLine +
+    "bForceFullLOD=1 " + Environment.NewLine +
+    "uGridDistantTreeRange=200" + Environment.NewLine +
+    "uGridDistantGrassRange=200" + Environment.NewLine +
+    "uGridDistantCount=210" + Environment.NewLine +
+    "fFlickeringLightDistance=10500.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Display]" + Environment.NewLine +
+    "fShadowLODMaxStartFade=1000.0" + Environment.NewLine +
+    "iPresentInterval=1" + Environment.NewLine +
+    "iAdapter=0" + Environment.NewLine +
+    "fSunShadowUpdateTime=0" + Environment.NewLine +
+    "fSunUpdateThreshold=2.0" + Environment.NewLine +
+    "fShadowBiasScale=1.0" + Environment.NewLine +
+    "fSpecularLODMaxStartFade=3000.0000" + Environment.NewLine +
+    "fLightLODMaxStartFade=16500.0000" + Environment.NewLine +
+    "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
+    "bPerPixelLighting=1" + Environment.NewLine +
+    "bAllowScreenshot=1" + Environment.NewLine +
+    "bSimpleLighting=0" + Environment.NewLine +
+    "bDecalsOnSkinnedGeometry=1" + Environment.NewLine +
+    "fNearDistance=20.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Audio]" + Environment.NewLine +
+    "fMusicDuckingSeconds=6.0" + Environment.NewLine +
+    "fMusicUnDuckingSeconds=8.0" + Environment.NewLine +
+    "fMenuModeFadeOutTime=3.0" + Environment.NewLine +
+    "fMenuModeFadeInTime=1.0" + Environment.NewLine +
+    "uMaxSizeForCachedSound=4096" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Actor]" + Environment.NewLine +
+    "fVisibleNavmeshMoveDist=12288.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Grass]" + Environment.NewLine +
+    "bAllowCreateGrass=1" + Environment.NewLine +
+    "bAllowLoadGrass=0" + Environment.NewLine +
+    "bDrawShaderGrass=1" + Environment.NewLine +
+    "iGrassCellRadius=3" + Environment.NewLine +
+    "iMinGrassSize=20" + Environment.NewLine +
+    "iMaxGrassTypesPerTexure=9" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[GeneralWarnings]" + Environment.NewLine +
+    "SGeneralMasterMismatchWarning=One Or more plugins could Not find the correct versions of the master files they depend on. Errors may occur during load Or game play. Check the ""Warnings.txt"" file For more information." + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Archive]" + Environment.NewLine +
+    "sResourceArchiveList=Skyrim - Misc.bsa, Skyrim - Shaders.bsa, Skyrim - Textures.bsa, Skyrim - Interface.bsa, Skyrim - Animations.bsa, Skyrim - Meshes.bsa, Skyrim - Sounds.bsa" + Environment.NewLine +
+    "sResourceArchiveList2=Skyrim - Voices.bsa, Skyrim - VoicesExtra.bsa" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Combat]" + Environment.NewLine +
+    "fMagnetismStrafeHeadingMult=0.0" + Environment.NewLine +
+    "fMagnetismLookingMult=0.0" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Papyrus]" + Environment.NewLine +
+    "fUpdateBudgetMS=1.2" + Environment.NewLine +
+    "fExtraTaskletBudgetMS=1.2" + Environment.NewLine +
+    "fPostLoadUpdateTimeMS=500.0" + Environment.NewLine +
+    "iMinMemoryPageSize=128" + Environment.NewLine +
+    "iMaxMemoryPageSize=512" + Environment.NewLine +
+    "iMaxAllocatedMemoryBytes=76800" + Environment.NewLine +
+    "bEnableLogging=0" + Environment.NewLine +
+    "bEnableTrace=0" + Environment.NewLine +
+    "bLoadDebugInformation=0" + Environment.NewLine +
+    "bEnableProfiling=0" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Water]" + Environment.NewLine +
+    "bReflectLODObjects=1" + Environment.NewLine +
+    "bReflectLODLand=1" + Environment.NewLine +
+    "bReflectSky=1" + Environment.NewLine +
+    "bReflectLODTrees=1" + Environment.NewLine +
+    "bReflectExplosions=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Trees]" + Environment.NewLine +
+    "bForceFullDetail=0" + Environment.NewLine +
+    "bEnableTreeAnimations=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Decals]" + Environment.NewLine +
+    "bDecalMultithreaded=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Cart]" + Environment.NewLine +
+    "fWheelAngDamp=0.1100" + Environment.NewLine +
+    "fMass=240.0000" + Environment.NewLine +
+    "fFriction=100.0000" + Environment.NewLine +
+    "fGravMult=7.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Camera]" + Environment.NewLine +
+    "fActorFadeOutLimit=-100" + Environment.NewLine +
+    "fOverShoulderPosY=0.0000" + Environment.NewLine +
+    "fOverShoulderPosZ=7.5000" + Environment.NewLine +
+    "fOverShoulderPosX=0.0000" + Environment.NewLine +
+    "fOverShoulderCombatAddY=0.0000" + Environment.NewLine +
+    "fOverShoulderCombatPosZ=7.5000" + Environment.NewLine +
+    "fOverShoulderCombatPosX=0.0000" + Environment.NewLine +
+    "fOverShoulderHorseAddY=0.0000" + Environment.NewLine +
+    "fOverShoulderHorsePosZ=0.0000" + Environment.NewLine +
+    "fOverShoulderHorsePosX=0.0000" + Environment.NewLine +
+    "fMouseWheelZoomIncrement=0.050 " + Environment.NewLine +
+    "fVanityModeMaxDist=1000.0000" + Environment.NewLine +
+    "fVanityModeMinDist=155.0000" + Environment.NewLine +
+    "fMinCurrentZoom=0.001" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[BackgroundLoad]" + Environment.NewLine +
+    "bBackgroundLoadLipFiles=1" + Environment.NewLine +
+    "bLoadBackgroundFaceGen=1" + Environment.NewLine +
+    "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
+    "bBackgroundCellLoads=1" + Environment.NewLine +
+    "bLoadHelmetsInBackground=1" + Environment.NewLine +
+    "bUseMultiThreadedTrees=1" + Environment.NewLine +
+    "bUseBackgroundFileLoader=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Animation]" + Environment.NewLine +
+    "bMultiThreadBoneUpdate=1")
+    afile.Close()
+    Dim fPathGr = "C:\Users\" + Environment.UserName + "\Documents\My Games\Skyrim\SkyrimPrefs.ini"
+    Dim afileGr As New IO.StreamWriter(fPathGr, False)
+    afileGr.WriteLine("[General]" + Environment.NewLine +
+    "fBrightLightColorB=1.0000" + Environment.NewLine +
+    "fBrightLightColorG=1.0000" + Environment.NewLine +
+    "fBrightLightColorR=1.0000" + Environment.NewLine +
+    "iStoryManagerLoggingEvent=-1" + Environment.NewLine +
+    "bEnableStoryManagerLogging=0" + Environment.NewLine +
+    "bMultiThreadMovement=1" + Environment.NewLine +
+    "bUseThreadedParticleSystem=1" + Environment.NewLine +
+    "bUseThreadedBlood=1" + Environment.NewLine +
+    "bUseThreadedMorpher=1" + Environment.NewLine +
+    "bUseThreadedTempEffects=1" + Environment.NewLine +
+    "bUseThreadedTextures=1" + Environment.NewLine +
+    "bUseThreadedMeshes=1" + Environment.NewLine +
+    "bUseThreadedLOD=1" + Environment.NewLine +
+    "bUseThreadedAI=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Imagespace]" + Environment.NewLine +
+    "bDoDepthOfField=1" + Environment.NewLine +
+    "iRadialBlurLevel=3" + Environment.NewLine +
+    "bDoRadialBlur=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Display]" + Environment.NewLine +
+    "iBlurDeferredShadowMask=1" + Environment.NewLine +
+    "fInteriorShadowDistance=4000.0000" + Environment.NewLine +
+    "fShadowDistance=8000.0000" + Environment.NewLine +
+    "iShadowMapResolutionSecondary=4096" + Environment.NewLine +
+    "iShadowMapResolutionPrimary=4096" + Environment.NewLine +
+    "iMaxAnisotropy=16" + Environment.NewLine +
+    "fLeafAnimDampenDistEnd=6000.0000" + Environment.NewLine +
+    "fLeafAnimDampenDistStart=4600.0000" + Environment.NewLine +
+    "fTreesMidLODSwitchDist=10000000.0000" + Environment.NewLine +
+    "fGamma=1.0000" + Environment.NewLine +
+    "fDecalLOD2=1500.0000" + Environment.NewLine +
+    "fDecalLOD1=1000.0000" + Environment.NewLine +
+    "fSpecularLODStartFade=3000.0000" + Environment.NewLine +
+    "fShadowLODStartFade=2000.0000" + Environment.NewLine +
+    "fLightLODStartFade=16000.0000" + Environment.NewLine +
+    "bUse Shaders=1" + Environment.NewLine +
+    "bAllow30HairShader=1" + Environment.NewLine +
+    "bUseRefractionShader=1" + Environment.NewLine +
+    "iTexMipMap=2048" + Environment.NewLine +
+    "iUseTexHiRes=1" + Environment.NewLine +
+    "iNormalMapQuality=4096" + Environment.NewLine +
+    "iTexNormalMapMinimum=2048" + Environment.NewLine +
+    "iTexMipMapResolution=4096" + Environment.NewLine +
+    "iTexMipMapQuality=4096" + Environment.NewLine +
+    "iMipMapResolution=4096" + Environment.NewLine +
+    "iMipMapSize=4096" + Environment.NewLine +
+    "bFaceMipMaps=1" + Environment.NewLine +
+    "bFaceGenTexturing=1" + Environment.NewLine +
+    "bFaceGenTexturingQuality=4096" + Environment.NewLine +
+    "bHighQualityTexMipMaps=1" + Environment.NewLine +
+    "bDynamicWindowReflections=1" + Environment.NewLine +
+    "iTexMipMapMinimum=4" + Environment.NewLine +
+    "iTexMipMapSkip=0" + Environment.NewLine +
+    "iWaterMultiSamples=0" + Environment.NewLine +
+    "iMultiSample=0" + Environment.NewLine +
+    "iShadowMode=4" + Environment.NewLine +
+    "bTreesReceiveShadows=1" + Environment.NewLine +
+    "bDrawLandShadows=1" + Environment.NewLine +
+    "bDrawShadows=1" + Environment.NewLine +
+    "bFull Screen=1" + Environment.NewLine +
+    "iSize H=1080" + Environment.NewLine +
+    "iSize W=1920" + Environment.NewLine +
+    "fMeshLODFadePercentDefault=1.2000" + Environment.NewLine +
+    "fMeshLODFadeBoundDefault=256.0000" + Environment.NewLine +
+    "fMeshLODLevel2FadeTreeDistance=75000.0000" + Environment.NewLine +
+    "fMeshLODLevel1FadeTreeDistance=100000.0000" + Environment.NewLine +
+    "fMeshLODLevel2FadeDist=10000000.0000" + Environment.NewLine +
+    "fMeshLODLevel1FadeDist=10000000.0000" + Environment.NewLine +
+    "iScreenShotIndex=28" + Environment.NewLine +
+    "bShadowMaskZPrepass=0" + Environment.NewLine +
+    "bMainZPrepass=0" + Environment.NewLine +
+    "iMaxSkinDecalsPerFrame=25" + Environment.NewLine +
+    "iMaxDecalsPerFrame=100" + Environment.NewLine +
+    "bFloatPointRenderTarget=1" + Environment.NewLine +
+    "bFXAAEnabled=0" + Environment.NewLine +
+    "iShadowMapResolutionInt=8192" + Environment.NewLine +
+    "iShadowMapResolution=4096" + Environment.NewLine +
+    "fShadowBiasScale=0.1500" + Environment.NewLine +
+    "iShadowMaskQuarter=4" + Environment.NewLine +
+    "iAdapter=0" + Environment.NewLine +
+    "iPresentInterval=1" + Environment.NewLine +
+    "iShadowFilter=4" + Environment.NewLine +
+    "bShadowsOnGrass=1" + Environment.NewLine +
+    "bTransparencyMultisampling=0" + Environment.NewLine +
+    "bDeferredShadows=1" + Environment.NewLine +
+    "iActorShadowCountInt=12" + Environment.NewLine +
+    "iActorShadowCountExt=20" + Environment.NewLine +
+    "iActorSelfShadow=1" + Environment.NewLine +
+    "iActorSelfShadowResolution=8192" + Environment.NewLine +
+    "bEquippedTorchesCastShadows=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Grass]" + Environment.NewLine +
+    "b30GrassVS=1" + Environment.NewLine +
+    "fGrassStartFadeDistance=50000.0000" + Environment.NewLine +
+    "fGrassMaxStartFadeDistance=50000.0000" + Environment.NewLine +
+    "fGrassMinStartFadeDistance=0.0000" + Environment.NewLine +
+    "bDrawShaderGrass=1" + Environment.NewLine +
+    "bGrassPointLighting=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[MAIN]" + Environment.NewLine +
+    "bGamepadEnable=0" + Environment.NewLine +
+    "bCrosshairEnabled=1" + Environment.NewLine +
+    "fHUDOpacity=1.0000" + Environment.NewLine +
+    "bSaveOnPause=0" + Environment.NewLine +
+    "bSaveOnTravel=0" + Environment.NewLine +
+    "bSaveOnWait=0" + Environment.NewLine +
+    "bSaveOnRest=0" + Environment.NewLine +
+    "fSkyCellRefFadeDistance=500000.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[GamePlay]" + Environment.NewLine +
+    "bShowFloatingQuestMarkers=1" + Environment.NewLine +
+    "bShowQuestMarkers=1" + Environment.NewLine +
+    "iDifficulty=2" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Interface]" + Environment.NewLine +
+    "sPosePlayerRaceSexMenu=" + Environment.NewLine +
+    "bDialogueSubtitles=1" + Environment.NewLine +
+    "bGeneralSubtitles=1" + Environment.NewLine +
+    "fMouseCursorSpeed=1.0000" + Environment.NewLine +
+    "bShowCompass=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Controls]" + Environment.NewLine +
+    "fGamepadHeadingSensitivity=1.0000" + Environment.NewLine +
+    "fMouseHeadingSensitivity=0.0125" + Environment.NewLine +
+    "bAlwaysRunByDefault=1" + Environment.NewLine +
+    "bInvertYValues=0" + Environment.NewLine +
+    "bGamePadRumble=1" + Environment.NewLine +
+    "bMouseAcceleration=1" + Environment.NewLine +
+    "bUseKinect=0" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Particles]" + Environment.NewLine +
+    "iMaxDesired=750" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[SaveGame]" + Environment.NewLine +
+    "fAutosaveEveryXMins=60.0000" + Environment.NewLine +
+    "bDisableAutoSave=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[AudioMenu]" + Environment.NewLine +
+    "fAudioMasterVolume=0.8000" + Environment.NewLine +
+    "fVal7=1.0000" + Environment.NewLine +
+    "uID7=0" + Environment.NewLine +
+    "fVal6=1.0000" + Environment.NewLine +
+    "uID6=0" + Environment.NewLine +
+    "fVal5=1.0000" + Environment.NewLine +
+    "uID5=0" + Environment.NewLine +
+    "fVal4=1.0000" + Environment.NewLine +
+    "uID4=2298633443" + Environment.NewLine +
+    "fVal3=1.0000" + Environment.NewLine +
+    "uID3=94881" + Environment.NewLine +
+    "fVal2=0.4000" + Environment.NewLine +
+    "uID2=466532" + Environment.NewLine +
+    "fVal1=1.0000" + Environment.NewLine +
+    "uID1=554685" + Environment.NewLine +
+    "fVal0=0.8000" + Environment.NewLine +
+    "uID0=1007612" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Clouds]" + Environment.NewLine +
+    "fCloudLevel2Distance=262144.0000" + Environment.NewLine +
+    "fCloudLevel1Distance=32768.0000" + Environment.NewLine +
+    "fCloudLevel0Distance=16384.0000" + Environment.NewLine +
+    "fCloudNearFadeDistance=9000.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[TerrainManager]" + Environment.NewLine +
+    "fTreeLoadDistance=75000.0000" + Environment.NewLine +
+    "fBlockMaximumDistance=500000.0000" + Environment.NewLine +
+    "fBlockLevel1Distance=140000.0000" + Environment.NewLine +
+    "fBlockLevel0Distance=75000.0000" + Environment.NewLine +
+    "fSplitDistanceMult=4.0000" + Environment.NewLine +
+    "bShowLODInEditor=0" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[NavMesh]" + Environment.NewLine +
+    "fObstacleAlpha=0.5000" + Environment.NewLine +
+    "fCoverSideHighAlpha=0.8000" + Environment.NewLine +
+    "fCoverSideLowAlpha=0.6500" + Environment.NewLine +
+    "fEdgeFullAlpha=1.0000" + Environment.NewLine +
+    "fEdgeHighAlpha=0.7500" + Environment.NewLine +
+    "fEdgeLowAlpha=0.5000" + Environment.NewLine +
+    "fTriangleFullAlpha=0.7000" + Environment.NewLine +
+    "fTriangleHighAlpha=0.3500" + Environment.NewLine +
+    "fTriangleLowAlpha=0.2000" + Environment.NewLine +
+    "fLedgeBoxHalfHeight=25.0000" + Environment.NewLine +
+    "fEdgeDistFromVert=10.0000" + Environment.NewLine +
+    "fEdgeThickness=10.0000" + Environment.NewLine +
+    "fPointSize=2.5000" + Environment.NewLine +
+    "bUseThreadedMeshes=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Trees]" + Environment.NewLine +
+    "bRenderSkinnedTrees=1" + Environment.NewLine +
+    "uiMaxSkinnedTreesToRender=24" + Environment.NewLine +
+    "bUseMultiThreadedTrees=1" + Environment.NewLine +
+    "bEnableTreeAnimations=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Decals]" + Environment.NewLine +
+    "uMaxDecals=1000" + Environment.NewLine +
+    "bDecals=1" + Environment.NewLine +
+    "bSkinnedDecals=1" + Environment.NewLine +
+    "uMaxSkinDecals=100" + Environment.NewLine +
+    "uMaxSkinDecalsPerActor=60" + Environment.NewLine +
+    "bDecalMultithreaded=1 " + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[LOD]" + Environment.NewLine +
+    "fLODFadeOutMultObjects=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultItems=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultActors=15.0000" + Environment.NewLine +
+    "fLODFadeOutMultSkyCell=1.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Launcher]" + Environment.NewLine +
+    "bEnableFileSelection=1" + Environment.NewLine +
+    "bShowAllResolutions=1" + Environment.NewLine +
+    "uLastAspectRatio=3" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[BlurShaderHDR]" + Environment.NewLine +
+    "bDoHighDynamicRange=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[BlurShader]" + Environment.NewLine +
+    "bUseBlurShader=0" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Water]" + Environment.NewLine +
+    "iWaterReflectHeight=2048" + Environment.NewLine +
+    "iWaterReflectWidth=2048" + Environment.NewLine +
+    "fWadingWaterTextureRes=1024" + Environment.NewLine +
+    "fSurfaceTileSize=1024" + Environment.NewLine +
+    "bUseWaterDisplacements=1" + Environment.NewLine +
+    "bUseWaterRefractions=1" + Environment.NewLine +
+    "bUseWaterReflections=1" + Environment.NewLine +
+    "bUseWaterDepth=1" + Environment.NewLine +
+    "bUseWaterReflectionBlur=1" + Environment.NewLine +
+    "bReflectExplosions=1" + Environment.NewLine +
+    "iWaterBlurAmount=4" + Environment.NewLine +
+    "bUseWaterHiRes=1" + Environment.NewLine +
+    "bUseWaterShader=1" + Environment.NewLine +
+    "bUseWaterHDR=1" + Environment.NewLine +
+    "bUseWaterLOD=1" + Environment.NewLine +
+    "bReflectLODObjects=1" + Environment.NewLine +
+    "bReflectLODLand=1" + Environment.NewLine +
+    "bReflectSky=1" + Environment.NewLine +
+    "bReflectLODTrees=1" + Environment.NewLine +
+    "bAutoWaterSilhouetteReflections=0" + Environment.NewLine +
+    "bForceHighDetailReflections=1" + Environment.NewLine +
+    "fBlockLoadDistanceLow=50000.0000" + Environment.NewLine +
+    "fBlockLoadDistance=125000.0000" + Environment.NewLine +
+    "fHighBlockLoadDistanceLow=20000.0000" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[BackgroundLoad]" + Environment.NewLine +
+    "bUseBackgroundFileLoader=1" + Environment.NewLine +
+    "bLoadBackgroundFaceGen=1" + Environment.NewLine +
+    "bUseMultiThreadedFaceGen=1" + Environment.NewLine +
+    "bBackgroundCellLoads=1" + Environment.NewLine +
+    "bBackgroundLoadLipFiles=1" + Environment.NewLine +
+    "bLoadHelmetsInBackground=1" + Environment.NewLine +
+    "bUseMultiThreadedTrees=1" + Environment.NewLine +
+    "" + Environment.NewLine +
+    "[Havok]" + Environment.NewLine +
+    "fInAirFallingCharGravityMult=1.35")
+    afileGr.Close()
+    
+End Sub
+
+Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+    
+    If System.IO.File.Exists("C:\Users\" & System.Environment.UserName & "\Documents\My Games\Skyrim\SkyrimPrefs.ini") = FALSE Then
+        MsgBox("You need To run the game at least once", MsgBoxStyle.Critical, "ini: Not Found")
+    Else
+        Changing_settings_medium()
+    End If
+End Sub
+
+Private Sub Feedback_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles Feedback.LinkClicked
+    Process.Start("http://www.nexusmods.com/skyrim/mods/72381/?tab=5&&navtag=http%3A%2F%2Fwww.nexusmods.com%2Fskyrim%2Fajax%2Fcomments%2F%3Fmod_id%3D72381%26page%3D1%26sort%3DDESC%26pid%3D0%26thread_id%3D4770440&pUp=1")
+    
+End Sub
+
+Private Sub Button2_MouseHover(sender As Object, e As EventArgs) Handles Button5.MouseHover, Button4.MouseHover, Button3.MouseHover, Button2.MouseHover
+    
+End Sub
+
+Private Sub Button2_MouseLeave(sender As Object, e As EventArgs) Handles Button5.MouseLeave, Button4.MouseLeave, Button3.MouseLeave, Button2.MouseLeave
+    
+End Sub
+
+Private Sub Panel2_MouseHover(sender As Object, e As EventArgs) Handles Panel2.MouseHover
+    
+End Sub
+
+Private Sub Panel2_MouseLeave(sender As Object, e As EventArgs) Handles Panel2.MouseLeave
+    
+End Sub
+
+Private Sub PictureBox3_Click(sender As Object, e As EventArgs) Handles PictureBox3.Click
+    
+    Dim result As Integer = MessageBox.Show("Clean the loadorder list (It will come back when you start the game again.)", "Cleaning time", MessageBoxButtons.YesNoCancel)
+    If result = DialogResult.Cancel Then
+        
+    ElseIf result = DialogResult.No Then
+        
+    ElseIf result = DialogResult.Yes Then
+        If My.Settings.Game = "skyrim_2011" = TRUE Then
+            
+            My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim\plugins.txt", False).Dispose()
+        Else
+            
+            My.Computer.FileSystem.OpenTextFileWriter("C:\Users\" & System.Environment.UserName & "\AppData\Local\Skyrim Special Edition\plugins.txt", False).Dispose()
+            
+        End If
+    End If
+End Sub
+
+Private Sub LinkLabel1_LinkClicked_2(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
+    Dim ggversion As Integer = MessageBox.Show("Are you sure?", "reconfigure the settings", MessageBoxButtons.YesNoCancel)
+    If ggversion = DialogResult.Cancel Then
+        
+    ElseIf ggversion = DialogResult.No Then
+        
+    ElseIf ggversion = DialogResult.Yes Then
+        My.Settings.FirstTimeUsed = TRUE
+        My.Settings.Save()
+        My.Settings.Reload()
+        End
+    End If
+End Sub
+
+Private Sub settings_options_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+    
+End Sub
+
+Private Sub loadorderSe()
+    If ifbeenrunning = TRUE Then
+    Else
+        For x = 0 To linesse.GetUpperBound(0)
+            
+            ifbeenrunning = FALSE
+            lineArray.Add(linesse(x))
+            
+        Next
+        
+        'CREATE NEW CHECKBOX CONTROL ARRAY
+        Dim MyCheckboxes(x) As CheckBox
+        
+        'LOOP THROUGH THE LAYERS AND CREATE A CHECKBOX FOR EACH
+        Dim i As Integer
+        Dim Ypos As Integer
+        
+        For x = 2 To lineArray.Count - 1
+            
+            'if the number of layers is 5 our Layer array will be 0 to 4
+            
+            MyCheckboxes(i) = New CheckBox
+            Panel1.Controls.Add(MyCheckboxes(i))
+            'CYCLE THROUGH AND POPULATE CHECKBOXES
+            
+            MyCheckboxes(i).Location = New Point(10, Ypos)        ' X LOCATION NEVER CHANGES, Y POSITION DOWN BY 25
+            Ypos = Ypos + 25
+            MyCheckboxes(i).Visible = TRUE
+            MyCheckboxes(i).Name = "MyCheckboxes" & x
+            MyCheckboxes(i).Size = New Size(300, 20)
+            If InStr(lineArray.Item(x), "*") > 0 Then
+                MyCheckboxes(i).Checked = TRUE
+                lineArray.Item(x) = lineArray.Item(x).Remove(0, 1)
+                MyCheckboxes(i).BackColor = Color.Green
+                MyCheckboxes(i).Text = lineArray.Item(x)
+            Else
+                MyCheckboxes(i).Checked = FALSE
+                
+                MyCheckboxes(i).BackColor = Color.Red
+                MyCheckboxes(i).Text = lineArray.Item(x)
+            End If
+            AddHandler MyCheckboxes(i).CheckedChanged, AddressOf Checkbox_onCheckedChanged
+        Next
+    End If
+    ifbeenrunning = TRUE
+End Sub
+Private Sub loadorder2011()
+    
+    If ifbeenrunning = TRUE Then
+    Else
+        For x = 0 To main_lines.GetUpperBound(0)
+            
+            ifbeenrunning = FALSE
+            If x > lines.GetUpperBound(0) = FALSE Then
+                lineArray.Add(lines(x))
+                u = u + 1
+            End If
+            
+            Main_lineArray.Add(main_lines(x))
+            
+        Next
+        
+        Dim MyCheckboxes(x) As CheckBox
+        
+        Dim i As Integer
+        Dim Ypos As Integer
+        
+        For x = 1 To Main_lineArray.Count - 1
+            
+            MyCheckboxes(i) = New CheckBox
+            
+            Panel1.Controls.Add(MyCheckboxes(i))
+            
+            MyCheckboxes(i).Location = New Point(10, Ypos)
+            Ypos = Ypos + 25
+            MyCheckboxes(i).Visible = TRUE
+            '     MyCheckboxes(i).Name = "MyCheckboxes" & x
+            MyCheckboxes(i).Size = New Size(300, 20)
+            '    If x >= linecount Then
+            ' MsgBox(containing)
+            tempnr = tempnr + 1
+            If containing.Contains(Main_lineArray.Item(x)) = FALSE Then
+                
+                MyCheckboxes(i).Checked = FALSE
+                '          lineArray.Item(x) = lineArray.Item(x).Remove(0)
+                MyCheckboxes(i).BackColor = Color.Red
+                MyCheckboxes(i).Text = Main_lineArray.Item(x)
+                MyCheckboxes(i).Name = "MyCheckboxes" & pluginschecked
+                
+            Else
+                MyCheckboxes(i).Checked = TRUE
+                MyCheckboxes(i).BackColor = Color.Green
+                pluginschecked = pluginschecked + 1
+                MyCheckboxes(i).Text = Main_lineArray.Item(x)        ' & pluginschecked
+                
+                ' pluginNames(pluginschecked) = pluginNames(pluginschecked) + x
+                '  MyCheckboxes(i).Name = "MyCheckboxes" & pluginschecked
+                MyCheckboxes(i).Name = "MyCheckboxes" & pluginschecked
+                
+            End If
+            
+            '   End If
+            
+            AddHandler MyCheckboxes(i).CheckedChanged, AddressOf Checkbox_onCheckedChanged
+        Next
+    End If
+    ifbeenrunning = TRUE
+End Sub
+Private Sub Panel1_Paint(sender As Object, e As PaintEventArgs) Handles Panel1.Paint
+    
+End Sub
+
+Private Sub About_LinkClicked_1(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles About.LinkClicked
+    Azaaxin.ShowDialog()
+End Sub
+
+Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Label1.Click
+    
+End Sub
+
+Private Sub LinkLabel2_LinkClicked_1(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles LinkLabel2.LinkClicked
+    Dim strLOOTInstallPath As String = My.Computer.Registry.GetValue(
     "HKEY_LOCAL_MACHINE\SOFTWARE\LOOT", "Installed Path", Nothing)
-        ' MsgBox(strLOOTInstallPath)
-        If File.Exists(strLOOTInstallPath & "\LOOT.exe") Then
-            '  Process.Start("C:\Program Files (x86)\LOOT\LOOT.exe", "")
-            'System.Diagnostics.Process.Start(System.IO.Path.Combine(My.Application.Info.DirectoryPath, "loot.exe"))
-            Dim myProcess As New Process
-            myProcess.StartInfo.WorkingDirectory = strLOOTInstallPath
-            myProcess.StartInfo.FileName = strLOOTInstallPath & "\LOOT.exe"
-            myProcess.Start()
-        Else
-            MsgBox("Couldn't find LOOT")
-        End If
-    End Sub
+    ' MsgBox(strLOOTInstallPath)
+    If File.Exists(strLOOTInstallPath & "\LOOT.exe") Then
+        '  Process.Start("C:\Program Files (x86)\LOOT\LOOT.exe", "")
+        'System.Diagnostics.Process.Start(System.IO.Path.Combine(My.Application.Info.DirectoryPath, "loot.exe"))
+        Dim myProcess As New Process
+        myProcess.StartInfo.WorkingDirectory = strLOOTInstallPath
+        myProcess.StartInfo.FileName = strLOOTInstallPath & "\LOOT.exe"
+        myProcess.Start()
+    Else
+        't find LOOT")
+    End If
+End Sub
 
-    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
-        Password.ShowDialog()
-    End Sub
+Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Label3.Click
+    Password.ShowDialog()
+End Sub
 End Class
